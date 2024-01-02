@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "572865305173",
+    "project_id": "vjti-hostel-f8c43",
+    "storage_bucket": "vjti-hostel-f8c43.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:572865305173:android:e9faa9fff9b20a934dd2dc",
+        "android_client_info": {
+          "package_name": "com.example.vjtihostel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmudqEKfPuHssS-fqZgb_a1pGbcQeNSds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
