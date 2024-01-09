@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:vjtihostel/button.dart';
+import 'package:vjtihostel/student/constant/const.dart';
 import 'package:vjtihostel/student/constant/data.dart';
 import 'package:vjtihostel/student/homepage.dart';
 
@@ -90,36 +91,7 @@ class _StudentDataState extends State<StudentData> {
     super.dispose();
   }
 
-  Widget dropdownMenu<T>(
-      List<T> list, T? dropdownValue, ValueChanged<T?> onChanged) {
-    return Padding(
-      padding: const EdgeInsets.all(25.0),
-      child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.green, // Set the color of the border
-              width: 1.0, // Set the width of the border
-            ),
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(7.0),
-            child: DropdownButton<T>(
-              iconEnabledColor: const Color.fromARGB(255, 194, 136, 136),
-              dropdownColor: const Color.fromARGB(255, 237, 233, 233),
-              value: dropdownValue,
-              onChanged: onChanged,
-              items: list.map<DropdownMenuItem<T>>((T value) {
-                return DropdownMenuItem<T>(
-                  value: value,
-                  child: Text(value.toString()),
-                );
-              }).toList(),
-            ),
-          )),
-    );
-  }
+
 
   String dropdownValueBlood = listbloodgroup.first;
   String dropdownValueCaste = listcastecategory.first;
@@ -207,7 +179,7 @@ class _StudentDataState extends State<StudentData> {
                           _addresController.text.trim(),
                           setbloodgroup,
                         ).then((value) => Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (_) => const HomePage())));
+                            MaterialPageRoute(builder: (_) =>  HomePage())));
                       }
                     },
                     child: const Button(
