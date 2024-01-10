@@ -1,9 +1,8 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vjtihostel/onboard.dart';
 import 'package:vjtihostel/student/complaints.dart';
-
+import 'package:vjtihostel/student/Drawer/request.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -73,8 +72,8 @@ class Drawers extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
             child: InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => const Complaints()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const Complaints()));
                 },
                 child: listtile("Complaints")),
           ),
@@ -83,7 +82,12 @@ class Drawers extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: listtile("Request"),
+            child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Request()));
+                },
+                child: listtile("Request")),
           ),
           const SizedBox(
             height: 15,
