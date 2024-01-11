@@ -73,7 +73,6 @@ class _ComplaintsState extends State<Complaints> {
       'Room Number': roomNo,
       'Contact Number': contactNumber,
       'Time': time,
-      
     });
   }
 
@@ -99,21 +98,79 @@ class _ComplaintsState extends State<Complaints> {
     super.initState();
   }
 
-    
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appbars('Complain'),
+      appBar: appbars(
+        'Complain',
+      ),
       body: SingleChildScrollView(
         reverse: true,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: InkWell(
+        child: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              writedata('Name', TextInputType.name, _roomController), // new
+              const SizedBox(
+                height: 10,
+              ),
+              writedata(
+                  'Reg Number', TextInputType.name, _roomController), // new
+              const SizedBox(
+                height: 10,
+              ),
+              writedata('Email Id', TextInputType.name, _roomController),
+              const SizedBox(
+                height: 10,
+              ),
+
+              writedata('Room Number', TextInputType.name, _roomController),
+              const SizedBox(
+                height: 10,
+              ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      decoration: InputDecoration(
+                          label: const Text('Problem Description'),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                  color: Color.fromARGB(255, 88, 120, 146))),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  const BorderSide(color: Colors.greenAccent),
+                              borderRadius: BorderRadius.circular(12))),
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      minLines: 1,
+                      controller: _problemController,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              dropdownMenu(listproblemcategory, dropdownValueProblem, (value) {
+                setState(() {
+                  dropdownValueProblem = value!;
+                  setproblem = dropdownValueProblem;
+                });
+              }),
+
+              const SizedBox(
+                height: 10,
+              ),
+
+              Row(
+                children: [
+                  InkWell(
                     onTap: () async {
                       ImagePicker imagePicker = ImagePicker();
                       XFile? file = await imagePicker.pickImage(
@@ -201,7 +258,10 @@ class _ComplaintsState extends State<Complaints> {
                       height: 60,
                       width: 280,
                       decoration: BoxDecoration(
-                        border: Border.all(width: 3, color: Colors.blue),
+                        color: const Color.fromARGB(255, 185, 213, 226),
+                        border: Border.all(
+                            width: 3,
+                            color: const Color.fromARGB(255, 69, 114, 148)),
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Row(
@@ -217,79 +277,45 @@ class _ComplaintsState extends State<Complaints> {
                           const SizedBox(width: 5),
                           const Text(
                             'Select image from gallery',
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontFamily: "Nunito",
+                                fontWeight: FontWeight.w700),
                           ),
                         ],
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: Image.network(imageUrl),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            writedata('Room Number', TextInputType.name, _roomController),
-            const SizedBox(
-              height: 25,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      decoration: InputDecoration(
-                          label: const Text('Problem Description'),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Colors.blue)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: Colors.greenAccent),
-                              borderRadius: BorderRadius.circular(12))),
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      minLines: 1,
-                      controller: _problemController,
-                    ),
-                  ],
-                ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: Image.network(imageUrl),
+                  )
+                ],
               ),
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            dropdownMenu(listproblemcategory, dropdownValueProblem, (value) {
-              setState(() {
-                dropdownValueProblem = value!;
-                setproblem = dropdownValueProblem;
-              });
-            }),
-            const SizedBox(
-              height: 30,
-            ),
-            InkWell(
-              onTap: () {
-              
-                sendProblemdata(
-                    imageUrl.toString(),
-                    _problemController.text.trim(),
-                    setproblem.toString(),
-                    widget.email.toString(),
-                    name.toString(),
-                    _roomController.text.trim(),
-                    int.parse(contactNo.toString()),
-                    timestamp).then((value) => showDialog(
+
+              const SizedBox(
+                height: 30,
+              ),
+
+              ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateColor.resolveWith(
+                        (states) => const Color(0xff90AAD6))),
+                onPressed: () {
+                  sendProblemdata(
+                          imageUrl.toString(),
+                          _problemController.text.trim(),
+                          setproblem.toString(),
+                          widget.email.toString(),
+                          name.toString(),
+                          _roomController.text.trim(),
+                          int.parse(contactNo.toString()),
+                          timestamp)
+                      .then((value) => showDialog(
                               context: context,
                               builder: (context) {
                                 return const AlertDialog(
@@ -299,23 +325,68 @@ class _ComplaintsState extends State<Complaints> {
                             int count = 1;
                             Navigator.of(context).popUntil((_) => count-- < 0);
                           }));
-
-                
-              },
-              child: const Button(
-                  txt: 'Send Problem',
-                  textcolor: Colors.black,
-                  leftcolor: Color(0xFFafcdfb),
-                  rightcolor: Color(0xFFa4c6fb),
-                  highlighcolor: Color(0xFF91bafb),
-                  fontsize: 20.0),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-          ],
+                },
+                child: const Text(
+                  "Send Problem",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+
+//  onTap: () {
+//                   sendProblemdata(
+//                           imageUrl.toString(),
+//                           _problemController.text.trim(),
+//                           setproblem.toString(),
+//                           widget.email.toString(),
+//                           name.toString(),
+//                           _roomController.text.trim(),
+//                           int.parse(contactNo.toString()),
+//                           timestamp)
+//                       .then((value) => showDialog(
+//                               context: context,
+//                               builder: (context) {
+//                                 return const AlertDialog(
+//                                   content: Text('Problem Sent Sucessfully'),
+//                                 );
+//                               }).then((value) {
+//                             int count = 1;
+//                             Navigator.of(context).popUntil((_) => count-- < 0);
+//                           }));
+//                 },
+
+
+// ElevatedButton(
+//                 onPressed: () {
+//                   sendProblemdata(
+//                           imageUrl.toString(),
+//                           _problemController.text.trim(),
+//                           setproblem.toString(),
+//                           widget.email.toString(),
+//                           name.toString(),
+//                           _roomController.text.trim(),
+//                           int.parse(contactNo.toString()),
+//                           timestamp)
+//                       .then((value) => showDialog(
+//                               context: context,
+//                               builder: (context) {
+//                                 return const AlertDialog(
+//                                   content: Text('Problem Sent Sucessfully'),
+//                                 );
+//                               }).then((value) {
+//                             int count = 1;
+//                             Navigator.of(context).popUntil((_) => count-- < 0);
+//                           }));
+//                 },
+//                 child: Text("Send Problem"),
+//               ),

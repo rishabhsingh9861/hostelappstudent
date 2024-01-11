@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:vjtihostel/student/constant/const.dart';
 
 class Rectors extends StatefulWidget {
   const Rectors({super.key});
@@ -11,28 +12,31 @@ class Rectors extends StatefulWidget {
 class _RectorsState extends State<Rectors> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          material(
-              '7231957066',
-              'rtSingh_b21@ci.vjti.ac.in',
-              'assets/images/try.png',
-              'Dr. Abhay Bambole ',
-              'Cheif Rector Hostel'),
-          material(
-              '7231957066',
-              'rtSingh_b21@ci.vjti.ac.in',
-              'assets/images/try.png',
-              'Dr. Abhay Bambole ',
-              'Cheif Rector Hostel'),
-          material(
-              '7231957066',
-              'rtSingh_b21@ci.vjti.ac.in',
-              'assets/images/try.png',
-              'Dr. Abhay Bambole ',
-              'Cheif Rector Hostel'),
-        ],
+    return Scaffold(
+      appBar: appbars("Rectors"),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            material(
+                '7231957066',
+                'rtSingh_b21@ci.vjti.ac.in',
+                'assets/images/try.png',
+                'Dr. Abhay Bambole ',
+                'Cheif Rector Hostel'),
+            material(
+                '7231957066',
+                'rtSingh_b21@ci.vjti.ac.in',
+                'assets/images/try.png',
+                'Dr. Abhay Bambole ',
+                'Cheif Rector Hostel'),
+            material(
+                '7231957066',
+                'rtSingh_b21@ci.vjti.ac.in',
+                'assets/images/try.png',
+                'Dr. Abhay Bambole ',
+                'Cheif Rector Hostel'),
+          ],
+        ),
       ),
     );
   }
@@ -43,7 +47,7 @@ Widget material(String phoneno, String emailto, String assetimage,
   String phoneNumber = phoneno;
   String email = emailto;
   return Material(
-    color: Colors.blueGrey,
+    // color: Colors.blueGrey,
     child: SingleChildScrollView(
       child: SafeArea(
         child: Padding(
@@ -53,13 +57,13 @@ Widget material(String phoneno, String emailto, String assetimage,
             width: 350,
             decoration: BoxDecoration(
               border: Border.all(
-                  width: 3, color: const Color.fromARGB(255, 76, 158, 175)),
+                  width: 3, color: const Color.fromARGB(255, 0, 0, 0)),
               borderRadius: BorderRadius.circular(15),
             ),
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
                   child: CircleAvatar(
                     backgroundImage: AssetImage(assetimage),
                     radius: 70,
