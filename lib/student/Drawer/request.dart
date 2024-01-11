@@ -11,6 +11,7 @@ class Request extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xff90AAD6),
         title: const Text("Request"),
         centerTitle: true,
         foregroundColor: Colors.black,

@@ -10,6 +10,7 @@ class EventRequest extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: const Color(0xff90AAD6),
         title: const Text(
           "Event Request",
           style: TextStyle(
@@ -104,8 +105,10 @@ class EventRequest extends StatelessWidget {
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateColor.resolveWith(
-                          (states) => Colors.blueAccent)),
+                    backgroundColor: MaterialStateColor.resolveWith(
+                      (states) => Color(0xff90AAD6),
+                    ),
+                  ),
                   onPressed: () {
                     print("Submit");
                   },

@@ -9,6 +9,7 @@ class LeaveRequest extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: const Color(0xff90AAD6),
         centerTitle: true,
         title: const Text(
           "Leave Request",
@@ -37,7 +38,7 @@ class LeaveRequest extends StatelessWidget {
               leaveDetails(
                 hinttext: "Enter Your Full Name ",
                 labletext: "Name",
-                icons: Icon(CupertinoIcons.person),
+                icons: const Icon(CupertinoIcons.person),
               ),
               const SizedBox(
                 height: 10,
@@ -45,7 +46,7 @@ class LeaveRequest extends StatelessWidget {
               leaveDetails(
                 hinttext: "Enter Your Hostel ID Number ",
                 labletext: "ID Number",
-                icons: Icon(CupertinoIcons.number),
+                icons: const Icon(CupertinoIcons.number),
               ),
               const SizedBox(
                 height: 10,
@@ -53,7 +54,7 @@ class LeaveRequest extends StatelessWidget {
               leaveDetails(
                 hinttext: "Enter Your Email Address",
                 labletext: "Email ID",
-                icons: Icon(CupertinoIcons.mail),
+                icons: const Icon(CupertinoIcons.mail),
               ),
               const SizedBox(
                 height: 5,
@@ -65,7 +66,7 @@ class LeaveRequest extends StatelessWidget {
               leaveDetails(
                 hinttext: " e.g., Casual, Medical, Vacation",
                 labletext: "Enter Type Of Leave",
-                icons: Icon(CupertinoIcons.person),
+                icons: const Icon(CupertinoIcons.person),
               ),
               const SizedBox(
                 height: 10,
@@ -76,14 +77,14 @@ class LeaveRequest extends StatelessWidget {
                     child: leaveDetails(
                       hinttext: " e.g. 01-01-2024",
                       labletext: "Start Date",
-                      icons: Icon(CupertinoIcons.doc_append),
+                      icons: const Icon(CupertinoIcons.doc_append),
                     ),
                   ),
                   Expanded(
                     child: leaveDetails(
                       hinttext: "e.g. 01-03-2024",
                       labletext: "End Date",
-                      icons: Icon(CupertinoIcons.doc_append),
+                      icons: const Icon(CupertinoIcons.doc_append),
                     ),
                   ),
                 ],
@@ -94,15 +95,17 @@ class LeaveRequest extends StatelessWidget {
               leaveDetails(
                 hinttext: " ",
                 labletext: "Reason for Leave",
-                icons: Icon(CupertinoIcons.italic),
+                icons: const Icon(CupertinoIcons.italic),
               ),
               const SizedBox(
                 height: 10,
               ),
               ElevatedButton(
                 style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => Colors.blueAccent)),
+                  backgroundColor: MaterialStateColor.resolveWith(
+                    (states) => const Color(0xff90AAD6),
+                  ),
+                ),
                 onPressed: () {
                   print("Submit");
                 },

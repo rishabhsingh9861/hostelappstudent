@@ -16,6 +16,7 @@ class _RoomChangeState extends State<RoomChange> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: const Color(0xff90AAD6),
         centerTitle: true,
         title: const Text(
           "Room Change Request",
@@ -125,8 +126,10 @@ class _RoomChangeState extends State<RoomChange> {
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateColor.resolveWith(
-                          (states) => Colors.blueAccent)),
+                    backgroundColor: MaterialStateColor.resolveWith(
+                      (states) => const Color(0xff90AAD6),
+                    ),
+                  ),
                   onPressed: () {
                     print("Submit");
                   },

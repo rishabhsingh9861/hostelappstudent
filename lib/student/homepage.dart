@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vjtihostel/onboard.dart';
+import 'package:vjtihostel/student/Drawer/certificate.dart';
 import 'package:vjtihostel/student/complaints.dart';
 import 'package:vjtihostel/student/Drawer/request.dart';
 
@@ -101,7 +102,13 @@ class Drawers extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: listtile("Certificates"),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Certificates()));
+              },
+              child: listtile("Certificates"),
+            ),
           ),
           const SizedBox(
             height: 15,
