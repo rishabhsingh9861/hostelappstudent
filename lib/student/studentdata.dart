@@ -1,11 +1,9 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:vjtihostel/button.dart';
 import 'package:vjtihostel/student/constant/const.dart';
 import 'package:vjtihostel/student/constant/data.dart';
 import 'package:vjtihostel/student/homepage.dart';
-
 
 class StudentData extends StatefulWidget {
   const StudentData({
@@ -44,13 +42,12 @@ class _StudentDataState extends State<StudentData> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _registrationController = TextEditingController();
-//  final _categoryController = TextEditingController();
   final _parentnameController = TextEditingController();
   final _parentcontactnoController = TextEditingController();
   final _studentcontactnoController = TextEditingController();
   final _addresController = TextEditingController();
-  //final _bloodgroupController = TextEditingController();
 
+  bool approv = false;
   Future addUserDetails(
       String name,
       String email,
@@ -60,7 +57,9 @@ class _StudentDataState extends State<StudentData> {
       int studentcontactnumber,
       int parentcontactnumber,
       String address,
-      String bloodgroup) async {
+      String bloodgroup,
+      bool aprov
+      ) async {
     await FirebaseFirestore.instance
         .collection('HostelStudents')
         .doc(widget.email)
@@ -74,6 +73,7 @@ class _StudentDataState extends State<StudentData> {
       'Parent Contact Number': parentcontactnumber,
       'Address': address,
       'Blood Group': bloodgroup,
+      'Approved' : approv,
     });
   }
 
@@ -90,8 +90,6 @@ class _StudentDataState extends State<StudentData> {
     // _bloodgroupController.dispose();
     super.dispose();
   }
-
-
 
   String dropdownValueBlood = listbloodgroup.first;
   String dropdownValueCaste = listcastecategory.first;
@@ -178,8 +176,11 @@ class _StudentDataState extends State<StudentData> {
                           int.parse(_parentcontactnoController.text.trim()),
                           _addresController.text.trim(),
                           setbloodgroup,
-                        ).then((value) => Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (_) =>  HomePage())));
+                          approv
+                        ).then((value) => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const HomePage())));
                       }
                     },
                     child: const Button(

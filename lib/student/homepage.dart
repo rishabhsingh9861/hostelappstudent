@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vjtihostel/onboard.dart';
 import 'package:vjtihostel/student/complaints.dart';
-import 'package:vjtihostel/student/pendingComplaints.dart';
+import 'package:vjtihostel/student/genrateid.dart';
+import 'package:vjtihostel/student/pendingcomplaints.dart';
 import 'package:vjtihostel/student/rectors.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,6 +28,21 @@ class _HomePageState extends State<HomePage> {
           title: const Text(
             'VJTI HOSTEL',
           ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => const GenerateId()));
+                },
+                child: Image.asset(
+                  'assets/images/id-card.png',
+                  scale: 10,
+                ),
+              ),
+            )
+          ],
         ),
         drawer: const Drawers(),
       ),
@@ -77,7 +93,6 @@ class Drawers extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
             child: InkWell(
                 onTap: () {
-                  print(email);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -94,8 +109,10 @@ class Drawers extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
             child: InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => PendingComplaints()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const PendingComplaints()));
                 },
                 child: listtile("Pending Complaints")),
           ),
@@ -141,8 +158,8 @@ class Drawers extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
             child: InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => Rectors()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const Rectors()));
                 },
                 child: listtile("Rectors")),
           ),

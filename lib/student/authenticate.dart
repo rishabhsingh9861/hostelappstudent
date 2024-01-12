@@ -13,7 +13,6 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
-    String email = '';
     return Scaffold(
         body: StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
@@ -21,10 +20,9 @@ class _AuthPageState extends State<AuthPage> {
         if (snapshot.hasData) {
           final User? user = snapshot.data;
           if (user != null) {
-            email = user.email.toString();
           }
 
-          return  HomePage( );
+          return  const HomePage( );
         } else {
           return const Onboard();
         }
