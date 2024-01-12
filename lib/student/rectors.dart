@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:vjtihostel/student/constant/const.dart';
 
 class Rectors extends StatefulWidget {
   const Rectors({Key? key});
@@ -14,6 +15,7 @@ class _RectorsState extends State<Rectors> {
 
   @override
   Widget build(BuildContext context) {
+
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection('Rectors')
@@ -41,11 +43,12 @@ class _RectorsState extends State<Rectors> {
           );
         } else {
           // Handle the case when there is no data or it's still loading
-          return CircularProgressIndicator();
-        }
-      },
+          return CircularProgressIndicator()
+   
+
     );
   }
+
 
   Widget material(int phoneno, String emailto, String assetimage,
       String nametext, String positiontext) {
@@ -73,6 +76,7 @@ class _RectorsState extends State<Rectors> {
                       backgroundImage: NetworkImage(assetimage),
                       radius: 70,
                     ),
+
                   ),
                   const SizedBox(
                     height: 10,
