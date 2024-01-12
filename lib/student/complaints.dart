@@ -172,6 +172,9 @@ class _ComplaintsState extends State<Complaints> {
                 children: [
                   InkWell(
                     onTap: () async {
+
+
+                      
                       ImagePicker imagePicker = ImagePicker();
                       XFile? file = await imagePicker.pickImage(
                           source: ImageSource.gallery);
@@ -224,8 +227,7 @@ class _ComplaintsState extends State<Complaints> {
                           imageUrl =
                               await refrenceImageToUpload.getDownloadURL();
                         } catch (error) {
-                          print(
-                              error); // Print or log the error for debugging purposes
+                          // Print or log the error for debugging purposes
 
                           showDialog(
                             context: context,

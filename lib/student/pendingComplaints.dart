@@ -13,6 +13,7 @@ class PendingComplaints extends StatefulWidget {
 }
 
 class _PendingComplaintsState extends State<PendingComplaints> {
+  bool isChecked = false;
   @override
   Widget build(BuildContext context) {
     List problemids = [];
@@ -54,7 +55,7 @@ class _PendingComplaintsState extends State<PendingComplaints> {
                 problemCategory = '${problem['Category']}';
                 roomNo = '${problem['Room Number']}';
                 issue = '${problem['Problem']}';
-              
+
                 Timestamp timestamp = problem['Time'];
                 DateTime dateTime = timestamp.toDate();
                 String formattedTime = DateFormat.yMd().format(dateTime);
@@ -101,19 +102,39 @@ class _PendingComplaintsState extends State<PendingComplaints> {
                             const SizedBox(
                               height: 40,
                             ),
+                            Row(
+                              children: [
+                                Material(
+                                  child: Checkbox(
+                                    checkColor: Colors.white,
+                                    value: isChecked,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        isChecked = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                const Text(
+                                  'Submit when only all complaints resolved',
+                                )
+                              ],
+                            ),
                             InkWell(
                               onTap: () {
-                                deletesolvedProblem(problemids[index]).then(
-                                    (value) => showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return const AlertDialog(
-                                                content:
-                                                    Text('Complaints Solved'),
-                                              );
-                                            })
-                                        .then((value) =>
-                                            {Navigator.pop(context)}));
+                                if (isChecked) {
+                                  deletesolvedProblem(problemids[index]).then(
+                                      (value) => showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return const AlertDialog(
+                                                  content:
+                                                      Text('Complaints Solved'),
+                                                );
+                                              })
+                                          .then((value) =>
+                                              {Navigator.pop(context)}));
+                                }
                               },
                               child: const Button(
                                   txt: 'Solved',
