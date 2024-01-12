@@ -1,12 +1,23 @@
+
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vjtihostel/onboard.dart';
 import 'package:vjtihostel/student/Drawer/certificate.dart';
 import 'package:vjtihostel/student/complaints.dart';
+
+import 'package:vjtihostel/student/pendingComplaints.dart';
+import 'package:vjtihostel/student/rectors.dart';
+
 import 'package:vjtihostel/student/Drawer/request.dart';
 
+
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -45,6 +56,7 @@ class Drawers extends StatelessWidget {
     }
 
     final user = FirebaseAuth.instance.currentUser!;
+    String email = user.email.toString();
     return Drawer(
         child: SingleChildScrollView(
       child: Column(
@@ -73,8 +85,18 @@ class Drawers extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
             child: InkWell(
                 onTap: () {
+
+                  print(email);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => Complaints(
+                                email: email,
+                              )));
+
                   Navigator.push(context,
                       MaterialPageRoute(builder: (_) => const Complaints()));
+
                 },
                 child: listtile("Complaints")),
           ),
@@ -83,12 +105,28 @@ class Drawers extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
+
+            child: InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => PendingComplaints()));
+                },
+                child: listtile("Pending Complaints")),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
+            child: listtile("Request"),
+
             child: GestureDetector(
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Request()));
                 },
                 child: listtile("Request")),
+
           ),
           const SizedBox(
             height: 15,
@@ -129,7 +167,12 @@ class Drawers extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: listtile("Rectors"),
+            child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => Rectors()));
+                },
+                child: listtile("Rectors")),
           ),
           const SizedBox(
             height: 15,

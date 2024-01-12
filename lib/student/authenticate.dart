@@ -24,7 +24,7 @@ class _AuthPageState extends State<AuthPage> {
             email = user.email.toString();
           }
 
-          return const HomePage();
+          return  HomePage( );
         } else {
           return const Onboard();
         }
