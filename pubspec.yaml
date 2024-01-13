@@ -93,7 +93,7 @@ flutter:
     - family: Nunito
       fonts:
         - asset: fonts/Nunito-Italic-VariableFont_wght.ttf
- complaints
+ 
   #       - asset: fonts/Schyler-Italic.ttf
 
         # - asset: fonts/Schyler-Italic.ttf
