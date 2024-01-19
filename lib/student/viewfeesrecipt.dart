@@ -5,20 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import 'package:vjtihostel/student/constant/const.dart';
+import 'package:vjtihostel/student/genrateid.dart';
 
 class FeesReceiptViewer extends StatefulWidget {
   const FeesReceiptViewer({
     Key? key,
     required this.url,
-    required this.name,
-    required this.roomno,
-    required this.hostelid,
+    required this.imgurl,
     required this.year,
   }) : super(key: key);
   final String url;
-  final String name;
-  final String roomno;
-  final String hostelid;
+  final String imgurl;
+
   final String year;
 
   @override
@@ -28,7 +26,10 @@ class FeesReceiptViewer extends StatefulWidget {
 class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
   String address = '';
   String bloodgroup = '';
+  String roomno = '';
+  String name = '';
   int parentsNumber = 0;
+  int hostelid = 0;
   int registrationnumber = 0;
   int studentnumber = 0;
   PdfViewerController? _pdfViewerController;
@@ -39,21 +40,22 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!;
     String emailids = user.email.toString();
-    
 
     Future addGeneratrIdDetails(
         String name,
         String year,
-        String hostelidno,
+        int hostelidno,
         int registration,
         String roomno,
         String address,
+        String bloodgrp,
         int studentcontactnumber,
         int parentcontactnumber,
         String url,
+        String imgurl,
         String emailid,
-         Timestamp time,
-         bool approv) async {
+        Timestamp time,
+        bool approv) async {
       await FirebaseFirestore.instance
           .collection('GenerateIdRequest')
           .doc()
@@ -63,13 +65,15 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
         'Hostel ID': hostelidno,
         'Registration No.': registration,
         'Room NO.': roomno,
+        'Blood Group': bloodgrp,
         'Adress': address,
         'Student contact number': studentcontactnumber,
         'Parent Contact Number': parentcontactnumber,
         'Fess Recipt': url,
-        'Emailid' : emailid ,
-        'Time' : time,
-        'Approved':approv
+        'Passport Photo': imgurl,
+        'Emailid': emailid,
+        'Time': time,
+        'Approved': approv
       });
     }
 
@@ -91,12 +95,15 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
 
           address = userData['Address'] as String;
           bloodgroup = userData['Blood Group'] as String;
+          name = userData['Name'] as String;
+          hostelid = userData['Hostel Id'] as int;
+          roomno = userData['Room No.'] as String;
           studentnumber = userData['Student contact number'] as int;
           registrationnumber = userData['Registration No.'] as int;
           parentsNumber = userData['Parent Contact Number'] as int;
-          bool approve = userData['Approved'] ;
+          bool approve = userData['Approved'];
 
-          // Do something with the data
+        
           return SafeArea(
             child: Scaffold(
               appBar: appbars('Preview'),
@@ -114,11 +121,11 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Name: ${widget.name}',
+                                  'Name: ${name}',
                                   style: textsty,
                                 ),
                                 Text(
-                                  'Hostel ID: ${widget.hostelid}',
+                                  'Hostel ID: ${hostelid}',
                                   style: textsty,
                                 ),
                                 Text(
@@ -126,7 +133,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                                   style: textsty,
                                 ),
                                 Text(
-                                  'Room No. :${widget.roomno}',
+                                  'Room No. :${roomno}',
                                   style: textsty,
                                 ),
                                 Text(
@@ -189,18 +196,20 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                       onPressed: () {
                         if (isChecked) {
                           addGeneratrIdDetails(
-                                  widget.name,
+                                  name,
                                   widget.year,
-                                  widget.hostelid,
+                                  hostelid,
                                   registrationnumber,
-                                  widget.roomno,
+                                  roomno,
                                   address,
+                                  bloodgroup,
                                   studentnumber,
                                   parentsNumber,
                                   widget.url,
+                                  imageUrl,
                                   emailids,
                                   timenow,
-                                  approve)                
+                                  approve)
                               .then((value) => showDialog(
                                       context: context,
                                       builder: (context) {
@@ -221,7 +230,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
             ),
           ); // Replace YourWidget with the widget you want to build
         }
-      }, 
+      },
     );
   }
 }

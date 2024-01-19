@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Amenities extends StatefulWidget {
-  Amenities({super.key});
+  const Amenities({super.key});
 
   @override
   State<Amenities> createState() => _RoomChangeState();
@@ -32,7 +32,7 @@ class _RoomChangeState extends State<Amenities> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   height: 120,
                   width: 150,
                   // decoration: const BoxDecoration(
@@ -120,7 +120,6 @@ class _RoomChangeState extends State<Amenities> {
                     ),
                   ),
                   onPressed: () {
-                    print("Submit");
                   },
                   child: const Text(
                     "Submit",

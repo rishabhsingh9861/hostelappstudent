@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:vjtihostel/student/Drawer/Forms/expenditure.dart';
-import 'package:vjtihostel/student/Drawer/Forms/hostelAndMess.dart';
+import 'package:vjtihostel/student/Drawer/Forms/hostelandmess.dart';
 
 class Certificates extends StatelessWidget {
   const Certificates({super.key});
@@ -27,37 +26,38 @@ class Certificates extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
+                margin: const EdgeInsets.symmetric(vertical: 20),
                 height: 100,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.blueGrey[200],
                 ),
                 child: Center(
-                  child: ListTile(
-                    leading: Container(
-                      height: 100,
-                      width: 100,
-                      child: const Image(
-                          image: NetworkImage(
-                              "https://tse4.mm.bing.net/th?id=OIP.GWNNI7nB26NNx3Cm23FLnQAAAA&pid=Api&P=0&h=180")),
-                    ),
-                    trailing: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HostelAndMess(),
-                            ),
-                          );
-                        },
-                        child:
-                            const Icon(CupertinoIcons.chevron_compact_right)),
-                    title: const Text(
-                      "Hostel and Mess Certificate",
-                      style: TextStyle(
-                        fontFamily: "Nunito",
-                        fontWeight: FontWeight.bold,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HostelAndMess(),
+                        ),
+                      );
+                    },
+                    child: const ListTile(
+                      leading: SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: Image(
+                            image: NetworkImage(
+                                "https://tse4.mm.bing.net/th?id=OIP.GWNNI7nB26NNx3Cm23FLnQAAAA&pid=Api&P=0&h=180")),
+                      ),
+                      trailing:
+                          Icon(CupertinoIcons.chevron_compact_right),
+                      title: Text(
+                        "Hostel and Mess Certificate",
+                        style: TextStyle(
+                          fontFamily: "Nunito",
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -71,10 +71,10 @@ class Certificates extends StatelessWidget {
                 ),
                 child: Center(
                   child: ListTile(
-                    leading: Container(
+                    leading: const SizedBox(
                       height: 100,
                       width: 100,
-                      child: const Image(
+                      child: Image(
                           image: NetworkImage(
                               "https://navi.com/blog/wp-content/uploads/2022/10/What-is-capital-expenditure.jpg")),
                     ),
@@ -83,7 +83,7 @@ class Certificates extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => HostelAndMess(),
+                              builder: (context) => const HostelAndMess(),
                             ),
                           );
                         },
