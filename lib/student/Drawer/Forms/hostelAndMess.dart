@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, file_names
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -9,18 +11,17 @@ class HostelAndMess extends StatefulWidget {
 }
 
 class _HostelAndMessState extends State<HostelAndMess> {
-  TextEditingController name = new TextEditingController();
-  TextEditingController year = new TextEditingController();
-  TextEditingController brach = new TextEditingController();
-  TextEditingController regNO = new TextEditingController();
-  TextEditingController roomNo = new TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController year = TextEditingController();
+  TextEditingController brach = TextEditingController();
+  TextEditingController regNO = TextEditingController();
+  TextEditingController roomNo = TextEditingController();
 
   void validateFields() {
     String Name = name.text.toString();
     String Year = year.text.toString();
     String branch = brach.text.toString();
     String RegNo = regNO.text.toString();
-    String roomno = roomNo.text.toString();
 
     if (Name != "" && Year != "" && branch != "" && RegNo != "") {
       // here data will be stored in the database
@@ -52,91 +53,93 @@ class _HostelAndMessState extends State<HostelAndMess> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(8),
-          child: Column(
-            children: [
-              Container(
-                height: 200,
-                width: 200,
-                child: Image.network(
-                    "https://icon-library.com/images/fill-out-form-icon/fill-out-form-icon-10.jpg"),
-              ),
-              const Text(
-                "Hostel and Mess ",
-                style: TextStyle(
-                    fontSize: 22,
-                    fontFamily: "Nunito",
-                    fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              hostelDetails(
-                  hinttext: "Enter Your Full Name",
-                  labletext: "Name",
-                  icons: const Icon(CupertinoIcons.person),
-                  controller: name),
-              const SizedBox(
-                height: 10,
-              ),
-              hostelDetails(
-                  hinttext: "Enter the year you are studing in eg: 2nd Year",
-                  labletext: "Year",
-                  icons: const Icon(CupertinoIcons.tag),
-                  controller: year),
-              const SizedBox(
-                height: 10,
-              ),
-              hostelDetails(
-                  hinttext: "Enter Your Branch",
-                  labletext: "Branch",
-                  icons: const Icon(CupertinoIcons.hammer),
-                  controller: brach),
-              const SizedBox(
-                height: 10,
-              ),
-              hostelDetails(
-                hinttext: "Enter Your Reg No",
-                labletext: "Reg No",
-                icons: const Icon(CupertinoIcons.number),
-                controller: regNO,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              hostelDetails(
-                hinttext: "Enter Your Room No",
-                labletext: "Room No",
-                icons: const Icon(CupertinoIcons.home),
-                controller: roomNo,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              hostelDetails(
-                hinttext: "Applying For i.e: Certificate type",
-                labletext: "Certificate Type",
-                icons: const Icon(CupertinoIcons.doc),
-                controller: roomNo,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateColor.resolveWith(
-                    (states) => const Color(0xff90AAD6),
+          padding: const EdgeInsets.all(8),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 200,
+                  width: 200,
+                  child: Image.network(
+                      "https://icon-library.com/images/fill-out-form-icon/fill-out-form-icon-10.jpg"),
+                ),
+                const Text(
+                  "Hostel and Mess ",
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontFamily: "Nunito",
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                hostelDetails(
+                    hinttext: "Enter Your Full Name",
+                    labletext: "Name",
+                    icons: const Icon(CupertinoIcons.person),
+                    controller: name),
+                const SizedBox(
+                  height: 10,
+                ),
+                hostelDetails(
+                    hinttext: "Enter the year you are studing in eg: 2nd Year",
+                    labletext: "Year",
+                    icons: const Icon(CupertinoIcons.tag),
+                    controller: year),
+                const SizedBox(
+                  height: 10,
+                ),
+                hostelDetails(
+                    hinttext: "Enter Your Branch",
+                    labletext: "Branch",
+                    icons: const Icon(CupertinoIcons.hammer),
+                    controller: brach),
+                const SizedBox(
+                  height: 10,
+                ),
+                hostelDetails(
+                  hinttext: "Enter Your Reg No",
+                  labletext: "Reg No",
+                  icons: const Icon(CupertinoIcons.number),
+                  controller: regNO,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                hostelDetails(
+                  hinttext: "Enter Your Room No",
+                  labletext: "Room No",
+                  icons: const Icon(CupertinoIcons.home),
+                  controller: roomNo,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                hostelDetails(
+                  hinttext: "Applying For i.e: Certificate type",
+                  labletext: "Certificate Type",
+                  icons: const Icon(CupertinoIcons.doc),
+                  controller: roomNo,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateColor.resolveWith(
+                      (states) => const Color(0xff90AAD6),
+                    ),
                   ),
-                ),
-                onPressed: () {
-                  validateFields();
-                },
-                child: const Text(
-                  "SUBMIT",
-                  style: TextStyle(color: Colors.white),
-                ),
-              )
-            ],
+                  onPressed: () {
+                    validateFields();
+                  },
+                  child: const Text(
+                    "SUBMIT",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
