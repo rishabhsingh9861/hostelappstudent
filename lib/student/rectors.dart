@@ -15,7 +15,6 @@ class _RectorsState extends State<Rectors> {
 
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection('Rectors')
@@ -30,7 +29,7 @@ class _RectorsState extends State<Rectors> {
               String reqId = snapshot.data!.docs[index].id;
               requiredId.add(reqId);
               final reqData =
-                  snapshot.data!.docs[index].data() as Map<String, dynamic>;
+              snapshot.data!.docs[index].data() as Map<String, dynamic>;
               String rectorName = reqData['Cheif Rector Name'] as String;
               String rectorImage = reqData['Cheif rector Image'] as String;
               String rectorEmail = reqData['Cheif Rector email'] as String;
@@ -43,9 +42,9 @@ class _RectorsState extends State<Rectors> {
           );
         } else {
           // Handle the case when there is no data or it's still loading
-          return CircularProgressIndicator()
-   
-
+          return CircularProgressIndicator();
+        }
+      },
     );
   }
 

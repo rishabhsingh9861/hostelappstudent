@@ -1,4 +1,3 @@
-
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 
@@ -9,10 +8,10 @@ import 'package:vjtihostel/student/Drawer/certificate.dart';
 import 'package:vjtihostel/student/complaints.dart';
 
 import 'package:vjtihostel/student/genrateid.dart';
-import 'package:vjtihostel/student/pendingcomplaints.dart';
-
-
 import 'package:vjtihostel/student/pendingComplaints.dart';
+
+
+
 
 import 'package:vjtihostel/student/rectors.dart';
 
@@ -79,146 +78,142 @@ class Drawers extends StatelessWidget {
     String email = user.email.toString();
     return Drawer(
         child: SingleChildScrollView(
-      child: Column(
-        children: [
-          UserAccountsDrawerHeader(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-            ),
-            // currentAccountPictureSize: const Size.square(72),
-            // otherAccountsPicturesSize: const Size.square(20.0),
-            // margin: EdgeInsets.zero,
+          child: Column(
+            children: [
+              UserAccountsDrawerHeader(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                // currentAccountPictureSize: const Size.square(72),
+                // otherAccountsPicturesSize: const Size.square(20.0),
+                // margin: EdgeInsets.zero,
 
-            accountName: Text(
-              user.displayName!,
-              style: const TextStyle(fontSize: 20, color: Colors.black),
-            ),
-            accountEmail: Text(
-              user.email!,
-              style: const TextStyle(fontSize: 20, color: Colors.black),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: InkWell(
-                onTap: () {
+                accountName: Text(
+                  user.displayName!,
+                  style: const TextStyle(fontSize: 20, color: Colors.black),
+                ),
+                accountEmail: Text(
+                  user.email!,
+                  style: const TextStyle(fontSize: 20, color: Colors.black),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
+                child: InkWell(
+                    onTap: () {
 
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => Complaints(
-                                email: email,
-                              )));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => Complaints(email: email),
+                        ),
+                      );
 
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const Complaints()));
 
-                },
-                child: listtile("Complaints")),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
+                    },
+                    child: listtile("Complaints")),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
 
-            child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const PendingComplaints()));
-                },
-                child: listtile("Pending Complaints")),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: listtile("Request"),
+                child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const PendingComplaints()));
+                    },
+                    child: listtile("Pending Complaints")),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Request()));
+                  },
+                  child: listtile("Request"),
+                ),
+              ),
 
-            child: GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Request()));
-                },
-                child: listtile("Request")),
-
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
+                child: listtile("Facilities"),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Certificates()));
+                  },
+                  child: listtile("Certificates"),
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
+                child: listtile("Events"),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
+                child: listtile("Committee"),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
+                child: InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => const Rectors()));
+                    },
+                    child: listtile("Rectors")),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
+                child: listtile("Developer"),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
+                child: InkWell(
+                    onTap: () {
+                      signUserOut();
+                    },
+                    child: listtile("SignOut")),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+            ],
           ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: listtile("Facilities"),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Certificates()));
-              },
-              child: listtile("Certificates"),
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: listtile("Events"),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: listtile("Committee"),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const Rectors()));
-                },
-                child: listtile("Rectors")),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: listtile("Developer"),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: InkWell(
-                onTap: () {
-                  signUserOut();
-                },
-                child: listtile("SignOut")),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-        ],
-      ),
-    ));
+        ));
   }
 }
 
