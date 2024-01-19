@@ -33,7 +33,7 @@ class _HostelAndMessState extends State<HostelAndMess> {
         final snackBar = SnackBar(
           backgroundColor: Colors.red,
           duration: Duration(seconds: 3),
-          content: Text('Reg No and Room No should be numeric.'),
+          content: Text('Reg No field and Room No field should be numeric.'),
         );
 
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
