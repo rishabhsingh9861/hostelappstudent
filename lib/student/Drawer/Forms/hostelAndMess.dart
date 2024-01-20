@@ -4,7 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HostelAndMess extends StatefulWidget {
 
-  const HostelAndMess({super.key});
+  const HostelAndMess({Key? key,
+    required this.email,
+  }) : super(key: key);
+  final String email;
 
 
   @override
@@ -12,78 +15,89 @@ class HostelAndMess extends StatefulWidget {
 }
 
 class _HostelAndMessState extends State<HostelAndMess> {
-  CollectionReference db = FirebaseFirestore.instance.collection('Certificates');
-  TextEditingController name = new TextEditingController();
-  TextEditingController year = new TextEditingController();
-  TextEditingController brach = new TextEditingController();
-  TextEditingController regNO = new TextEditingController();
-  TextEditingController roomNo = new TextEditingController();
+  CollectionReference db = FirebaseFirestore.instance.collection('HostelStudents');
+  CollectionReference db1 = FirebaseFirestore.instance.collection('CertificateRequest');
   TextEditingController certificateType = new TextEditingController();
 
   void validateFields() async {
-    String Name = name.text.toString();
-    String Year = year.text.toString();
-    String branch = brach.text.toString();
-    String RegNo = regNO.text.toString();
-    String roomno = roomNo.text.toString();
-    String certificate = certificateType.text.toString();
+    try {
+      // Use a single document for all requests
+      DocumentReference certificateRequestDoc = db1.doc('requests');
 
-    if (Name != "" && Year != "" && branch != "" && RegNo != "" && roomno != "" && certificate != "") {
-      if (int.tryParse(RegNo) == null || int.tryParse(roomno) == null) {
-        final snackBar = SnackBar(
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 3),
-          content: Text('Reg No field and Room No field should be numeric.'),
-        );
+      DocumentSnapshot idCardSnapshot =
+      await db.doc(widget.email).collection('StudentIDCard').doc('idcard').get();
 
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        return;
-      }
-      try {
-        await db.add({
-          'Name': Name,
-          'Year': Year,
-          'Branch': branch,
-          'RegNo': RegNo,
-          'RoomNo': roomno,
-          'CertificateType': certificate,
-        });
+      if (idCardSnapshot.exists) {
+        Map<String, dynamic>? idCardData = idCardSnapshot.data() as Map<String, dynamic>?;
 
-        // Data added successfully
+        if (idCardData != null) {
+          String name = idCardData['Name'] ?? '';
+          String year = idCardData['Year'] ?? '';
+          int regNo = idCardData['Registration No.'] ?? 0;
+          String roomNo = idCardData['Room NO.'] ?? '';
+
+          String certificate = certificateType.text.toString();
+
+          if (certificate.isNotEmpty) {
+            // Create a new request or update the existing one
+            await certificateRequestDoc.set({
+              'Certificates': FieldValue.arrayUnion([
+                {
+                  'Name': name,
+                  'Year': year,
+                  'RegNo': regNo,
+                  'RoomNo': roomNo,
+                  'CertificateType': certificate,
+                  'Timestamp': Timestamp.now(),
+                }
+              ]),
+            }, SetOptions(merge: true));
+
+            // Data added successfully
+            const snackBar = SnackBar(
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 3),
+              content: Text('Sent for verification!'),
+            );
+
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+            // Clear the text fields
+            certificateType.clear();
+          } else {
+            const snackBar = SnackBar(
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+              content: Text('Fill All The Fields'),
+            );
+
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+        } else {
+          // Handle the case where idCardData is null
+        }
+      } else {
         const snackBar = SnackBar(
-          backgroundColor: Colors.green,
-          duration: Duration(seconds: 3),
-          content: Text('Data added successfully!'),
-        );
-
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        // Clear the text fields
-        name.clear();
-        year.clear();
-        brach.clear();
-        regNO.clear();
-        roomNo.clear();
-        certificateType.clear();
-      } catch (e) {
-        // Handle errors
-        final snackBar = SnackBar(
           backgroundColor: Colors.red,
           duration: Duration(seconds: 3),
-          content: Text('Error adding data: $e'),
+          content: Text('First generate your ID card'),
         );
 
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
-    } else {
-      const snackBar = SnackBar(
+    } catch (e) {
+      // Handle errors
+      final snackBar = SnackBar(
         backgroundColor: Colors.red,
         duration: Duration(seconds: 3),
-        content: Text('Fill All The Fields'),
+        content: Text('Error fetching data: $e'),
       );
 
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -119,48 +133,48 @@ class _HostelAndMessState extends State<HostelAndMess> {
                       fontFamily: "Nunito",
                       fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                hostelDetails(
-                    hinttext: "Enter Your Full Name",
-                    labletext: "Name",
-                    icons: const Icon(CupertinoIcons.person),
-                    controller: name),
-                const SizedBox(
-                  height: 10,
-                ),
-                hostelDetails(
-                    hinttext: "Enter the year you are studing in eg: 2nd Year",
-                    labletext: "Year",
-                    icons: const Icon(CupertinoIcons.tag),
-                    controller: year),
-                const SizedBox(
-                  height: 10,
-                ),
-                hostelDetails(
-                    hinttext: "Enter Your Branch",
-                    labletext: "Branch",
-                    icons: const Icon(CupertinoIcons.hammer),
-                    controller: brach),
-                const SizedBox(
-                  height: 10,
-                ),
-                hostelDetails(
-                  hinttext: "Enter Your Reg No",
-                  labletext: "Reg No",
-                  icons: const Icon(CupertinoIcons.number),
-                  controller: regNO,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                hostelDetails(
-                  hinttext: "Enter Your Room No",
-                  labletext: "Room No",
-                  icons: const Icon(CupertinoIcons.home),
-                  controller: roomNo,
-                ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // hostelDetails(
+                //     hinttext: "Enter Your Full Name",
+                //     labletext: "Name",
+                //     icons: const Icon(CupertinoIcons.person),
+                //     controller: name),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // hostelDetails(
+                //     hinttext: "Enter the year you are studing in eg: 2nd Year",
+                //     labletext: "Year",
+                //     icons: const Icon(CupertinoIcons.tag),
+                //     controller: year),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // hostelDetails(
+                //     hinttext: "Enter Your Branch",
+                //     labletext: "Branch",
+                //     icons: const Icon(CupertinoIcons.hammer),
+                //     controller: brach),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // hostelDetails(
+                //   hinttext: "Enter Your Reg No",
+                //   labletext: "Reg No",
+                //   icons: const Icon(CupertinoIcons.number),
+                //   controller: regNO,
+                // ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // hostelDetails(
+                //   hinttext: "Enter Your Room No",
+                //   labletext: "Room No",
+                //   icons: const Icon(CupertinoIcons.home),
+                //   controller: roomNo,
+                // ),
                 const SizedBox(
                   height: 10,
                 ),

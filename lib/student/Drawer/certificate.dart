@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:vjtihostel/student/Drawer/Forms/expenditure.dart';
@@ -8,6 +9,8 @@ class Certificates extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser!;
+    String email = user.email.toString();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -47,12 +50,12 @@ class Certificates extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => HostelAndMess(),
+                              builder: (context) => HostelAndMess(email: email,),
                             ),
                           );
                         },
                         child:
-                            const Icon(CupertinoIcons.chevron_compact_right)),
+                        const Icon(CupertinoIcons.chevron_compact_right)),
                     title: const Text(
                       "Hostel and Mess Certificate",
                       style: TextStyle(
@@ -83,12 +86,12 @@ class Certificates extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => HostelAndMess(),
+                              builder: (context) => HostelAndMess(email:email),
                             ),
                           );
                         },
                         child:
-                            const Icon(CupertinoIcons.chevron_compact_right)),
+                        const Icon(CupertinoIcons.chevron_compact_right)),
                     title: const Text(
                       " Expenditure Certificate",
                       style: TextStyle(
