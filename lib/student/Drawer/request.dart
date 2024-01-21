@@ -3,12 +3,16 @@ import 'package:vjtihostel/student/Drawer/Forms/amenities.dart';
 import 'package:vjtihostel/student/Drawer/Forms/event.dart';
 import 'package:vjtihostel/student/Drawer/Forms/leaves.dart';
 import 'package:vjtihostel/student/Drawer/Forms/room.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class Request extends StatelessWidget {
   const Request({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser!;
+    String email = user.email.toString();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff90AAD6),
@@ -42,7 +46,7 @@ class Request extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RoomChange(),
+                          builder: (context) => RoomChange(email: email),
                         ),
                       );
                     },
