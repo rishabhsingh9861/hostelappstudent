@@ -25,7 +25,7 @@ class EventRequest extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   height: 120,
                   width: 150,
                   // decoration: const BoxDecoration(
@@ -106,11 +106,10 @@ class EventRequest extends StatelessWidget {
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => Color(0xff90AAD6),
+                      (states) => const Color(0xff90AAD6),
                     ),
                   ),
                   onPressed: () {
-                    print("Submit");
                   },
                   child: const Text(
                     "Submit",

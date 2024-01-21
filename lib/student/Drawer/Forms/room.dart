@@ -1,16 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RoomChange extends StatefulWidget {
+
   RoomChange({Key? key,
     required this.email,
   }) : super(key: key);
   final String email;
 
+  
+
+
   @override
   State<RoomChange> createState() => _RoomChangeState();
 }
+
+final user = FirebaseAuth.instance.currentUser!;
+String emailid = user.email.toString();
 
 class _RoomChangeState extends State<RoomChange> {
   CollectionReference db = FirebaseFirestore.instance.collection('HostelStudents');
@@ -120,6 +129,24 @@ class _RoomChangeState extends State<RoomChange> {
   }
 
 
+  String name = '';
+
+  void getuserdata() async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('HostelStudents')
+        .doc(emailid)
+        .collection('StudentIDCard')
+        .doc('idcard')
+        .get();
+
+    if (snapshot.exists) {
+      Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
+      name = userData['Name'];
+      // contactNo = userData['Student contact number'];
+      // roomo = userData['Room NO.'];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,7 +155,7 @@ class _RoomChangeState extends State<RoomChange> {
         backgroundColor: const Color(0xff90AAD6),
         centerTitle: true,
         title: const Text(
-          "Room Change Request",
+          "Room Change / Left Request",
           style: TextStyle(
             fontFamily: "Nunito",
             fontWeight: FontWeight.bold,
@@ -141,7 +168,7 @@ class _RoomChangeState extends State<RoomChange> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Container(
+                SizedBox(
                   height: 120,
                   width: 150,
                   // decoration: const BoxDecoration(
@@ -153,11 +180,15 @@ class _RoomChangeState extends State<RoomChange> {
                   height: 10,
                 ),
 
+
                 leaveDetails(
                   hinttext: " e.g. Branch wise",
                   labletext: "Roommate Preferences ",
                   icons: Icon(CupertinoIcons.person),
                   controller: preferences,
+
+      
+
                 ),
                 const SizedBox(
                   height: 10,
@@ -165,8 +196,12 @@ class _RoomChangeState extends State<RoomChange> {
                 leaveDetails(
                   hinttext: " ",
                   labletext: "Reason for Room Change",
+
                   icons: Icon(CupertinoIcons.italic),
                   controller: reason,
+
+                  
+
                 ),
                 const SizedBox(
                   height: 10,
@@ -198,9 +233,13 @@ class _RoomChangeState extends State<RoomChange> {
                       (states) => const Color(0xff90AAD6),
                     ),
                   ),
+
                   onPressed: () {
                     validateFields();
                   },
+
+           
+
                   child: const Text(
                     "Submit",
                     style: TextStyle(color: Colors.white),
@@ -247,5 +286,8 @@ TextField leaveDetails({
         ),
       ),
     ),
+    keyboardType: TextInputType.multiline,
+    maxLines: null,
+    minLines: 1,
   );
 }

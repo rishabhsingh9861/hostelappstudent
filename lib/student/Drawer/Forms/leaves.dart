@@ -23,7 +23,7 @@ class LeaveRequest extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 height: 120,
                 width: 150,
                 // decoration: const BoxDecoration(
@@ -58,7 +58,7 @@ class LeaveRequest extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              Divider(),
+              const Divider(),
               const SizedBox(
                 height: 5,
               ),
@@ -106,7 +106,6 @@ class LeaveRequest extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  print("Submit");
                 },
                 child: const Text(
                   "Submit",

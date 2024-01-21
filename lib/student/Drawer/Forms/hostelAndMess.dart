@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, file_names
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,6 +17,7 @@ class HostelAndMess extends StatefulWidget {
 }
 
 class _HostelAndMessState extends State<HostelAndMess> {
+
   CollectionReference db = FirebaseFirestore.instance.collection('HostelStudents');
   CollectionReference db1 = FirebaseFirestore.instance.collection('CertificateRequest');
   TextEditingController certificateType = new TextEditingController();
@@ -88,6 +91,7 @@ class _HostelAndMessState extends State<HostelAndMess> {
     } catch (e) {
       // Handle errors
       final snackBar = SnackBar(
+
         backgroundColor: Colors.red,
         duration: Duration(seconds: 3),
         content: Text('Error fetching data: $e'),
@@ -116,12 +120,14 @@ class _HostelAndMessState extends State<HostelAndMess> {
         ),
       ),
       body: SafeArea(
+
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(8),
             child: Column(
               children: [
                 Container(
+
                   height: 200,
                   width: 200,
                   child: Image.network(
@@ -133,6 +139,7 @@ class _HostelAndMessState extends State<HostelAndMess> {
                       fontSize: 22,
                       fontFamily: "Nunito",
                       fontWeight: FontWeight.bold),
+
                 ),
                 // const SizedBox(
                 //   height: 10,
@@ -179,11 +186,14 @@ class _HostelAndMessState extends State<HostelAndMess> {
                 const SizedBox(
                   height: 10,
                 ),
+
                 hostelDetails(
                   hinttext: "Applying For i.e: Certificate type",
                   labletext: "Certificate Type",
                   icons: const Icon(CupertinoIcons.doc),
+
                   controller: certificateType,
+
                 ),
                 const SizedBox(
                   height: 10,
@@ -191,7 +201,9 @@ class _HostelAndMessState extends State<HostelAndMess> {
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith(
+
                           (states) => const Color(0xff90AAD6),
+
                     ),
                   ),
                   onPressed: () {
