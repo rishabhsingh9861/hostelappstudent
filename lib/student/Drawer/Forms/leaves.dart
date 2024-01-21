@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class LeaveRequest extends StatelessWidget {
-  const LeaveRequest({super.key});
 
+class LeaveRequest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,7 +124,7 @@ TextField leaveDetails({
   required String hinttext,
   required String labletext,
   required Icon icons,
-  //required TextEditingController controller,
+  // required TextEditingController controller,
 }) {
   return TextField(
     // controller: controller,

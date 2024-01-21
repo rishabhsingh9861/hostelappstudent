@@ -15,6 +15,8 @@ class _RectorsState extends State<Rectors> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
+
+
         stream: FirebaseFirestore.instance
             .collection('Rectors')
             .orderBy('Rank', descending: false)
@@ -44,6 +46,7 @@ class _RectorsState extends State<Rectors> {
             return const Center(child: CircularProgressIndicator());
           }
         });
+
   }
 
   Widget material(int phoneno, String emailto, String assetimage,

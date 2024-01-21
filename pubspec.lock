@@ -583,7 +583,10 @@ packages:
       sha256: "3c74dbf8763d36539f114c799d8a2d87343b5067e9d796ca22b5eb8437090ee3"
       url: "https://pub.dev"
     source: hosted
-    version: "1.9.1"
+
+    version: "1.10.0"
+
+
   mime:
     dependency: transitive
     description:
@@ -592,6 +595,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+
   octo_image:
     dependency: transitive
     description:
@@ -600,6 +604,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+
   package_config:
     dependency: transitive
     description:
@@ -772,7 +777,9 @@ packages:
       sha256: "83615bee9045c1d322bbbd1ba209b7a749c2cbcdcb3fdd1df8eb488b3279c1c8"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.1"
+
+    version: "2.1.2"
+
   stream_transform:
     dependency: transitive
     description:
@@ -1017,7 +1024,10 @@ packages:
     dependency: transitive
     description:
       name: web
-      sha256: dc8ccd225a2005c1be616fe02951e2e342092edf968cf0844220383757ef8f10
+
+      sha256: afe077240a270dcfd2aafe77602b4113645af95d0ad31128cc02bce5ac5d5152
+
+
       url: "https://pub.dev"
     source: hosted
     version: "0.1.4-beta"
