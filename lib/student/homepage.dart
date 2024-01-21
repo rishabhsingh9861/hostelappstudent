@@ -11,7 +11,7 @@ import 'package:vjtihostel/student/Drawer/certificate.dart';
 import 'package:vjtihostel/student/complaints.dart';
 import 'package:vjtihostel/student/constant/const.dart';
 import 'package:vjtihostel/student/genrateid.dart';
-import 'package:vjtihostel/student/pendingComplaints.dart';
+import 'package:vjtihostel/student/pendingproblem.dart';
 import 'package:vjtihostel/student/rectors.dart';
 import 'package:vjtihostel/student/Drawer/request.dart';
 
