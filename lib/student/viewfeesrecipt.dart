@@ -103,12 +103,22 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
           parentsNumber = userData['Parent Contact Number'] as int;
           bool approve = userData['Approved'];
 
-        
           return SafeArea(
             child: Scaffold(
+              backgroundColor: Colors.white,
               appBar: appbars('Preview'),
               body: Column(
                 children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 80,
+                    backgroundImage: NetworkImage(
+                      imageUrl,
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SizedBox(
@@ -118,41 +128,42 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                         padding: const EdgeInsets.all(8.0),
                         child: SingleChildScrollView(
                           child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Name: ${name}',
-                                  style: textsty,
-                                ),
-                                Text(
-                                  'Hostel ID: ${hostelid}',
-                                  style: textsty,
-                                ),
-                                Text(
-                                  'Year: ${widget.year}',
-                                  style: textsty,
-                                ),
-                                Text(
-                                  'Room No. :${roomno}',
-                                  style: textsty,
-                                ),
-                                Text(
-                                  'Addres :$address',
-                                  style: textsty,
-                                ),
-                                Text(
-                                  'Registration No. :$registrationnumber',
-                                  style: textsty,
-                                ),
-                                Text(
-                                  'Parent Contact No. :$parentsNumber',
-                                  style: textsty,
-                                ),
-                                Text(
-                                  'Student Number.:$studentnumber',
-                                  style: textsty,
-                                ),
-                              ]),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Name: ${name}',
+                                style: textstyy,
+                              ),
+                              Text(
+                                'Hostel ID: ${hostelid}',
+                                style: textstyy,
+                              ),
+                              Text(
+                                'Year: ${widget.year}',
+                                style: textstyy,
+                              ),
+                              Text(
+                                'Room No.: ${roomno}',
+                                style: textstyy,
+                              ),
+                              Text(
+                                'Addres: $address',
+                                style: textstyy,
+                              ),
+                              Text(
+                                'Registration No.: $registrationnumber',
+                                style: textstyy,
+                              ),
+                              Text(
+                                'Parent Contact No.: $parentsNumber',
+                                style: textstyy,
+                              ),
+                              Text(
+                                'Student Number.: $studentnumber',
+                                style: textstyy,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -193,38 +204,50 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                     ],
                   ),
                   ElevatedButton(
-                      onPressed: () {
-                        if (isChecked) {
-                          addGeneratrIdDetails(
-                                  name,
-                                  widget.year,
-                                  hostelid,
-                                  registrationnumber,
-                                  roomno,
-                                  address,
-                                  bloodgroup,
-                                  studentnumber,
-                                  parentsNumber,
-                                  widget.url,
-                                  imageUrl,
-                                  emailids,
-                                  timenow,
-                                  approve)
-                              .then((value) => showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return const AlertDialog(
-                                          content: Text(
-                                              'Send For Verification Process'),
-                                        );
-                                      }).then((value) {
-                                    int count = 1;
-                                    Navigator.of(context)
-                                        .popUntil((_) => count-- < 0);
-                                  }));
-                        }
-                      },
-                      child: const Text('Generate Id Card')),
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                            (states) =>
+                                const Color.fromARGB(255, 124, 162, 192))),
+                    onPressed: () {
+                      if (isChecked) {
+                        addGeneratrIdDetails(
+                                name,
+                                widget.year,
+                                hostelid,
+                                registrationnumber,
+                                roomno,
+                                address,
+                                bloodgroup,
+                                studentnumber,
+                                parentsNumber,
+                                widget.url,
+                                imageUrl,
+                                emailids,
+                                timenow,
+                                approve)
+                            .then((value) => showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return const AlertDialog(
+                                        content: Text(
+                                            'Send For Verification Process'),
+                                      );
+                                    }).then((value) {
+                                  int count = 1;
+                                  Navigator.of(context)
+                                      .popUntil((_) => count-- < 0);
+                                }));
+                      }
+                    },
+                    child: const Text(
+                      'Generate Id Card',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: "Nunito",
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

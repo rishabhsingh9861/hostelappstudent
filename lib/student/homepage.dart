@@ -32,24 +32,31 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 208, 208, 206),
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(50))),
+          backgroundColor: const Color(0xff90AAD6),
           centerTitle: true,
-          title: const Text('VJTI HOSTEL'),
+          title: const Text(
+            "VJTI HOSTEL",
+            style: TextStyle(
+              fontFamily: "Nunito",
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           actions: [
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-              child: InkWell(
+              child: GestureDetector(
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const GenerateId()),
+                    MaterialPageRoute(
+                      builder: (_) => const GenerateId(),
+                    ),
                   );
                 },
                 child: Image.asset(
-                  'assets/images/id-card.png',
+                  'assets/images/idcard.png',
                   scale: 10,
                 ),
               ),
@@ -99,102 +106,197 @@ class _HomePageState extends State<HomePage> {
               String pphoto = reqData['Passport Photo'] as String? ?? '';
               int parentnumber = reqData['Parent Contact Number'] as int? ?? 0;
 
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.blueGrey,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: Image.asset("assets/images/vjtiLogo.png")),
+                        const Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Hostel Id: $hostelid',
-                                style: textsty,
+                                "Veermata Jijabai \n  Technological\n     Institute",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.red,
+                                  fontFamily: "Anton",
+                                ),
                               ),
-                              const SizedBox(
-                                height: 15,
+                              SizedBox(
+                                height: 10,
                               ),
                               Text(
-                                'Room  No. : $roomo',
-                                style: textsty,
+                                "( An Autonomous Institute of Government of Maharashtra )",
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.blueGrey,
+                                  fontFamily: "Nunito",
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 15),
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage(pphoto),
-                              radius: 70,
+                        ),
+                      ],
+                    ),
+                    div,
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Column(
+                              // mainAxisAlignment: MainAxisAlignment.start,
+                              // crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "V",
+                                  style: stylVJTI,
+                                ),
+                                Text(
+                                  "J",
+                                  style: stylVJTI,
+                                ),
+                                Text(
+                                  "T",
+                                  style: stylVJTI,
+                                ),
+                                Text(
+                                  "I",
+                                  style: stylVJTI,
+                                ),
+                              ],
                             ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            SizedBox(
+                              height: 170,
+                              width: 160,
+                              child: Image(
+                                image: NetworkImage(
+                                  pphoto,
+                                ),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Text(
+                          "HOSTEL ID CARD",
+                          style: TextStyle(
+                            fontFamily: "Anton",
+                            color: Colors.red,
+                            fontSize: 21,
+                            letterSpacing: 4,
                           ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Name: $name',
-                          style: textsty,
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Registration No. : $registration',
-                          style: textsty,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Hostel Id: $hostelid',
+                            style: idStyle,
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Address : $addres',
-                          style: textsty,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Blood Group : $bloodgrp',
-                          style: textsty,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      Row(
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              'Call Parent: ',
-                              style: textsty,
+                          Text(
+                            'Name: $name',
+                            style: idStyle,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'ID No : $registration',
+                            style: const TextStyle(
+                              fontSize: 19,
+                              color: Colors.black,
+                              fontFamily: "Nunito",
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          InkWell(
-                            onTap: () async {
-                              final call = 'tel:$parentnumber';
-                              if (!await launchUrlString(call)) {
-                                await canLaunchUrlString(call);
-                              }
-                            },
-                            child: SizedBox(
-                              height: 30,
-                              width: 30,
-                              child: Image.asset('assets/images/phoneicon.png'),
-                            ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Room  No. : $roomo',
+                            style: idStyle,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Address : $addres',
+                            style: idStyle,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Blood Group : $bloodgrp',
+                            style: idStyle,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          const Text(
+                            'Contact No : 123456789 ', //
+                            style: idStyle,
+                          ),
+                          const SizedBox(
+                            height: 5,
                           ),
                         ],
-                      )
-                    ],
-                  ),
+                      ),
+                    ),
+                    // Column(
+                    //   children: [
+                    //     Row(
+                    //       children: [
+                    //         const Padding(
+                    //           padding: EdgeInsets.all(8.0),
+                    //           child: Text(
+                    //             'Call Parent: ',
+                    //             style: textsty,
+                    //           ),
+                    //         ),
+                    //         GestureDetector(
+                    //           onTap: () async {
+                    //             final call = 'tel:$parentnumber';
+                    //             if (!await launchUrlString(call)) {
+                    //               await canLaunchUrlString(call);
+                    //             }
+                    //           },
+                    //           child: SizedBox(
+                    //             height: 30,
+                    //             width: 30,
+                    //             child:
+                    //                 Image.asset('assets/images/phoneicon.png'),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     )
+                    //   ],
+                    // ),
+                  ],
                 ),
               );
             } else {
@@ -223,152 +325,138 @@ class Drawers extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser!;
     String email = user.email.toString();
     return Drawer(
-        child: SingleChildScrollView(
+
+      backgroundColor: const Color.fromARGB(255, 176, 189, 211),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            UserAccountsDrawerHeader(
+              currentAccountPicture: const CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.white,
+                backgroundImage: NetworkImage(
+                    "https://icon-library.com/images/profile-icon-vector/profile-icon-vector-7.jpg"),
+              ),
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 184, 200, 228),
+              ),
+              accountName: Text(
+                user.displayName!,
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontFamily: "Nunito",
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              accountEmail: Text(
+                user.email!,
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: Colors.black87,
+                  fontFamily: "Nunito",
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
 
 
-      child: Column(
-        children: [
-          UserAccountsDrawerHeader(
-            decoration: const BoxDecoration(
-              color: Colors.white,
             ),
-            // currentAccountPictureSize: const Size.square(72),
-            // otherAccountsPicturesSize: const Size.square(20.0),
-            // margin: EdgeInsets.zero,
-
-            accountName: Text(
-              user.displayName!,
-              style: const TextStyle(fontSize: 20, color: Colors.black),
-            ),
-            accountEmail: Text(
-              user.email!,
-              style: const TextStyle(fontSize: 20, color: Colors.black),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => Complaints(
-                                email: email,
-                              )));
-                },
-                child: listtile("Complaints")),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const PendingComplaints()));
-                },
-                child: listtile("Pending Complaints")),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Request()));
-                },
-                child: listtile("Request")),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => FacilitiesPage()));
-              },
-              child: listtile("Facilities")),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: GestureDetector(
+            GestureDetector(
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const Certificates()));
+                        builder: (_) => Complaints(
+                              email: email,
+                            )));
+              },
+              child: listtile(
+                "Complaints",
+              ),
+            ),
+            div,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const PendingComplaints()));
+              },
+              child: listtile("Pending Complaints"),
+            ),
+            div,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Request()));
+              },
+              child: listtile("Request"),
+            ),
+            div,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => FacilitiesPage()));
+              },
+              child: listtile("Facilities"),
+            ),
+            div,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Certificates(),
+                  ),
+                );
               },
               child: listtile("Certificates"),
             ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: listtile("Events"),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => CommitteePage()));
-                },
-                child: listtile("Committee")),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const Rectors()));
-                },
-                child: listtile("Rectors")),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: listtile("Developer"),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(50, 10, 30, 10),
-            child: InkWell(
-                onTap: () {
-                  signUserOut();
-                },
-                child: listtile("SignOut")),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-        ],
+            div,
+            listtile("Events"),
+            div,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => CommitteePage(),
+                  ),
+                );
+              },
+              child: listtile("Committee"),
+            ),
+            div,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const Rectors(),
+                  ),
+                );
+              },
+              child: listtile("Rectors"),
+            ),
+            div,
+            listtile("Developer"),
+            div,
+            ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateColor.resolveWith((states) => Colors.red)),
+              onPressed: () {
+                signUserOut();
+              },
+              child: const Text(
+                "Sign Out",
+                style: TextStyle(color: Colors.white),
+              ),
+            )
+          ],
+        ),
       ),
-    ));
+    );
   }
 }
 
@@ -376,7 +464,12 @@ ListTile listtile(String title) {
   return ListTile(
     title: Text(
       title,
-      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+      style: const TextStyle(
+        fontSize: 21,
+        color: Colors.black87,
+        fontFamily: "Nunito",
+        fontWeight: FontWeight.bold,
+      ),
     ),
   );
 }

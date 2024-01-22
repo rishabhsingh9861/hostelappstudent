@@ -4,6 +4,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vjtihostel/student/constant/const.dart';
@@ -72,6 +73,7 @@ class _ComplaintsState extends State<Complaints> {
       'Time': time,
     });
   }
+
   Future<void> sendProblemtoemplyee(
     String photourl,
     String problemDescription,
@@ -140,7 +142,6 @@ class _ComplaintsState extends State<Complaints> {
               const SizedBox(
                 height: 10,
               ),
-             
               const SizedBox(
                 height: 10,
               ),
@@ -150,15 +151,23 @@ class _ComplaintsState extends State<Complaints> {
                   children: [
                     TextFormField(
                       decoration: InputDecoration(
-                          label: const Text('Problem Description'),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
-                                  color: Color.fromARGB(255, 88, 120, 146))),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: Colors.greenAccent),
-                              borderRadius: BorderRadius.circular(12))),
+                        label: const Text(
+                          'Problem Description',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 88, 120, 146),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 88, 120, 146),
+                          ),
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                      ),
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       minLines: 1,
@@ -176,11 +185,9 @@ class _ComplaintsState extends State<Complaints> {
                   setproblem = dropdownValueProblem;
                 });
               }),
-
               const SizedBox(
                 height: 10,
               ),
-
               Row(
                 children: [
                   InkWell(
@@ -270,24 +277,21 @@ class _ComplaintsState extends State<Complaints> {
                       height: 60,
                       width: 280,
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 185, 213, 226),
+                        color: Colors.white,
                         border: Border.all(
-                            width: 3,
-                            color: const Color.fromARGB(255, 69, 114, 148)),
-                        borderRadius: BorderRadius.circular(15),
+                            width: 1,
+                            color: Color.fromARGB(255, 122, 159, 187)),
+                        borderRadius: BorderRadius.circular(25),
                       ),
-                      child: Row(
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Image.asset(
-                              'assets/images/galleryimage.png',
-                              height: 40,
-                              width: 40,
-                            ),
+                            padding: EdgeInsets.all(5.0),
+                            child: Icon(CupertinoIcons.photo),
                           ),
-                          const SizedBox(width: 5),
-                          const Text(
+                          SizedBox(width: 5),
+                          Text(
                             'Select Problem Image',
                             style: TextStyle(
                                 fontSize: 18,
@@ -308,11 +312,9 @@ class _ComplaintsState extends State<Complaints> {
                   )
                 ],
               ),
-
               const SizedBox(
                 height: 30,
               ),
-
               ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith(
@@ -353,4 +355,3 @@ class _ComplaintsState extends State<Complaints> {
     );
   }
 }
-

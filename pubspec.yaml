@@ -94,4 +94,7 @@ flutter:
     - family: Nunito
       fonts:
         - asset: fonts/Nunito-Italic-VariableFont_wght.ttf
+    - family: Anton
+      fonts:
+        - asset: fonts/Anton-Regular.ttf
 
