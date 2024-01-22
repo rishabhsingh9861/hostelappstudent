@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vjtihostel/student/constant/const.dart';
@@ -17,7 +18,7 @@ class GenerateId extends StatefulWidget {
 }
 
 String imageUrl =
-    'https://firebasestorage.googleapis.com/v0/b/vjti-hostel-f8c43.appspot.com/o/Icons%2Ficon.png?alt=media&token=2da3e303-790a-4b1e-aee2-cf974c14e386';
+    'https://tse3.mm.bing.net/th?id=OIP.PZpRGo0S1iGYMx8z82P-WAHaHJ&pid=Api&P=0&h=180';
 
 List<String> listyear = <String>[
   'Select Year',
@@ -122,192 +123,228 @@ class _GenerateIdState extends State<GenerateId> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: SafeArea(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 30,
-              ),
-             
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child:
-                    dropdownMenu(listyear, dropdownValueYear, (String? value) {
-                  setState(() {
-                    dropdownValueYear = value!;
-                    setyear = dropdownValueYear;
-                  });
-                }),
-              ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: appbars("Identification Details"),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 280,
+                  child: Image.asset('assets/images/idcard.png'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: dropdownMenu(listyear, dropdownValueYear,
+                      (String? value) {
+                    setState(() {
+                      dropdownValueYear = value!;
+                      setyear = dropdownValueYear;
+                    });
+                  }),
+                ),
+                Row(
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: InkWell(
+                        onTap: () async {
+                          ImagePicker imagePicker = ImagePicker();
+                          XFile? file = await imagePicker.pickImage(
+                              source: ImageSource.gallery);
 
-              const SizedBox(
-                height: 50,
-              ),
-
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () async {
-                      ImagePicker imagePicker = ImagePicker();
-                      XFile? file = await imagePicker.pickImage(
-                          source: ImageSource.gallery);
-
-                      if (file == null) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const AlertDialog(
-                              content: Text('Image not selected'),
+                          if (file == null) {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return const AlertDialog(
+                                  content: Text('Image not selected'),
+                                );
+                              },
                             );
-                          },
-                        );
-                      } else {
-                        String uniqueFilename =
-                            DateTime.now().millisecondsSinceEpoch.toString();
+                          } else {
+                            String uniqueFilename = DateTime.now()
+                                .millisecondsSinceEpoch
+                                .toString();
 
-                        Reference refrenceroot = FirebaseStorage.instance.ref();
-                        Reference referenceDirImages =
-                            refrenceroot.child('Passport Photo');
-                        Reference refrenceImageToUpload =
-                            referenceDirImages.child(uniqueFilename);
+                            Reference refrenceroot =
+                                FirebaseStorage.instance.ref();
+                            Reference referenceDirImages =
+                                refrenceroot.child('Passport Photo');
+                            Reference refrenceImageToUpload =
+                                referenceDirImages.child(uniqueFilename);
 
-                        try {
-                          showDialog(
-                            context: context,
-                            builder: (_) {
-                              return const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Please wait Uploading',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        decoration: TextDecoration.none),
-                                  ),
-                                  CircularProgressIndicator(),
-                                ],
+                            try {
+                              showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return const Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Please wait Uploading',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            decoration: TextDecoration.none),
+                                      ),
+                                      CircularProgressIndicator(),
+                                    ],
+                                  );
+                                },
                               );
-                            },
-                          );
 
-                          await refrenceImageToUpload.putFile(
-                              File(file.path),
-                              SettableMetadata(
-                                contentType: "image/jpeg",
-                              ));
+                              await refrenceImageToUpload.putFile(
+                                  File(file.path),
+                                  SettableMetadata(
+                                    contentType: "image/jpeg",
+                                  ));
 
-                          imageUrl =
-                              await refrenceImageToUpload.getDownloadURL();
-                        } catch (error) {
-                          // Print or log the error for debugging purposes
+                              imageUrl =
+                                  await refrenceImageToUpload.getDownloadURL();
+                            } catch (error) {
+                              // Print or log the error for debugging purposes
 
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return const AlertDialog(
-                                content: Text('Image not uploaded'),
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const AlertDialog(
+                                    content: Text('Image not uploaded'),
+                                  );
+                                },
                               );
-                            },
-                          );
-                        } finally {
-                          Navigator.of(context)
-                              .pop(); // Dismiss the "Please wait Uploading" dialog
-                        }
+                            } finally {
+                              Navigator.of(context)
+                                  .pop(); // Dismiss the "Please wait Uploading" dialog
+                            }
 
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const AlertDialog(
-                              content: Text('Image uploaded successfully'),
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return const AlertDialog(
+                                  content: Text('Image uploaded successfully'),
+                                );
+                              },
                             );
-                          },
-                        );
-                      }
+                          }
 
-                      setState(() {
-                        imageUrl;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 60,
-                        width: 280,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 185, 213, 226),
-                          border: Border.all(
-                              width: 3,
-                              color: const Color.fromARGB(255, 69, 114, 148)),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Image.asset(
-                                'assets/images/galleryimage.png',
-                                height: 40,
-                                width: 40,
+                          setState(() {
+                            imageUrl;
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            height: 60,
+                            width: 280,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                width: 1,
+                                color: const Color.fromARGB(255, 97, 139, 163),
                               ),
+                              borderRadius: BorderRadius.circular(25),
                             ),
-                            const SizedBox(width: 5),
-                            const Text(
-                              'Select Passport Size Photo',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: "Nunito",
-                                  fontWeight: FontWeight.w700),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Padding(
+                                    padding: EdgeInsets.all(5.0),
+                                    child: Icon(CupertinoIcons.photo)),
+                                Text(
+                                  'Select Passport Size Photo',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: "Nunito",
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: Image.network(imageUrl),
-                  )
-                ],
-              ),
-
-              const SizedBox(
-                height: 50,
-              ),
-              InkWell(
-                onTap: () async {
-                  File? file = await pickFile();
-                  uploadFile(file);
-                  setState(() {
-                    uniqueFilename;
-                  });
-                },
-                child: Container(
-                  height: 60,
-                  width: 250,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 2, color: Colors.green),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Center(
-                      child: Text(
-                    uniqueFilename,
-                    style: textsty,
-                  )),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: Image.network(
+                          imageUrl,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              ),
-              const SizedBox(
-                height: 100,
-              ),
-              ElevatedButton(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: InkWell(
+                        onTap: () async {
+                          File? file = await pickFile();
+                          uploadFile(file);
+                          setState(() {
+                            uniqueFilename;
+                          });
+                        },
+                        child: Container(
+                          height: 58,
+                          width: 250,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              width: 1,
+                              color: const Color.fromARGB(255, 97, 139, 163),
+                            ),
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: Center(
+                            child: Text(
+                              uniqueFilename,
+                              style: const TextStyle(
+                                fontFamily: "Nunito",
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        height: 44,
+                        child: Image.network(
+                            "http://cdn.onlinewebfonts.com/svg/img_215257.png"),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) => const Color.fromARGB(255, 108, 159, 201),
+                    ),
+                  ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       if (downloadUrl != '') {
@@ -333,9 +370,16 @@ class _GenerateIdState extends State<GenerateId> {
                   },
                   child: const Text(
                     'Review',
-                    style: textsty,
-                  )),
-            ],
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Nunito",
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

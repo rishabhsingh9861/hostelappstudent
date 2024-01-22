@@ -49,7 +49,7 @@ List<String> listDepartment = <String>[
   'Select Department',
   'Civil',
   'Computer Science',
-  'information Technology',
+  'Information Technology',
   'Electronics',
   'Electrical',
   'EXTC',
@@ -138,6 +138,7 @@ class _StudentDataState extends State<StudentData> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: appbars("Students Details"),
         body: SingleChildScrollView(
           reverse: false,
           child: Form(
@@ -146,39 +147,37 @@ class _StudentDataState extends State<StudentData> {
               //  mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(
-                  height: 25,
+                  height: 10,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: writedata(
-                      "First Name", TextInputType.name, _nameController),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: writedata(
-                      "Middle Name", TextInputType.name, _middlenameController),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: writedata(
-                      "Surname", TextInputType.name, _surnameController),
-                ),
-                const SizedBox(
-                  height: 25,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: writedata(
+                            "First Name", TextInputType.name, _nameController),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: writedata("Middle Name", TextInputType.name,
+                            _middlenameController),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: writedata(
+                            "Surname", TextInputType.name, _surnameController),
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: writedata("Registraion No.", TextInputType.number,
                       _registrationController),
-                ),
-                const SizedBox(
-                  height: 25,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -190,9 +189,6 @@ class _StudentDataState extends State<StudentData> {
                     });
                   }),
                 ),
-                const SizedBox(
-                  height: 25,
-                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: dropdownMenu(listBlock, dropdownValueBlock,
@@ -202,9 +198,6 @@ class _StudentDataState extends State<StudentData> {
                       setblock = dropdownValueBlock;
                     });
                   }),
-                ),
-                const SizedBox(
-                  height: 25,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -216,56 +209,35 @@ class _StudentDataState extends State<StudentData> {
                     });
                   }),
                 ),
-                const SizedBox(
-                  height: 25,
-                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: writedata("Enter Room Number", TextInputType.number,
                       _roomnoController),
-                ),
-                const SizedBox(
-                  height: 25,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: writedata("Enter Hostel Id", TextInputType.number,
                       _hostelIdController),
                 ),
-                const SizedBox(
-                  height: 25,
-                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: writedata("Parents Name", TextInputType.name,
                       _parentnameController),
-                ),
-                const SizedBox(
-                  height: 25,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: writedata("Student Phone Number", TextInputType.number,
                       _studentcontactnoController),
                 ),
-                const SizedBox(
-                  height: 25,
-                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: writedata("Parents Phone Number", TextInputType.number,
                       _parentcontactnoController),
                 ),
-                const SizedBox(
-                  height: 25,
-                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: writedata(
                       "Native Place", TextInputType.name, _addresController),
-                ),
-                const SizedBox(
-                  height: 25,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -277,12 +249,61 @@ class _StudentDataState extends State<StudentData> {
                     });
                   }),
                 ),
-                const SizedBox(
-                  height: 25,
-                ),
                 Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: InkWell(
+                  padding: const EdgeInsets.all(15.0),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith(
+                        (states) => Color.fromARGB(255, 147, 182, 206),
+                      ),
+                    ),
+                    onPressed: () {
+                      // fetchUsernames();
+
+                      if (_formKey.currentState!.validate()) {
+                        addUserDetails(
+                                "${_nameController.text} ${_middlenameController.text} ${_surnameController.text}"
+                                    .trim(),
+                                widget.email,
+                                int.parse(_registrationController.text.trim()),
+                                setcaste,
+                                _parentnameController.text.trim(),
+                                int.parse(
+                                    _studentcontactnoController.text.trim()),
+                                int.parse(
+                                    _parentcontactnoController.text.trim()),
+                                _addresController.text.trim(),
+                                setbloodgroup,
+                                setblock + _roomnoController.text,
+                                setdepartment,
+                                int.parse(_hostelIdController.text.trim()),
+                                approv)
+                            .then((value) => Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const HomePage())));
+                      }
+                    },
+                    child: const Text(
+                      "Submit",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/*
+
+InkWell(
                     onTap: () {
                       // fetchUsernames();
 
@@ -318,12 +339,4 @@ class _StudentDataState extends State<StudentData> {
                         highlighcolor: Color(0xFFE7E7E7),
                         fontsize: 20),
                   ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+*/
