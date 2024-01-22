@@ -325,6 +325,7 @@ class Drawers extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser!;
     String email = user.email.toString();
     return Drawer(
+
       backgroundColor: const Color.fromARGB(255, 176, 189, 211),
       child: SingleChildScrollView(
         child: Column(
@@ -357,6 +358,8 @@ class Drawers extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+
+
             ),
             GestureDetector(
               onTap: () {

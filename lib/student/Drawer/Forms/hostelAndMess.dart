@@ -2,39 +2,107 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HostelAndMess extends StatefulWidget {
-  const HostelAndMess({super.key});
+
+  const HostelAndMess({Key? key,
+    required this.email,
+  }) : super(key: key);
+  final String email;
+
 
   @override
   State<HostelAndMess> createState() => _HostelAndMessState();
 }
 
 class _HostelAndMessState extends State<HostelAndMess> {
-  TextEditingController name = TextEditingController();
-  TextEditingController year = TextEditingController();
-  TextEditingController brach = TextEditingController();
-  TextEditingController regNO = TextEditingController();
-  TextEditingController roomNo = TextEditingController();
 
-  void validateFields() {
-    String Name = name.text.toString();
-    String Year = year.text.toString();
-    String branch = brach.text.toString();
-    String RegNo = regNO.text.toString();
+  CollectionReference db = FirebaseFirestore.instance.collection('HostelStudents');
+  CollectionReference db1 = FirebaseFirestore.instance.collection('CertificateRequest');
+  TextEditingController certificateType = new TextEditingController();
 
-    if (Name != "" && Year != "" && branch != "" && RegNo != "") {
-      // here data will be stored in the database
-    } else {
-      const snackBar = SnackBar(
+  void validateFields() async {
+    try {
+      // Use a single document for all requests
+      DocumentReference certificateRequestDoc = db1.doc('requests');
+
+      DocumentSnapshot idCardSnapshot =
+      await db.doc(widget.email).collection('StudentIDCard').doc('idcard').get();
+
+      if (idCardSnapshot.exists) {
+        Map<String, dynamic>? idCardData = idCardSnapshot.data() as Map<String, dynamic>?;
+
+        if (idCardData != null) {
+          String name = idCardData['Name'] ?? '';
+          String year = idCardData['Year'] ?? '';
+          int regNo = idCardData['Registration No.'] ?? 0;
+          String roomNo = idCardData['Room NO.'] ?? '';
+
+          String certificate = certificateType.text.toString();
+
+          if (certificate.isNotEmpty) {
+            // Create a new request or update the existing one
+            await certificateRequestDoc.set({
+              'Certificates': FieldValue.arrayUnion([
+                {
+                  'Name': name,
+                  'Year': year,
+                  'RegNo': regNo,
+                  'RoomNo': roomNo,
+                  'CertificateType': certificate,
+                  'Timestamp': Timestamp.now(),
+                }
+              ]),
+            }, SetOptions(merge: true));
+
+            // Data added successfully
+            const snackBar = SnackBar(
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 3),
+              content: Text('Sent for verification!'),
+            );
+
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+            // Clear the text fields
+            certificateType.clear();
+          } else {
+            const snackBar = SnackBar(
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+              content: Text('Fill All The Fields'),
+            );
+
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+        } else {
+          // Handle the case where idCardData is null
+        }
+      } else {
+        const snackBar = SnackBar(
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+          content: Text('First generate your ID card'),
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } catch (e) {
+      // Handle errors
+      final snackBar = SnackBar(
+
         backgroundColor: Colors.red,
         duration: Duration(seconds: 3),
-        content: Text('Fill All The Fields'),
+        content: Text('Error fetching data: $e'),
       );
 
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +120,14 @@ class _HostelAndMessState extends State<HostelAndMess> {
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: SingleChildScrollView(
+
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(8),
             child: Column(
               children: [
-                SizedBox(
+                Container(
+
                   height: 200,
                   width: 200,
                   child: Image.network(
@@ -69,57 +139,61 @@ class _HostelAndMessState extends State<HostelAndMess> {
                       fontSize: 22,
                       fontFamily: "Nunito",
                       fontWeight: FontWeight.bold),
+
                 ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // hostelDetails(
+                //     hinttext: "Enter Your Full Name",
+                //     labletext: "Name",
+                //     icons: const Icon(CupertinoIcons.person),
+                //     controller: name),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // hostelDetails(
+                //     hinttext: "Enter the year you are studing in eg: 2nd Year",
+                //     labletext: "Year",
+                //     icons: const Icon(CupertinoIcons.tag),
+                //     controller: year),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // hostelDetails(
+                //     hinttext: "Enter Your Branch",
+                //     labletext: "Branch",
+                //     icons: const Icon(CupertinoIcons.hammer),
+                //     controller: brach),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // hostelDetails(
+                //   hinttext: "Enter Your Reg No",
+                //   labletext: "Reg No",
+                //   icons: const Icon(CupertinoIcons.number),
+                //   controller: regNO,
+                // ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // hostelDetails(
+                //   hinttext: "Enter Your Room No",
+                //   labletext: "Room No",
+                //   icons: const Icon(CupertinoIcons.home),
+                //   controller: roomNo,
+                // ),
                 const SizedBox(
                   height: 10,
                 ),
-                hostelDetails(
-                    hinttext: "Enter Your Full Name",
-                    labletext: "Name",
-                    icons: const Icon(CupertinoIcons.person),
-                    controller: name),
-                const SizedBox(
-                  height: 10,
-                ),
-                hostelDetails(
-                    hinttext: "Enter the year you are studing in eg: 2nd Year",
-                    labletext: "Year",
-                    icons: const Icon(CupertinoIcons.tag),
-                    controller: year),
-                const SizedBox(
-                  height: 10,
-                ),
-                hostelDetails(
-                    hinttext: "Enter Your Branch",
-                    labletext: "Branch",
-                    icons: const Icon(CupertinoIcons.hammer),
-                    controller: brach),
-                const SizedBox(
-                  height: 10,
-                ),
-                hostelDetails(
-                  hinttext: "Enter Your Reg No",
-                  labletext: "Reg No",
-                  icons: const Icon(CupertinoIcons.number),
-                  controller: regNO,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                hostelDetails(
-                  hinttext: "Enter Your Room No",
-                  labletext: "Room No",
-                  icons: const Icon(CupertinoIcons.home),
-                  controller: roomNo,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
+
                 hostelDetails(
                   hinttext: "Applying For i.e: Certificate type",
                   labletext: "Certificate Type",
                   icons: const Icon(CupertinoIcons.doc),
-                  controller: roomNo,
+
+                  controller: certificateType,
+
                 ),
                 const SizedBox(
                   height: 10,
@@ -127,7 +201,9 @@ class _HostelAndMessState extends State<HostelAndMess> {
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => const Color(0xff90AAD6),
+
+                          (states) => const Color(0xff90AAD6),
+
                     ),
                   ),
                   onPressed: () {
@@ -159,7 +235,7 @@ TextField hostelDetails({
       hintText: hinttext,
       labelText: labletext,
       labelStyle:
-          const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+      const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
       icon: icons,
       border: const OutlineInputBorder(
         borderRadius: BorderRadius.all(
