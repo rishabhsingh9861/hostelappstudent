@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,7 +17,7 @@ class GenerateId extends StatefulWidget {
 }
 
 String imageUrl =
-    'https://tse3.mm.bing.net/th?id=OIP.PZpRGo0S1iGYMx8z82P-WAHaHJ&pid=Api&P=0&h=180';
+    'https://firebasestorage.googleapis.com/v0/b/vjti-hostel-f8c43.appspot.com/o/Icons%2Ficon.png?alt=media&token=2da3e303-790a-4b1e-aee2-cf974c14e386';
 
 List<String> listyear = <String>[
   'Select Year',
@@ -331,7 +330,7 @@ class _GenerateIdState extends State<GenerateId> {
                       child: SizedBox(
                         height: 44,
                         child: Image.network(
-                            "http://cdn.onlinewebfonts.com/svg/img_215257.png"),
+                            "https://firebasestorage.googleapis.com/v0/b/vjti-hostel-f8c43.appspot.com/o/Icons%2Fupload.png?alt=media&token=8c8b961e-eb40-42a0-9417-97ce63fd43fd"),
                       ),
                     ),
                   ],

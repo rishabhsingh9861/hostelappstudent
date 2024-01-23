@@ -19,8 +19,7 @@ Widget dropdownMenu<T>(
       width: double.infinity,
       decoration: BoxDecoration(
         border: Border.all(
-          color: const Color.fromARGB(
-              255, 97, 139, 163), // Set the color of the border
+          color: Colors.black, // Set the color of the border
           width: 1.0, // Set the width of the border
         ),
         borderRadius: const BorderRadius.all(
@@ -31,7 +30,7 @@ Widget dropdownMenu<T>(
         padding: const EdgeInsets.all(7.0),
         child: DropdownButton<T>(
           iconEnabledColor: const Color.fromARGB(255, 69, 122, 158),
-          dropdownColor: Color.fromARGB(255, 198, 209, 228),
+          dropdownColor: const Color.fromARGB(255, 198, 209, 228),
           value: dropdownValue,
           onChanged: onChanged,
           borderRadius: BorderRadius.circular(25),

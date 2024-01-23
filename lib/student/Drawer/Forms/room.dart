@@ -1,18 +1,16 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RoomChange extends StatefulWidget {
-
-  RoomChange({Key? key,
+  const RoomChange({
+    Key? key,
     required this.email,
   }) : super(key: key);
   final String email;
-
-  
-
 
   @override
   State<RoomChange> createState() => _RoomChangeState();
@@ -22,10 +20,12 @@ final user = FirebaseAuth.instance.currentUser!;
 String emailid = user.email.toString();
 
 class _RoomChangeState extends State<RoomChange> {
-  CollectionReference db = FirebaseFirestore.instance.collection('HostelStudents');
-  CollectionReference db1 = FirebaseFirestore.instance.collection('RoomChangeReq');
-  TextEditingController preferences = new TextEditingController();
-  TextEditingController reason = new TextEditingController();
+  CollectionReference db =
+      FirebaseFirestore.instance.collection('HostelStudents');
+  CollectionReference db1 =
+      FirebaseFirestore.instance.collection('RoomChangeReq');
+  //TextEditingController preferences = TextEditingController();
+  TextEditingController reason = TextEditingController();
   bool? click;
 
   void validateFields() async {
@@ -35,23 +35,25 @@ class _RoomChangeState extends State<RoomChange> {
         // Use a single document for all requests
         DocumentReference roomChangeRequestDoc = db1.doc('requests');
 
-        DocumentSnapshot idCardSnapshot =
-        await db.doc(widget.email).collection('StudentIDCard').doc('idcard').get();
+        DocumentSnapshot idCardSnapshot = await db
+            .doc(widget.email)
+            .collection('StudentIDCard')
+            .doc('idcard')
+            .get();
 
         if (idCardSnapshot.exists) {
           Map<String, dynamic>? idCardData =
-          idCardSnapshot.data() as Map<String, dynamic>?;
+              idCardSnapshot.data() as Map<String, dynamic>?;
 
           if (idCardData != null) {
             String name = idCardData['Name'] ?? '';
             String year = idCardData['Year'] ?? '';
             int regNo = idCardData['Registration No.'] ?? 0;
             String roomNo = idCardData['Room NO.'] ?? '';
-            String prefer = preferences.text.toString();
+            //String prefer = preferences.text.toString();
             String reasonText = reason.text.toString();
 
-
-            if (prefer.isNotEmpty && reasonText.isNotEmpty) {
+            if (reasonText.isNotEmpty) {
               // Create a new request or update the existing one
               await roomChangeRequestDoc.set({
                 'Requests': FieldValue.arrayUnion([
@@ -60,7 +62,7 @@ class _RoomChangeState extends State<RoomChange> {
                     'Year': year,
                     'RegNo': regNo,
                     'RoomNo': roomNo,
-                    'Preferences': prefer,
+                   // 'Preferences': prefer,
                     'Reason': reasonText,
                     'Timestamp': Timestamp.now(),
                   }
@@ -77,7 +79,7 @@ class _RoomChangeState extends State<RoomChange> {
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
               // Clear the text fields
-              preferences.clear();
+              // preferences.clear();
               reason.clear();
             } else {
               const snackBar = SnackBar(
@@ -120,7 +122,7 @@ class _RoomChangeState extends State<RoomChange> {
       // Handle errors
       final snackBar = SnackBar(
         backgroundColor: Colors.red,
-        duration: Duration(seconds: 3),
+        duration: const Duration(seconds: 3),
         content: Text('Error fetching data: $e'),
       );
 
@@ -129,23 +131,6 @@ class _RoomChangeState extends State<RoomChange> {
   }
 
 
-  String name = '';
-
-  void getuserdata() async {
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance
-        .collection('HostelStudents')
-        .doc(emailid)
-        .collection('StudentIDCard')
-        .doc('idcard')
-        .get();
-
-    if (snapshot.exists) {
-      Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
-      name = userData['Name'];
-      // contactNo = userData['Student contact number'];
-      // roomo = userData['Room NO.'];
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -180,15 +165,19 @@ class _RoomChangeState extends State<RoomChange> {
                   height: 10,
                 ),
 
+                // leaveDetails(
+                //   hinttext: " e.g. Branch wise",
+                //   labletext: "Roommate Preferences ",
+                //   icons: const Icon(CupertinoIcons.person),
+                //   controller: preferences,
 
-                leaveDetails(
-                  hinttext: " e.g. Branch wise",
-                  labletext: "Roommate Preferences ",
-                  icons: Icon(CupertinoIcons.person),
-                  controller: preferences,
-
-      
-
+                // ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'If Academics year completed , write only "Academics Year Completed" else specify your problem ',
+                    style: TextStyle(color: Colors.red),
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -196,12 +185,8 @@ class _RoomChangeState extends State<RoomChange> {
                 leaveDetails(
                   hinttext: " ",
                   labletext: "Reason for Room Change",
-
-                  icons: Icon(CupertinoIcons.italic),
+                  icons: const Icon(CupertinoIcons.italic),
                   controller: reason,
-
-                  
-
                 ),
                 const SizedBox(
                   height: 10,
@@ -233,13 +218,9 @@ class _RoomChangeState extends State<RoomChange> {
                       (states) => const Color(0xff90AAD6),
                     ),
                   ),
-
                   onPressed: () {
                     validateFields();
                   },
-
-           
-
                   child: const Text(
                     "Submit",
                     style: TextStyle(color: Colors.white),

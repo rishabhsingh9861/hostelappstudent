@@ -117,7 +117,7 @@ class _ComplaintsState extends State<Complaints> {
       Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
       name = userData['Name'];
       contactNo = userData['Student contact number'];
-      roomo = userData['Room NO.'];
+      roomo = userData['Room No'];
     }
   }
 
@@ -226,10 +226,13 @@ class _ComplaintsState extends State<Complaints> {
                                   Text(
                                     'Please wait Uploading',
                                     style: TextStyle(
+                                        color: Colors.green,
                                         fontSize: 20,
                                         decoration: TextDecoration.none),
                                   ),
-                                  CircularProgressIndicator(),
+                                  CircularProgressIndicator(
+                                    color: Colors.green,
+                                  ),
                                 ],
                               );
                             },
@@ -280,7 +283,7 @@ class _ComplaintsState extends State<Complaints> {
                         color: Colors.white,
                         border: Border.all(
                             width: 1,
-                            color: Color.fromARGB(255, 122, 159, 187)),
+                            color: const Color.fromARGB(255, 122, 159, 187)),
                         borderRadius: BorderRadius.circular(25),
                       ),
                       child: const Row(

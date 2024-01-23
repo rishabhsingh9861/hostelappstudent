@@ -49,6 +49,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
         String roomno,
         String address,
         String bloodgrp,
+        String department,
         int studentcontactnumber,
         int parentcontactnumber,
         String url,
@@ -65,8 +66,9 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
         'Hostel ID': hostelidno,
         'Registration No.': registration,
         'Room NO.': roomno,
-        'Blood Group': bloodgrp,
         'Adress': address,
+        'Blood Group': bloodgrp,
+        'Department':department,    
         'Student contact number': studentcontactnumber,
         'Parent Contact Number': parentcontactnumber,
         'Fess Recipt': url,
@@ -97,7 +99,8 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
           bloodgroup = userData['Blood Group'] as String;
           name = userData['Name'] as String;
           hostelid = userData['Hostel Id'] as int;
-          roomno = userData['Room No.'] as String;
+          roomno = userData['Room No'] as String;
+       String   dept = userData['Department'] as String;
           studentnumber = userData['Student contact number'] as int;
           registrationnumber = userData['Registration No.'] as int;
           parentsNumber = userData['Parent Contact Number'] as int;
@@ -107,35 +110,34 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
             child: Scaffold(
               backgroundColor: Colors.white,
               appBar: appbars('Preview'),
-              body: Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 80,
-                    backgroundImage: NetworkImage(
-                      imageUrl,
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 10,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      height: 350,
-                      width: MediaQuery.of(context).size.width,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SingleChildScrollView(
+                    CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 80,
+                      backgroundImage: NetworkImage(
+                        imageUrl,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Name: ${name}',
+                                'Name: $name',
                                 style: textstyy,
                               ),
                               Text(
-                                'Hostel ID: ${hostelid}',
+                                'Hostel ID: $hostelid',
                                 style: textstyy,
                               ),
                               Text(
@@ -143,7 +145,11 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                                 style: textstyy,
                               ),
                               Text(
-                                'Room No.: ${roomno}',
+                                'Year: $dept',
+                                style: textstyy,
+                              ),
+                              Text(
+                                'Room No.: $roomno',
                                 style: textstyy,
                               ),
                               Text(
@@ -167,88 +173,89 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                      child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: SfPdfViewer.network(widget.url,
-                          controller: _pdfViewerController,
-                          enableDocumentLinkAnnotation: false),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 300,
+                        width: MediaQuery.of(context).size.width,
+                        child: SfPdfViewer.network(widget.url,
+                            controller: _pdfViewerController,
+                            enableDocumentLinkAnnotation: false),
+                      ),
                     ),
-                  )),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Row(
-                    children: [
-                      Material(
-                        child: Checkbox(
-                          checkColor: Colors.white,
-                          value: isChecked,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isChecked = value!;
-                            });
-                          },
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      children: [
+                        Material(
+                          child: Checkbox(
+                            checkColor: Colors.white,
+                            value: isChecked,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                isChecked = value!;
+                              });
+                            },
+                          ),
+                        ),
+                        const Column(
+                          children: [
+                            Text(
+                              'All Correct',
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.resolveWith(
+                              (states) =>
+                                  const Color.fromARGB(255, 124, 162, 192))),
+                      onPressed: () {
+                        if (isChecked) {
+                          addGeneratrIdDetails(
+                                  name,
+                                  widget.year,
+                                  hostelid,
+                                  registrationnumber,
+                                  roomno,
+                                  address,
+                                  bloodgroup,
+                                  dept,
+                                  studentnumber,
+                                  parentsNumber,
+                                  widget.url,
+                                  imageUrl,
+                                  emailids,
+                                  timenow,
+                                  approve)
+                              .then((value) => showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return const AlertDialog(
+                                          content: Text(
+                                              'Send For Verification Process'),
+                                        );
+                                      }).then((value) {
+                                    int count = 1;
+                                    Navigator.of(context)
+                                        .popUntil((_) => count-- < 0);
+                                  }));
+                        }
+                      },
+                      child: const Text(
+                        'Generate Id Card',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: "Nunito",
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Column(
-                        children: [
-                          Text(
-                            'All Correct',
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.resolveWith(
-                            (states) =>
-                                const Color.fromARGB(255, 124, 162, 192))),
-                    onPressed: () {
-                      if (isChecked) {
-                        addGeneratrIdDetails(
-                                name,
-                                widget.year,
-                                hostelid,
-                                registrationnumber,
-                                roomno,
-                                address,
-                                bloodgroup,
-                                studentnumber,
-                                parentsNumber,
-                                widget.url,
-                                imageUrl,
-                                emailids,
-                                timenow,
-                                approve)
-                            .then((value) => showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return const AlertDialog(
-                                        content: Text(
-                                            'Send For Verification Process'),
-                                      );
-                                    }).then((value) {
-                                  int count = 1;
-                                  Navigator.of(context)
-                                      .popUntil((_) => count-- < 0);
-                                }));
-                      }
-                    },
-                    child: const Text(
-                      'Generate Id Card',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: "Nunito",
-                        fontWeight: FontWeight.bold,
-                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ); // Replace YourWidget with the widget you want to build
