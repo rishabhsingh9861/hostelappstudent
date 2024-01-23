@@ -6,7 +6,6 @@ import 'package:vjtihostel/student/Drawer/Forms/leaves.dart';
 import 'package:vjtihostel/student/Drawer/Forms/room.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 class Request extends StatelessWidget {
   const Request({super.key});
 
@@ -35,7 +34,7 @@ class Request extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LeaveRequest(),
+                          builder: (context) => const LeaveRequest(),
                         ),
                       );
                     },
@@ -47,7 +46,6 @@ class Request extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-
                           builder: (context) => RoomChange(email: email),
                         ),
                       );
@@ -58,11 +56,11 @@ class Request extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Requestcontainer(
-                    Requestname: "Complaints ",
-                    image: "Complaint.png",
-                    function: () {},
-                  ),
+                  // Requestcontainer(
+                  //   Requestname: "Complaints ",
+                  //   image: "Complaint.png",
+                  //   function: () {},
+                  // ),
                   Requestcontainer(
                     Requestname: "Amenities",
                     image: "Amenities1.jpg",
@@ -70,8 +68,7 @@ class Request extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Amenities(),
-
+                          builder: (context) => const Amenities(),
                         ),
                       );
                     },

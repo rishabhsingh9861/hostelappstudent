@@ -40,75 +40,75 @@ class Certificates extends StatelessWidget {
                 ),
                 child: Center(
 
-                  child: ListTile(
-                    leading: Container(
-                      height: 100,
-                      width: 100,
-                      child: const Image(
-                          image: NetworkImage(
-                              "https://tse4.mm.bing.net/th?id=OIP.GWNNI7nB26NNx3Cm23FLnQAAAA&pid=Api&P=0&h=180")),
-                    ),
-                    trailing: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
+                  child: InkWell(
+                    onTap: () {
+                         Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => HostelAndMess(email: email,),
                             ),
                           );
-                        },
-                        child:
-                        const Icon(CupertinoIcons.chevron_compact_right)),
-                    title: const Text(
-                      "Hostel and Mess Certificate",
-                      style: TextStyle(
-                        fontFamily: "Nunito",
-                        fontWeight: FontWeight.bold,
-
+                    },
+                    child: const ListTile(
+                      leading: SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: Image(
+                            image: NetworkImage(
+                                "https://tse4.mm.bing.net/th?id=OIP.GWNNI7nB26NNx3Cm23FLnQAAAA&pid=Api&P=0&h=180")),
+                      ),
+                      trailing:  Icon(CupertinoIcons.chevron_compact_right),
+                      title:  Text(
+                        "Hostel and Mess Certificate",
+                        style: TextStyle(
+                          fontFamily: "Nunito",
+                          fontWeight: FontWeight.bold,
+                  
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-              Container(
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.blueGrey[200],
-                ),
-                child: Center(
-                  child: ListTile(
-                    leading: const SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: Image(
-                          image: NetworkImage(
-                              "https://navi.com/blog/wp-content/uploads/2022/10/What-is-capital-expenditure.jpg")),
-                    ),
-                    trailing: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
+              // Container(
+              //   height: 100,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(10),
+              //     color: Colors.blueGrey[200],
+              //   ),
+              //   child: Center(
+              //     child: ListTile(
+              //       leading: const SizedBox(
+              //         height: 100,
+              //         width: 100,
+              //         child: Image(
+              //             image: NetworkImage(
+              //                 "https://navi.com/blog/wp-content/uploads/2022/10/What-is-capital-expenditure.jpg")),
+              //       ),
+              //       trailing: GestureDetector(
+              //           onTap: () {
+              //             Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
 
-                              builder: (context) => HostelAndMess(email:email),
+              //                 builder: (context) => HostelAndMess(email:email),
 
 
-                            ),
-                          );
-                        },
-                        child:
-                        const Icon(CupertinoIcons.chevron_compact_right)),
-                    title: const Text(
-                      " Expenditure Certificate",
-                      style: TextStyle(
-                        fontFamily: "Nunito",
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              )
+              //               ),
+              //             );
+              //           },
+              //           child:
+              //           const Icon(CupertinoIcons.chevron_compact_right)),
+              //       title: const Text(
+              //         " Expenditure Certificate",
+              //         style: TextStyle(
+              //           fontFamily: "Nunito",
+              //           fontWeight: FontWeight.bold,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ),

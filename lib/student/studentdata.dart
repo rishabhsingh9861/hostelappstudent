@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:vjtihostel/button.dart';
 import 'package:vjtihostel/student/constant/const.dart';
 import 'package:vjtihostel/student/constant/data.dart';
 import 'package:vjtihostel/student/homepage.dart';
@@ -100,7 +99,7 @@ class _StudentDataState extends State<StudentData> {
       'Parent Contact Number': parentcontactnumber,
       'Address': address,
       'Blood Group': bloodgroup,
-      'Room No.': roomNumber,
+      'Room No': roomNumber,
       'Department': department,
       'Hostel Id': hostelid,
       'Approved': approv,
@@ -254,7 +253,7 @@ class _StudentDataState extends State<StudentData> {
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => Color.fromARGB(255, 147, 182, 206),
+                        (states) => const Color.fromARGB(255, 147, 182, 206),
                       ),
                     ),
                     onPressed: () {
