@@ -30,6 +30,7 @@ Widget dropdownMenu<T>(
       child: Padding(
         padding: const EdgeInsets.all(7.0),
         child: DropdownButton<T>(
+          elevation: 0,
           iconEnabledColor: const Color.fromARGB(255, 69, 122, 158),
           dropdownColor: Color.fromARGB(255, 198, 209, 228),
           value: dropdownValue,
@@ -91,8 +92,11 @@ const textstyy = TextStyle(
   fontFamily: "Nunito",
   fontWeight: FontWeight.bold,
 );
-const div = Divider(
-  color: Colors.black,
+const div = Padding(
+  padding: EdgeInsets.only(left: 8.0, right: 8),
+  child: Divider(
+    color: Colors.black,
+  ),
 );
 
 const stylVJTI = TextStyle(

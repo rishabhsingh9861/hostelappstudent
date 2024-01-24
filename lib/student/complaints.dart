@@ -7,6 +7,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:vjtihostel/student/constant/const.dart';
 
 class Complaints extends StatefulWidget {
@@ -130,6 +132,7 @@ class _ComplaintsState extends State<Complaints> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: appbars(
         'Complain',
       ),
@@ -197,13 +200,12 @@ class _ComplaintsState extends State<Complaints> {
                           source: ImageSource.gallery);
 
                       if (file == null) {
-                        showDialog(
+                        QuickAlert.show(
                           context: context,
-                          builder: (context) {
-                            return const AlertDialog(
-                              content: Text('Image not selected'),
-                            );
-                          },
+                          type: QuickAlertType.error,
+                          text: 'Image Not Selected ',
+                          autoCloseDuration: const Duration(seconds: 2),
+                          showConfirmBtn: false,
                         );
                       } else {
                         String uniqueFilename =
@@ -216,25 +218,13 @@ class _ComplaintsState extends State<Complaints> {
                             referenceDirImages.child(uniqueFilename);
 
                         try {
-                          showDialog(
+                          QuickAlert.show(
                             context: context,
-                            builder: (_) {
-                              return const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Please wait Uploading',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        decoration: TextDecoration.none),
-                                  ),
-                                  CircularProgressIndicator(),
-                                ],
-                              );
-                            },
+                            type: QuickAlertType.loading,
+                            text: 'Please Wait Uploading Your Image',
+                            autoCloseDuration: const Duration(seconds: 2),
+                            showConfirmBtn: false,
                           );
-
                           await refrenceImageToUpload.putFile(
                               File(file.path),
                               SettableMetadata(
@@ -246,26 +236,24 @@ class _ComplaintsState extends State<Complaints> {
                         } catch (error) {
                           // Print or log the error for debugging purposes
 
-                          showDialog(
+                          QuickAlert.show(
                             context: context,
-                            builder: (context) {
-                              return const AlertDialog(
-                                content: Text('Image not uploaded'),
-                              );
-                            },
+                            type: QuickAlertType.error,
+                            text: 'Image Not Uploaded',
+                            autoCloseDuration: const Duration(seconds: 2),
+                            showConfirmBtn: false,
                           );
                         } finally {
-                          Navigator.of(context)
-                              .pop(); // Dismiss the "Please wait Uploading" dialog
+                          // Navigator.of(context)
+                          //     .pop(); // Dismiss the "Please wait Uploading" dialog
                         }
 
-                        showDialog(
+                        QuickAlert.show(
                           context: context,
-                          builder: (context) {
-                            return const AlertDialog(
-                              content: Text('Image uploaded successfully'),
-                            );
-                          },
+                          type: QuickAlertType.success,
+                          text: 'Image Uploaded Successfully!',
+                          autoCloseDuration: const Duration(seconds: 2),
+                          showConfirmBtn: false,
                         );
                       }
 

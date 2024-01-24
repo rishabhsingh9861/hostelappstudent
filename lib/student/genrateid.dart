@@ -134,9 +134,42 @@ class _GenerateIdState extends State<GenerateId> {
               // mainAxisAlignment: MainAxisAlignment.center,
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: 280,
-                  child: Image.asset('assets/images/idcard.png'),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(left: 5, top: 5),
+                          height: 100,
+                          child: Hero(
+                              tag: "vjtiLogo",
+                              child: Image.asset("assets/images/vjtiLogo.png")),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 8.0, right: 8),
+                          child: Text(
+                            "Veermata Jijabai \n  Technological\n     Institute",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.red,
+                              fontFamily: "Anton",
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        height: 280,
+                        child: Hero(
+                            tag: "ID",
+                            child: Image.asset('assets/images/idcard.png')),
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -327,13 +360,13 @@ class _GenerateIdState extends State<GenerateId> {
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: SizedBox(
-                        height: 44,
-                        child: Image.network(
-                            "http://cdn.onlinewebfonts.com/svg/img_215257.png"),
-                      ),
-                    ),
+                    // Expanded(
+                    //   child: SizedBox(
+                    //     height: 44,
+                    //     child: Image.network(
+                    //         "http://cdn.onlinewebfonts.com/svg/img_215257.png"),
+                    //   ),
+                    // ),
                   ],
                 ),
                 const SizedBox(
