@@ -1,4 +1,4 @@
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +16,7 @@ class _ComplaintsState extends State<PendingComplaints> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Complaints'),
+        title: const Text('Pending Complaints'),
       ),
       body: Center(
         child: Padding(
@@ -96,15 +96,18 @@ class _ComplaintsState extends State<PendingComplaints> {
   }
 }
 
-
+final user = FirebaseAuth.instance.currentUser!;
+String email = user.email.toString();
 class ElectricalComplaints extends StatelessWidget {
   const ElectricalComplaints({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
 
-
+    // final user = FirebaseAuth.instance.currentUser!;
+    // String email = user.email.toString();
     return Scaffold(
+
       appBar: AppBar(
         title: const Text('Electrical Complaints'),
       ),
@@ -112,6 +115,7 @@ class ElectricalComplaints extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('Electical') // Use the determined collection path
+            .where('Email', isEqualTo: email)
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
@@ -244,6 +248,7 @@ class CarpentryComplaints extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('Carpentry') // Use the determined collection path
+            .where('Email', isEqualTo: email)
         // .doc(email)
         // .collection('pending')
             .snapshots(),
@@ -363,6 +368,7 @@ class PlumbingComplaints extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('Plumbing') // Use the determined collection path
+            .where('Email', isEqualTo: email)
         // .doc(email)
         // .collection('pending')
             .snapshots(),
@@ -483,6 +489,7 @@ class StructuralComplaints extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('Structural') // Use the determined collection path
+            .where('Email', isEqualTo: email)
         // .doc(email)
         // .collection('pending')
             .snapshots(),
@@ -602,6 +609,7 @@ class CleaningComplaints extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('Cleaning') // Use the determined collection path
+            .where('Email', isEqualTo: email)
         // .doc(email)
         // .collection('pending')
             .snapshots(),
