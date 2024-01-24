@@ -60,7 +60,7 @@ class _VjtiloginState extends State<Vjtilogin> {
             // ignore: use_build_context_synchronously
              Navigator.of(context).popUntil((route) => route.isFirst);
             Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (_) =>  HomePage( )));
+                context, MaterialPageRoute(builder: (_) =>  const HomePage( )));
           } else
           
            {
@@ -160,82 +160,5 @@ class _VjtiloginState extends State<Vjtilogin> {
     );
   }
 
-  // Future signInWithGoogle() async {
-  //     setState(() {
-  //   _isSigningIn = true;
-  // });
-  //   final GoogleSignIn googleSignIn = GoogleSignIn();
-  //   // await googleSignIn.signOut(); // clear authentication cache
-
-  //   final GoogleSignInAccount? guser = await googleSignIn.signIn();
-
-  //   if (guser != null) {
-  //     final String email = guser.email;
-  //     if (email.endsWith('vjti.ac.in')) {
-  //       final GoogleSignInAuthentication gauth = await guser.authentication;
-
-  //       final credential = GoogleAuthProvider.credential(
-  //         accessToken: gauth.accessToken,
-  //         idToken: gauth.idToken,
-  //       );
-
-  //       return FirebaseAuth.instance
-  //           .signInWithCredential(credential)
-  //           .then((value) {
-  //         Navigator.pushReplacement(
-  //             context, MaterialPageRoute(builder: (_) => const HomePage()));
-  //       }).catchError((e) {
-  //         showDialog(
-  //             context: context,
-  //             builder: (context) {
-  //               return AlertDialog(
-  //                 content: Text(e.message.toString()),
-  //               );
-  //             });
-  //       });
-  //     } else {
-  //       // ignore: use_build_context_synchronously
-  //       showDialog(
-  //           context: context,
-  //           builder: (context) {
-  //             return const AlertDialog(
-  //               content: Text("Please Select Vjti email id"),
-  //             );
-  //           });
-  //     }
-  //   }
-  // }
-
-  // bool _isSigningIn = false;
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return SafeArea(
-  //     child: Scaffold(
-  //       body: BackgrounImage(
-  //         assetimage: const AssetImage("assets/images/vjtigirlhostel.jpg"),
-  //         child: Column(
-  //           mainAxisAlignment: MainAxisAlignment.end,
-  //           children: [
-  //             InkWell(
-  //               onTap: () {
-  //                 signInWithGoogle();
-  //               },
-  //               child: const Padding(
-  //                 padding: EdgeInsets.all(30.0),
-  //                 child: Button(
-  //                   txt: "Login With VJTI Email Id",
-  //                   fontsize: 20.0,
-  //                   leftcolor: Color(0xFF4B4C17),
-  //                   rightcolor: Color(0xFF0C1010),
-  //                   highlighcolor: Color.fromARGB(255, 255, 255, 255),
-  //                 ),
-  //               ),
-  //             )
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+  
 }

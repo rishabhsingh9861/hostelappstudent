@@ -19,24 +19,33 @@ Widget dropdownMenu<T>(
       width: double.infinity,
       decoration: BoxDecoration(
         border: Border.all(
-          color: const Color.fromARGB(
-              255, 97, 139, 163), // Set the color of the border
+          color: Colors.black, // Set the color of the border
           width: 1.0, // Set the width of the border
         ),
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(25),
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.all(7.0),
         child: DropdownButton<T>(
-          iconEnabledColor: const Color.fromARGB(255, 93, 212, 228),
-          dropdownColor: Color(0xff90AAD6),
+          iconEnabledColor: const Color.fromARGB(255, 69, 122, 158),
+          dropdownColor: const Color.fromARGB(255, 198, 209, 228),
           value: dropdownValue,
           onChanged: onChanged,
           borderRadius: BorderRadius.circular(25),
           items: list.map<DropdownMenuItem<T>>((T value) {
             return DropdownMenuItem<T>(
               value: value,
-              child: Text(value.toString()),
+              alignment: Alignment.center,
+              child: Text(
+                value.toString(),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontFamily: "Nunito",
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             );
           }).toList(),
         ),
@@ -53,22 +62,48 @@ class HomeContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 150,
-        width: 150,
-        decoration: BoxDecoration(
-          border: Border.all(
-              width: 3, color: const Color.fromARGB(255, 76, 158, 175)),
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Center(
-            child: Text(
+      height: 150,
+      width: 150,
+      decoration: BoxDecoration(
+        border: Border.all(
+            width: 3, color: const Color.fromARGB(255, 76, 158, 175)),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Center(
+        child: Text(
           texts,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-        )));
+        ),
+      ),
+    );
   }
 }
 
 const textsty = TextStyle(
   fontSize: 25,
   color: Colors.black,
+);
+
+const textstyy = TextStyle(
+  fontSize: 21,
+  color: Colors.black,
+  fontFamily: "Nunito",
+  fontWeight: FontWeight.bold,
+);
+const div = Divider(
+  color: Colors.black,
+);
+
+const stylVJTI = TextStyle(
+  fontSize: 30,
+  color: Colors.red,
+  fontFamily: "Anton",
+  fontWeight: FontWeight.bold,
+);
+
+const idStyle = TextStyle(
+  fontSize: 19,
+  color: Colors.black,
+  fontFamily: "Nunito",
+  fontWeight: FontWeight.bold,
 );

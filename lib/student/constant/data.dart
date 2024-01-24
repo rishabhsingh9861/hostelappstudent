@@ -5,18 +5,27 @@ Widget writedata(
   return TextFormField(
     keyboardType: keyboard,
     decoration: InputDecoration(
-        labelText: text,
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide:
-                const BorderSide(color: Color.fromARGB(255, 77, 117, 143))),
-        focusedBorder: OutlineInputBorder(
-            borderSide:
-                const BorderSide(color: Color.fromARGB(255, 77, 113, 143)),
-            borderRadius: BorderRadius.circular(12))),
+      labelText: text,
+      labelStyle: const TextStyle(
+          color: Colors.black,
+          fontFamily: "Nunito",
+          fontWeight: FontWeight.bold),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(25),
+        borderSide: const BorderSide(
+          color: Color.fromARGB(255, 69, 122, 158),
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: const BorderSide(
+          color: Color.fromARGB(255, 61, 87, 109),
+        ),
+        borderRadius: BorderRadius.circular(25),
+      ),
+    ),
     validator: (value) {
       if (value == null || value.isEmpty) {
-        return 'Please entere name';
+        return 'Please entere details';
       }
       // if (validPincode( ) == false) {
       //   return 'Please Provide valid pincode';

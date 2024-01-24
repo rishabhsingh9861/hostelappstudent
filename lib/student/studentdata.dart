@@ -1,11 +1,8 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:vjtihostel/button.dart';
 import 'package:vjtihostel/student/constant/const.dart';
 import 'package:vjtihostel/student/constant/data.dart';
 import 'package:vjtihostel/student/homepage.dart';
-
 
 class StudentData extends StatefulWidget {
   const StudentData({
@@ -38,19 +35,43 @@ List<String> listcastecategory = <String>[
   'SC',
   'ST',
 ];
+List<String> listBlock = <String>[
+  'Select Block',
+  'A',
+  'B',
+  'C',
+  'D',
+  'E',
+  'T',
+];
+List<String> listDepartment = <String>[
+  'Select Department',
+  'Civil',
+  'Computer Science',
+  'Information Technology',
+  'Electronics',
+  'Electrical',
+  'EXTC',
+  'Mechanical',
+  'Production',
+  'Textile',
+];
 
 class _StudentDataState extends State<StudentData> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
+  final _middlenameController = TextEditingController();
+  final _surnameController = TextEditingController();
   final _emailController = TextEditingController();
   final _registrationController = TextEditingController();
-//  final _categoryController = TextEditingController();
   final _parentnameController = TextEditingController();
   final _parentcontactnoController = TextEditingController();
   final _studentcontactnoController = TextEditingController();
   final _addresController = TextEditingController();
-  //final _bloodgroupController = TextEditingController();
+  final _roomnoController = TextEditingController();
+  final _hostelIdController = TextEditingController();
 
+  bool approv = false;
   Future addUserDetails(
       String name,
       String email,
@@ -60,7 +81,11 @@ class _StudentDataState extends State<StudentData> {
       int studentcontactnumber,
       int parentcontactnumber,
       String address,
-      String bloodgroup) async {
+      String bloodgroup,
+      String roomNumber,
+      String department,
+      int hostelid,
+      bool aprov) async {
     await FirebaseFirestore.instance
         .collection('HostelStudents')
         .doc(widget.email)
@@ -74,6 +99,10 @@ class _StudentDataState extends State<StudentData> {
       'Parent Contact Number': parentcontactnumber,
       'Address': address,
       'Blood Group': bloodgroup,
+      'Room No': roomNumber,
+      'Department': department,
+      'Hostel Id': hostelid,
+      'Approved': approv,
     });
   }
 
@@ -87,108 +116,179 @@ class _StudentDataState extends State<StudentData> {
     _studentcontactnoController.dispose();
     _parentcontactnoController.dispose();
     _addresController.dispose();
+    _middlenameController.dispose();
+    _surnameController.dispose();
+    _roomnoController.dispose();
+    _hostelIdController.dispose();
     // _bloodgroupController.dispose();
     super.dispose();
   }
 
-
-
   String dropdownValueBlood = listbloodgroup.first;
   String dropdownValueCaste = listcastecategory.first;
+  String dropdownValueBlock = listBlock.first;
+  String dropdownValueDepartment = listDepartment.first;
   String setcaste = "";
   String setbloodgroup = "";
+  String setblock = "";
+  String setdepartment = "";
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: appbars("Students Details"),
         body: SingleChildScrollView(
-          reverse: true,
+          reverse: false,
           child: Form(
             key: _formKey,
             child: Column(
               //  mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(
-                  height: 50,
+                  height: 10,
                 ),
-                writedata("Name", TextInputType.name, _nameController),
-                const SizedBox(
-                  height: 50,
-                ),
-                writedata("Registraion No.", TextInputType.number,
-                    _registrationController),
-                const SizedBox(
-                  height: 25,
-                ),
-                dropdownMenu(listcastecategory, dropdownValueCaste,
-                    (String? value) {
-                  setState(() {
-                    dropdownValueCaste = value!;
-                    setcaste = dropdownValueCaste;
-                  });
-                }),
-                const SizedBox(
-                  height: 25,
-                ),
-                writedata(
-                    "Parents Name", TextInputType.name, _parentnameController),
-                const SizedBox(
-                  height: 50,
-                ),
-                writedata("Student Phone Number", TextInputType.number,
-                    _studentcontactnoController),
-                const SizedBox(
-                  height: 50,
-                ),
-                writedata("Parents Phone Number", TextInputType.number,
-                    _parentcontactnoController),
-                const SizedBox(
-                  height: 50,
-                ),
-                writedata(
-                    "Native Place", TextInputType.name, _addresController),
-                const SizedBox(
-                  height: 25,
-                ),
-                dropdownMenu(listbloodgroup, dropdownValueBlood,
-                    (String? value) {
-                  setState(() {
-                    dropdownValueBlood = value!;
-                    setbloodgroup = dropdownValueBlood;
-                  });
-                }),
-                const SizedBox(
-                  height: 50,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: writedata(
+                            "First Name", TextInputType.name, _nameController),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: writedata("Middle Name", TextInputType.name,
+                            _middlenameController),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: writedata(
+                            "Surname", TextInputType.name, _surnameController),
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: InkWell(
-                    onTap: () {
+                  padding: const EdgeInsets.all(8.0),
+                  child: writedata("Registraion No.", TextInputType.number,
+                      _registrationController),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: dropdownMenu(listcastecategory, dropdownValueCaste,
+                      (String? value) {
+                    setState(() {
+                      dropdownValueCaste = value!;
+                      setcaste = dropdownValueCaste;
+                    });
+                  }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: dropdownMenu(listBlock, dropdownValueBlock,
+                      (String? value) {
+                    setState(() {
+                      dropdownValueBlock = value!;
+                      setblock = dropdownValueBlock;
+                    });
+                  }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: dropdownMenu(listDepartment, dropdownValueDepartment,
+                      (String? value) {
+                    setState(() {
+                      dropdownValueDepartment = value!;
+                      setdepartment = dropdownValueDepartment;
+                    });
+                  }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: writedata("Enter Room Number", TextInputType.number,
+                      _roomnoController),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: writedata("Enter Hostel Id", TextInputType.number,
+                      _hostelIdController),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: writedata("Parents Name", TextInputType.name,
+                      _parentnameController),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: writedata("Student Phone Number", TextInputType.number,
+                      _studentcontactnoController),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: writedata("Parents Phone Number", TextInputType.number,
+                      _parentcontactnoController),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: writedata(
+                      "Native Place", TextInputType.name, _addresController),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: dropdownMenu(listbloodgroup, dropdownValueBlood,
+                      (String? value) {
+                    setState(() {
+                      dropdownValueBlood = value!;
+                      setbloodgroup = dropdownValueBlood;
+                    });
+                  }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith(
+                        (states) => const Color.fromARGB(255, 147, 182, 206),
+                      ),
+                    ),
+                    onPressed: () {
                       // fetchUsernames();
 
                       if (_formKey.currentState!.validate()) {
                         addUserDetails(
-                          _nameController.text.trim(),
-                          widget.email,
-                          int.parse(_registrationController.text.trim()),
-                          setcaste,
-                          _parentnameController.text.trim(),
-                          int.parse(_studentcontactnoController.text.trim()),
-                          int.parse(_parentcontactnoController.text.trim()),
-                          _addresController.text.trim(),
-                          setbloodgroup,
-                        ).then((value) => Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (_) =>  HomePage())));
+                                "${_nameController.text} ${_middlenameController.text} ${_surnameController.text}"
+                                    .trim(),
+                                widget.email,
+                                int.parse(_registrationController.text.trim()),
+                                setcaste,
+                                _parentnameController.text.trim(),
+                                int.parse(
+                                    _studentcontactnoController.text.trim()),
+                                int.parse(
+                                    _parentcontactnoController.text.trim()),
+                                _addresController.text.trim(),
+                                setbloodgroup,
+                                setblock + _roomnoController.text,
+                                setdepartment,
+                                int.parse(_hostelIdController.text.trim()),
+                                approv)
+                            .then((value) => Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const HomePage())));
                       }
                     },
-                    child: const Button(
-                        txt: "Submit",
-                        textcolor: Color(0xFF111111),
-                        leftcolor: Color(0xFFa7a7a7),
-                        rightcolor: Color(0xFFE7E7E7),
-                        highlighcolor: Color(0xFFE7E7E7),
-                        fontsize: 20),
+                    child: const Text(
+                      "Submit",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 )
               ],
@@ -199,3 +299,43 @@ class _StudentDataState extends State<StudentData> {
     );
   }
 }
+
+/*
+
+InkWell(
+                    onTap: () {
+                      // fetchUsernames();
+
+                      if (_formKey.currentState!.validate()) {
+                        addUserDetails(
+                                "${_nameController.text} ${_middlenameController.text} ${_surnameController.text}"
+                                    .trim(),
+                                widget.email,
+                                int.parse(_registrationController.text.trim()),
+                                setcaste,
+                                _parentnameController.text.trim(),
+                                int.parse(
+                                    _studentcontactnoController.text.trim()),
+                                int.parse(
+                                    _parentcontactnoController.text.trim()),
+                                _addresController.text.trim(),
+                                setbloodgroup,
+                                setblock + _roomnoController.text,
+                                setdepartment,
+                                int.parse(_hostelIdController.text.trim()),
+                                approv)
+                            .then((value) => Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const HomePage())));
+                      }
+                    },
+                    child: const Button(
+                        txt: "Submit",
+                        textcolor: Color(0xFF111111),
+                        leftcolor: Color(0xFFa7a7a7),
+                        rightcolor: Color(0xFFE7E7E7),
+                        highlighcolor: Color(0xFFE7E7E7),
+                        fontsize: 20),
+                  ),
+*/

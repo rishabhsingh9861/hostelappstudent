@@ -46,7 +46,10 @@ dependencies:
   video_player: ^2.7.1
   url_launcher: ^6.1.14
   firebase_storage: ^11.2.6
-  intl: ^0.19.0
+  file_picker: ^6.1.1
+  syncfusion_flutter_pdfviewer: ^24.1.45
+  cached_network_image: ^3.2.0
+  
   
 
 dev_dependencies:
@@ -91,17 +94,7 @@ flutter:
     - family: Nunito
       fonts:
         - asset: fonts/Nunito-Italic-VariableFont_wght.ttf
- complaints
-  #       - asset: fonts/Schyler-Italic.ttf
+    - family: Anton
+      fonts:
+        - asset: fonts/Anton-Regular.ttf
 
-        # - asset: fonts/Schyler-Italic.ttf
-
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages
