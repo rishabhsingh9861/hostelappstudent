@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -102,8 +102,7 @@ class ElectricalComplaints extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
-    String email = user.email.toString();
+
 
     return Scaffold(
       appBar: AppBar(
@@ -133,11 +132,11 @@ class ElectricalComplaints extends StatelessWidget {
               // Extracting fields with null checks
               String photoUrl = complaintData['Photo Url'] ?? '';
               String problemDescription = complaintData['Problem'] ?? '';
-              String problemCategory = complaintData['Category'] ?? '';
-              String emailId = complaintData['Email'] ?? '';
-              String name = complaintData['Name'] ?? '';
+              // String problemCategory = complaintData['Category'] ?? '';
+              // String emailId = complaintData['Email'] ?? '';
+              // String name = complaintData['Name'] ?? '';
               String roomNo = complaintData['Room Number'] ?? '';
-              int contactNumber = complaintData['Contact Number'] ?? 0;
+              // int contactNumber = complaintData['Contact Number'] ?? 0;
               Timestamp time = complaintData['Time'] ?? Timestamp.now();
               bool isComplete = complaintData['Status'] == 'Solved';
               String formattedDate = DateFormat.yMMMd().add_jms().format(time.toDate());
@@ -235,8 +234,7 @@ class CarpentryComplaints extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
-    String email = user.email.toString();
+
 
     return Scaffold(
       appBar: AppBar(
@@ -268,11 +266,11 @@ class CarpentryComplaints extends StatelessWidget {
               // Extracting fields with null checks
               String photoUrl = complaintData['Photo Url'] ?? '';
               String problemDescription = complaintData['Problem'] ?? '';
-              String problemCategory = complaintData['Category'] ?? '';
-              String emailId = complaintData['Email'] ?? '';
-              String name = complaintData['Name'] ?? '';
+              // String problemCategory = complaintData['Category'] ?? '';
+              // String emailId = complaintData['Email'] ?? '';
+              // String name = complaintData['Name'] ?? '';
               String roomNo = complaintData['Room Number'] ?? '';
-              int contactNumber = complaintData['Contact Number'] ?? 0;
+              // int contactNumber = complaintData['Contact Number'] ?? 0;
               Timestamp time = complaintData['Time'] ?? Timestamp.now();
               bool isComplete = complaintData['Status'] == 'Solved';
               String formattedDate = DateFormat.yMMMd().add_jms().format(time.toDate());
@@ -355,8 +353,7 @@ class PlumbingComplaints extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
-    String email = user.email.toString();
+
 
     return Scaffold(
       appBar: AppBar(
@@ -388,11 +385,11 @@ class PlumbingComplaints extends StatelessWidget {
               // Extracting fields with null checks
               String photoUrl = complaintData['Photo Url'] ?? '';
               String problemDescription = complaintData['Problem'] ?? '';
-              String problemCategory = complaintData['Category'] ?? '';
-              String emailId = complaintData['Email'] ?? '';
-              String name = complaintData['Name'] ?? '';
+              // String problemCategory = complaintData['Category'] ?? '';
+              // String emailId = complaintData['Email'] ?? '';
+              // String name = complaintData['Name'] ?? '';
               String roomNo = complaintData['Room Number'] ?? '';
-              int contactNumber = complaintData['Contact Number'] ?? 0;
+              // int contactNumber = complaintData['Contact Number'] ?? 0;
               Timestamp time = complaintData['Time'] ?? Timestamp.now();
               bool isComplete = complaintData['Status'] == 'Solved';
               String formattedDate = DateFormat.yMMMd().add_jms().format(time.toDate());
@@ -475,8 +472,8 @@ class StructuralComplaints extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
-    String email = user.email.toString();
+    // final user = FirebaseAuth.instance.currentUser!;
+    // String email = user.email.toString();
 
     return Scaffold(
       appBar: AppBar(
@@ -508,11 +505,11 @@ class StructuralComplaints extends StatelessWidget {
               // Extracting fields with null checks
               String photoUrl = complaintData['Photo Url'] ?? '';
               String problemDescription = complaintData['Problem'] ?? '';
-              String problemCategory = complaintData['Category'] ?? '';
-              String emailId = complaintData['Email'] ?? '';
-              String name = complaintData['Name'] ?? '';
+              // String problemCategory = complaintData['Category'] ?? '';
+              // String emailId = complaintData['Email'] ?? '';
+              // String name = complaintData['Name'] ?? '';
               String roomNo = complaintData['Room Number'] ?? '';
-              int contactNumber = complaintData['Contact Number'] ?? 0;
+
               Timestamp time = complaintData['Time'] ?? Timestamp.now();
               bool isComplete = complaintData['Status'] == 'Solved';
               String formattedDate = DateFormat.yMMMd().add_jms().format(time.toDate());
@@ -595,8 +592,7 @@ class CleaningComplaints extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
-    String email = user.email.toString();
+
 
     return Scaffold(
       appBar: AppBar(
@@ -628,11 +624,9 @@ class CleaningComplaints extends StatelessWidget {
               // Extracting fields with null checks
               String photoUrl = complaintData['Photo Url'] ?? '';
               String problemDescription = complaintData['Problem'] ?? '';
-              String problemCategory = complaintData['Category'] ?? '';
-              String emailId = complaintData['Email'] ?? '';
-              String name = complaintData['Name'] ?? '';
+
               String roomNo = complaintData['Room Number'] ?? '';
-              int contactNumber = complaintData['Contact Number'] ?? 0;
+
               Timestamp time = complaintData['Time'] ?? Timestamp.now();
               bool isComplete = complaintData['Status'] == 'Solved';
               String formattedDate = DateFormat.yMMMd().add_jms().format(time.toDate());
@@ -697,7 +691,7 @@ class CleaningComplaints extends StatelessWidget {
                               .delete();
                         },
                       ),
-                      Text('Solved'),
+                      Text('Solved'),// solved text
                     ],
                   ),
                 ),
