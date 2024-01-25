@@ -239,106 +239,88 @@ class CarpentryComplaints extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    Timestamp times = Timestamp.now();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Carpentry Complaints'),
-      ),
+    List problemids = [];
+    String problemCategory = '';
+    String roomNo = '';
+    String issue = '';
+    final user = FirebaseAuth.instance.currentUser!;
+    String email = user.email.toString();
 
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('Carpentry') // Use the determined collection path
-            .where('Email', isEqualTo: email)
-        // .doc(email)
-        // .collection('pending')
-            .snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+    Future<void> deletesolvedProblem(String probid) async {
+      FirebaseFirestore.instance
+          .collection('HostelStudents')
+          .doc(email)
+          .collection('Complaints')
+          .doc(probid)
+          .delete();
+    }
 
-          // Extracting data from the snapshot
-          var complaints = snapshot.data!.docs;
+    Future<void> sendProblemHistory(
+      String photourl,
+      String problemDescription,
+      String problemCategory,
+      String name,
+      String roomNo,
+      int contactNumber,
+      Timestamp time,
+    ) async {
+      await FirebaseFirestore.instance
+          .collection('Solved $problemCategory')
+          .doc()
+          .set({
+        'Photo Url': photourl,
+        'Problem': problemDescription,
+        'Category': problemCategory,
+        'Name': name,
+        'Room Number': roomNo,
+        'Contact Number': contactNumber,
+        'Time': time,
+      });
+    }
 
-          return ListView.builder(
-            itemCount: complaints.length,
-            itemBuilder: (context, index) {
-              var complaint = complaints[index];
-              var complaintData = complaint.data() as Map<String, dynamic>;
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('HostelStudents')
+          .doc(email)
+          .collection('Complaints')
+          .orderBy('Time', descending: false)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Scaffold(
+            appBar: appbars('Pending Complaints'),
+            body: ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                String probid = snapshot.data!.docs[index].id;
+                problemids.add(probid);
+                final problem =
+                    snapshot.data!.docs[index].data() as Map<String, dynamic>;
 
-              // Extracting fields with null checks
-              String photoUrl = complaintData['Photo Url'] ?? '';
-              String problemDescription = complaintData['Problem'] ?? '';
-              // String problemCategory = complaintData['Category'] ?? '';
-              // String emailId = complaintData['Email'] ?? '';
-              // String name = complaintData['Name'] ?? '';
-              String roomNo = complaintData['Room Number'] ?? '';
-              // int contactNumber = complaintData['Contact Number'] ?? 0;
-              Timestamp time = complaintData['Time'] ?? Timestamp.now();
-              bool isComplete = complaintData['Status'] == 'Solved';
-              String formattedDate = DateFormat.yMMMd().add_jms().format(time.toDate());
+                problemCategory = '${problem['Category']}';
+                roomNo = '${problem['Room Number']}';
+                issue = '${problem['Problem']}';
+                String photo = '${problem['Photo Url']}';
+                String name = '${problem['Name']}';
+                String prob = '${problem['Problem']}';
+              int contact = problem['Contact Number'];
+                Timestamp timestamp = problem['Time'];
+                DateTime dateTime = timestamp.toDate();
+                String formattedTime = DateFormat.yMd().format(dateTime);
 
-              return isComplete
-                  ? Container() // If status is complete, don't display the complaint
-                  : Card(
-                elevation: 3.0,
-                margin: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  title: Text('Problem: $problemDescription'),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Text('Problem: $problemDescription'),
-                      // Text('Category: $problemCategory'),
-                      // Text('Email: $emailId'),
-                      Text('Room No: $roomNo'),
-                      // Text('Contact Number: $contactNumber'),
-                      Text('Timestamp: $formattedDate'),
-                    ],
-                  ),
-                  leading: GestureDetector(
-                    onTap: () {
-                      _showFullImage(context, photoUrl);
-                    },
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(photoUrl),
-                    ),
-                  ),
-                  trailing: Column(
-                    children: [
-                      Radio(
-                        value: true,
-                        groupValue: isComplete,
-                        onChanged: (bool? value) async {
-                          // Handle radio button change
-                          // Update the complaint status in Firestore
-                          await FirebaseFirestore.instance
-                              .collection('Carpentry') // Use the determined collection path
-                          // .doc(email)
-                          // .collection('pending')
-                              .doc(complaint.id)
-                              .update({
-                            'Status': 'Solved',
-                            'SolvedTimestamp': FieldValue.serverTimestamp(),});
-                          complaintData['Status'] = 'Solved';
-                          complaintData['SolvedTimestamp'] = FieldValue.serverTimestamp();
-                          // Copy the document to 'Solved Electrical' collection
-                          await FirebaseFirestore.instance
-                              .collection('Solved Carpentry') // Use the determined collection path
-                          // .doc(email)
-                          // .collection('History')
-                              .add(complaintData);
+                return Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Container(
+                    height: 350,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 3,
+                        color: const Color.fromARGB(255, 76, 158, 175),
 
-                          // Delete the document from 'Electical' collection
-                          await FirebaseFirestore.instance
-                              .collection('Carpentry') // Use the determined collection path
-                          // .doc(email)
-                          // .collection('pending')
-                              .doc(complaint.id)
-                              .delete();
-                        },
                       ),
                       Text('Solved'),
                     ],
@@ -425,126 +407,102 @@ class PlumbingComplaints extends StatelessWidget {
                     child: CircleAvatar(
                       backgroundImage: NetworkImage(photoUrl),
                     ),
-                  ),
-                  trailing: Column(
-                    children: [
-                      Radio(
-                        value: true,
-                        groupValue: isComplete,
-                        onChanged: (bool? value) async {
-                          // Handle radio button change
-                          // Update the complaint status in Firestore
-                          await FirebaseFirestore.instance
-                              .collection('Plumbing') // Use the determined collection path
-                          // .doc(email)
-                          // .collection('pending')
-                              .doc(complaint.id)
-                              .update({
-                            'Status': 'Solved',
-                            'SolvedTimestamp': FieldValue.serverTimestamp(),});
-                          complaintData['Status'] = 'Solved';
-                          complaintData['SolvedTimestamp'] = FieldValue.serverTimestamp();
-                          // Copy the document to 'Solved Electrical' collection
-                          await FirebaseFirestore.instance
-                              .collection('Solved Plumbing') // Use the determined collection path
-                          // .doc(email)
-                          // .collection('History')
-                              .add(complaintData);
 
-                          // Delete the document from 'Electical' collection
-                          await FirebaseFirestore.instance
-                              .collection('Plumbing') // Use the determined collection path
-                          // .doc(email)
-                          // .collection('pending')
-                              .doc(complaint.id)
-                              .delete();
-                        },
-                      ),
-                      Text('Solved'),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
-}
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Category:   $problemCategory",
+                          style: textsty,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Date: $formattedTime",
+                          style: textsty,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Room No. : $roomNo",
+                          style: textsty,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Problem : $issue",
+                          style: textsty,
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        Row(
+                          children: [
+                            Checkbox(
+                              checkColor: Colors.white,
+                              value: selectedComplaints
+                                  .contains(problemids[index]),
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  if (value!) {
+                                    selectedComplaints.add(problemids[index]);
+                                  } else {
+                                    selectedComplaints
+                                        .remove(problemids[index]);
+                                  }
+                                });
+                              },
+                            ),
+                            const Text(
+                              'Submit when only this complaint is resolved',
+                            ),
+                          ],
+                        ),
+                        InkWell(
+                          onTap: () {
+                            if (selectedComplaints
+                                .contains(problemids[index])) {
+                              sendProblemHistory(photo, prob, problemCategory,
+                                      name, roomNo, contact, times)
+                                  .then((value) =>
+                                      deletesolvedProblem(problemids[index])
+                                          .then(
+                                        (value) => showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return const AlertDialog(
+                                              content: Text('Complaint Solved'),
+                                            );
+                                          },
+                                        ).then((value) =>
+                                            {Navigator.pop(context)}),
+                                      ));
+                            } else {
+                              // Display a message that no complaint is selected
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const AlertDialog(
+                                    content: Text('Select a complaint first.'),
+                                  );
+                                },
+                              );
+                            }
+                          },
+                          child: const Button(
+                            txt: 'Solved',
+                            textcolor: Colors.black,
+                            leftcolor: Color(0xFFafcdfb),
+                            rightcolor: Color(0xFFa4c6fb),
+                            highlighcolor: Color(0xFF91bafb),
+                            fontsize: 20.0,
+                          ),
+                        ),
+                      ],
 
-class StructuralComplaints extends StatelessWidget {
-  const StructuralComplaints({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // final user = FirebaseAuth.instance.currentUser!;
-    // String email = user.email.toString();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Structural Complaints'),
-      ),
-
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('Structural') // Use the determined collection path
-            .where('Email', isEqualTo: email)
-        // .doc(email)
-        // .collection('pending')
-            .snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          // Extracting data from the snapshot
-          var complaints = snapshot.data!.docs;
-
-          return ListView.builder(
-            itemCount: complaints.length,
-            itemBuilder: (context, index) {
-              var complaint = complaints[index];
-              var complaintData = complaint.data() as Map<String, dynamic>;
-
-              // Extracting fields with null checks
-              String photoUrl = complaintData['Photo Url'] ?? '';
-              String problemDescription = complaintData['Problem'] ?? '';
-              // String problemCategory = complaintData['Category'] ?? '';
-              // String emailId = complaintData['Email'] ?? '';
-              // String name = complaintData['Name'] ?? '';
-              String roomNo = complaintData['Room Number'] ?? '';
-
-              Timestamp time = complaintData['Time'] ?? Timestamp.now();
-              bool isComplete = complaintData['Status'] == 'Solved';
-              String formattedDate = DateFormat.yMMMd().add_jms().format(time.toDate());
-
-              return isComplete
-                  ? Container() // If status is complete, don't display the complaint
-                  : Card(
-                elevation: 3.0,
-                margin: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  title: Text('Problem: $problemDescription'),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Text('Problem: $problemDescription'),
-                      // Text('Category: $problemCategory'),
-                      // Text('Email: $emailId'),
-                      Text('Room No: $roomNo'),
-                      // Text('Contact Number: $contactNumber'),
-                      Text('Timestamp: $formattedDate'),
-                    ],
-                  ),
-                  leading: GestureDetector(
-                    onTap: () {
-                      _showFullImage(context, photoUrl);
-                    },
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(photoUrl),
                     ),
                   ),
                   trailing: Column(
