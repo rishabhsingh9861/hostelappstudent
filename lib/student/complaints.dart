@@ -22,7 +22,7 @@ class Complaints extends StatefulWidget {
 
 List<String> listproblemcategory = <String>[
   'Select Category',
-  'Electical',
+  'Electrical',
   'Carpentry',
   'Plumbing',
   'Structural',
@@ -85,10 +85,8 @@ class _ComplaintsState extends State<Complaints> {
     Timestamp time,
   ) async {
     await FirebaseFirestore.instance
-        .collection('HostelStudents')
-        .doc(widget.email)
-        .collection('Complaints')
-        .doc()
+        .collection(problemCategory)
+       .doc()
         .set({
       'Photo Url': photourl,
       'Problem': problemDescription,
@@ -131,7 +129,7 @@ class _ComplaintsState extends State<Complaints> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appbars(
-        'Complain',
+        'Complaint',
       ),
       body: SingleChildScrollView(
         reverse: true,

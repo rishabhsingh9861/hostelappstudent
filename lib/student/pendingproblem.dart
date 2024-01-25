@@ -19,7 +19,8 @@ class _PendingComplaintsState extends State<PendingComplaints> {
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
-   
+    Timestamp times = Timestamp.now();
+
     List problemids = [];
     String problemCategory = '';
     String roomNo = '';
@@ -34,6 +35,29 @@ class _PendingComplaintsState extends State<PendingComplaints> {
           .collection('Complaints')
           .doc(probid)
           .delete();
+    }
+
+    Future<void> sendProblemHistory(
+      String photourl,
+      String problemDescription,
+      String problemCategory,
+      String name,
+      String roomNo,
+      int contactNumber,
+      Timestamp time,
+    ) async {
+      await FirebaseFirestore.instance
+          .collection('Solved $problemCategory')
+          .doc()
+          .set({
+        'Photo Url': photourl,
+        'Problem': problemDescription,
+        'Category': problemCategory,
+        'Name': name,
+        'Room Number': roomNo,
+        'Contact Number': contactNumber,
+        'Time': time,
+      });
     }
 
     return StreamBuilder<QuerySnapshot>(
@@ -57,9 +81,12 @@ class _PendingComplaintsState extends State<PendingComplaints> {
                     snapshot.data!.docs[index].data() as Map<String, dynamic>;
 
                 problemCategory = '${problem['Category']}';
-                roomNo = '${problem['Room No.']}';
+                roomNo = '${problem['Room Number']}';
                 issue = '${problem['Problem']}';
-
+                String photo = '${problem['Photo Url']}';
+                String name = '${problem['Name']}';
+                String prob = '${problem['Problem']}';
+              int contact = problem['Contact Number'];
                 Timestamp timestamp = problem['Time'];
                 DateTime dateTime = timestamp.toDate();
                 String formattedTime = DateFormat.yMd().format(dateTime);
@@ -133,16 +160,21 @@ class _PendingComplaintsState extends State<PendingComplaints> {
                           onTap: () {
                             if (selectedComplaints
                                 .contains(problemids[index])) {
-                              deletesolvedProblem(problemids[index]).then(
-                                (value) => showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return const AlertDialog(
-                                      content: Text('Complaint Solved'),
-                                    );
-                                  },
-                                ).then((value) => {Navigator.pop(context)}),
-                              );
+                              sendProblemHistory(photo, prob, problemCategory,
+                                      name, roomNo, contact, times)
+                                  .then((value) =>
+                                      deletesolvedProblem(problemids[index])
+                                          .then(
+                                        (value) => showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return const AlertDialog(
+                                              content: Text('Complaint Solved'),
+                                            );
+                                          },
+                                        ).then((value) =>
+                                            {Navigator.pop(context)}),
+                                      ));
                             } else {
                               // Display a message that no complaint is selected
                               showDialog(
