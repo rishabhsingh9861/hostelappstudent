@@ -3,8 +3,8 @@
 
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vjtihostel/student/constant/const.dart';
@@ -48,74 +48,42 @@ class _ComplaintsState extends State<Complaints> {
   }
 
   Future<void> sendProblemdata(
-      String photourl,
-      String problemDescription,
-      String problemCategory,
-      String emailid,
-      String name,
-      String roomNo,
-      int contactNumber,
-      Timestamp time,
-      ) async {
-    String collectionPath = ''; // Initialize an empty string
-
-    // Determine the collection path based on the selected category
-    switch (problemCategory) {
-      case 'Electical':
-        collectionPath = 'Electical';
-        break;
-      case 'Carpentry':
-        collectionPath = 'Carpentry';
-        break;
-      case 'Plumbing':
-        collectionPath = 'Plumbing';
-        break;
-      case 'Structural':
-        collectionPath = 'Structural';
-        break;
-      case 'Cleaning':
-        collectionPath = 'Cleaning';
-        break;
-      default:
-      // Handle the default case or any other categories
-        break;
-    }
-
-    // Check if a valid collection path is determined
-    if (collectionPath.isNotEmpty) {
-      final user = FirebaseAuth.instance.currentUser;
-
-      // Check if the user is not null before proceeding
-      if (user != null) {
-        // Get the user's email
-        String email = user.email.toString();
-        await FirebaseFirestore.instance
-            .collection(collectionPath) // Use the determined collection path
-            .doc()
-            .set({
-          'Photo Url': photourl,
-          'Problem': problemDescription,
-          'Category': problemCategory,
-          'Email': email,
-          'Name': name,
-          'Room Number': roomNo,
-          'Contact Number': contactNumber,
-          'Time': time,
-        });
-      }
-    }
+    String photourl,
+    String problemDescription,
+    String problemCategory,
+    String emailid,
+    String name,
+    String roomNo,
+    int contactNumber,
+    Timestamp time,
+  ) async {
+    await FirebaseFirestore.instance
+        .collection('HostelStudents')
+        .doc(widget.email)
+        .collection('Complaints')
+        .doc()
+        .set({
+      'Photo Url': photourl,
+      'Problem': problemDescription,
+      'Category': problemCategory,
+      'Email': emailid,
+      'Name': name,
+      'Room Number': roomNo,
+      'Contact Number': contactNumber,
+      'Time': time,
+    });
   }
 
   Future<void> sendProblemtoemplyee(
-      String photourl,
-      String problemDescription,
-      String problemCategory,
-      String emailid,
-      String name,
-      String roomNo,
-      int contactNumber,
-      Timestamp time,
-      ) async {
+    String photourl,
+    String problemDescription,
+    String problemCategory,
+    String emailid,
+    String name,
+    String roomNo,
+    int contactNumber,
+    Timestamp time,
+  ) async {
     await FirebaseFirestore.instance
         .collection(problemCategory)
        .doc()
@@ -147,7 +115,7 @@ class _ComplaintsState extends State<Complaints> {
       Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
       name = userData['Name'];
       contactNo = userData['Student contact number'];
-      roomo = userData['Room NO.'];
+      roomo = userData['Room No'];
     }
   }
 
@@ -172,7 +140,6 @@ class _ComplaintsState extends State<Complaints> {
               const SizedBox(
                 height: 10,
               ),
-
               const SizedBox(
                 height: 10,
               ),
@@ -182,15 +149,23 @@ class _ComplaintsState extends State<Complaints> {
                   children: [
                     TextFormField(
                       decoration: InputDecoration(
-                          label: const Text('Problem Description'),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(
-                                  color: Color.fromARGB(255, 88, 120, 146))),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide:
-                              const BorderSide(color: Colors.greenAccent),
-                              borderRadius: BorderRadius.circular(12))),
+                        label: const Text(
+                          'Problem Description',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 88, 120, 146),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(255, 88, 120, 146),
+                          ),
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                      ),
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       minLines: 1,
@@ -208,11 +183,9 @@ class _ComplaintsState extends State<Complaints> {
                   setproblem = dropdownValueProblem;
                 });
               }),
-
               const SizedBox(
                 height: 10,
               ),
-
               Row(
                 children: [
                   InkWell(
@@ -232,13 +205,13 @@ class _ComplaintsState extends State<Complaints> {
                         );
                       } else {
                         String uniqueFilename =
-                        DateTime.now().millisecondsSinceEpoch.toString();
+                            DateTime.now().millisecondsSinceEpoch.toString();
 
                         Reference refrenceroot = FirebaseStorage.instance.ref();
                         Reference referenceDirImages =
-                        refrenceroot.child('Images');
+                            refrenceroot.child('Images');
                         Reference refrenceImageToUpload =
-                        referenceDirImages.child(uniqueFilename);
+                            referenceDirImages.child(uniqueFilename);
 
                         try {
                           showDialog(
@@ -251,10 +224,13 @@ class _ComplaintsState extends State<Complaints> {
                                   Text(
                                     'Please wait Uploading',
                                     style: TextStyle(
+                                        color: Colors.green,
                                         fontSize: 20,
                                         decoration: TextDecoration.none),
                                   ),
-                                  CircularProgressIndicator(),
+                                  CircularProgressIndicator(
+                                    color: Colors.green,
+                                  ),
                                 ],
                               );
                             },
@@ -267,7 +243,7 @@ class _ComplaintsState extends State<Complaints> {
                               ));
 
                           imageUrl =
-                          await refrenceImageToUpload.getDownloadURL();
+                              await refrenceImageToUpload.getDownloadURL();
                         } catch (error) {
                           // Print or log the error for debugging purposes
 
@@ -302,24 +278,21 @@ class _ComplaintsState extends State<Complaints> {
                       height: 60,
                       width: 280,
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 185, 213, 226),
+                        color: Colors.white,
                         border: Border.all(
-                            width: 3,
-                            color: const Color.fromARGB(255, 69, 114, 148)),
-                        borderRadius: BorderRadius.circular(15),
+                            width: 1,
+                            color: const Color.fromARGB(255, 122, 159, 187)),
+                        borderRadius: BorderRadius.circular(25),
                       ),
-                      child: Row(
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Image.asset(
-                              'assets/images/galleryimage.png',
-                              height: 40,
-                              width: 40,
-                            ),
+                            padding: EdgeInsets.all(5.0),
+                            child: Icon(CupertinoIcons.photo),
                           ),
-                          const SizedBox(width: 5),
-                          const Text(
+                          SizedBox(width: 5),
+                          Text(
                             'Select Problem Image',
                             style: TextStyle(
                                 fontSize: 18,
@@ -340,38 +313,36 @@ class _ComplaintsState extends State<Complaints> {
                   )
                 ],
               ),
-
               const SizedBox(
                 height: 30,
               ),
-
               ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith(
-                            (states) => const Color(0xff90AAD6))),
+                        (states) => const Color(0xff90AAD6))),
                 onPressed: () {
                   sendProblemdata(
-                      imageUrl.toString(),
-                      _problemController.text.trim(),
-                      setproblem.toString(),
-                      widget.email.toString(),
-                      name.toString(),
-                      roomo,
-                      int.parse(contactNo.toString()),
-                      timestamp)
+                          imageUrl.toString(),
+                          _problemController.text.trim(),
+                          setproblem.toString(),
+                          widget.email.toString(),
+                          name.toString(),
+                          roomo,
+                          int.parse(contactNo.toString()),
+                          timestamp)
                       .then((value) => showDialog(
-                      context: context,
-                      builder: (context) {
-                        return const AlertDialog(
-                          content: Text('Problem Sent Sucessfully'), //problem sent
-                        );
-                      }).then((value) {
-                    int count = 1;
-                    Navigator.of(context).popUntil((_) => count-- < 0);
-                  }));
+                              context: context,
+                              builder: (context) {
+                                return const AlertDialog(
+                                  content: Text('Problem Sent Sucessfully'),
+                                );
+                              }).then((value) {
+                            int count = 1;
+                            Navigator.of(context).popUntil((_) => count-- < 0);
+                          }));
                 },
                 child: const Text(
-                  "Send Problem",// send text
+                  "Send Problem",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
