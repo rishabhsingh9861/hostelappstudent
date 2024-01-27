@@ -58,14 +58,9 @@ class _CommitteePageState extends State<CommitteePage> {
 
                           String committename = reqData['Name'] as String;
 
-                          return Card(
-                            color: const Color.fromARGB(255, 196, 220, 240),
-                            elevation: 8,
-                            margin: const EdgeInsets.symmetric(vertical: 8),
-                            child: ListTile(
-                              trailing: IconButton(
-                                onPressed: () {
-                                  Navigator.push(
+                          return InkWell(
+                            onTap: () {
+                                Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => MembersPage(
@@ -74,17 +69,22 @@ class _CommitteePageState extends State<CommitteePage> {
                                       ),
                                     ),
                                   );
-                                },
-                                icon: const Icon(
+                            },
+                            child: Card(
+                              color: const Color.fromARGB(255, 196, 220, 240),
+                              elevation: 8,
+                              margin: const EdgeInsets.symmetric(vertical: 8),
+                              child: ListTile(
+                                trailing: const Icon(
                                   CupertinoIcons.chevron_forward,
                                 ),
-                              ),
-                              title: Text(
-                                committename,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    fontFamily: "Nunito"),
+                                title: Text(
+                                  committename,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      fontFamily: "Nunito"),
+                                ),
                               ),
                             ),
                           );
@@ -146,7 +146,7 @@ class MembersPage extends StatelessWidget {
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 218, 216, 216),
+                        color: const Color.fromARGB(255, 218, 216, 216),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(width: 1),
                       ),
