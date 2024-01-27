@@ -35,15 +35,7 @@ List<String> listcastecategory = <String>[
   'SC',
   'ST',
 ];
-List<String> listBlock = <String>[
-  'Select Block',
-  'A',
-  'B',
-  'C',
-  'D',
-  'E',
-  'T',
-];
+
 List<String> listDepartment = <String>[
   'Select Department',
   'Civil',
@@ -68,7 +60,7 @@ class _StudentDataState extends State<StudentData> {
   final _parentcontactnoController = TextEditingController();
   final _studentcontactnoController = TextEditingController();
   final _addresController = TextEditingController();
-  final _roomnoController = TextEditingController();
+
   final _hostelIdController = TextEditingController();
 
   bool approv = false;
@@ -82,7 +74,6 @@ class _StudentDataState extends State<StudentData> {
       int parentcontactnumber,
       String address,
       String bloodgroup,
-      String roomNumber,
       String department,
       int hostelid,
       bool aprov) async {
@@ -99,7 +90,6 @@ class _StudentDataState extends State<StudentData> {
       'Parent Contact Number': parentcontactnumber,
       'Address': address,
       'Blood Group': bloodgroup,
-      'Room No': roomNumber,
       'Department': department,
       'Hostel Id': hostelid,
       'Approved': approv,
@@ -118,7 +108,7 @@ class _StudentDataState extends State<StudentData> {
     _addresController.dispose();
     _middlenameController.dispose();
     _surnameController.dispose();
-    _roomnoController.dispose();
+
     _hostelIdController.dispose();
     // _bloodgroupController.dispose();
     super.dispose();
@@ -126,11 +116,11 @@ class _StudentDataState extends State<StudentData> {
 
   String dropdownValueBlood = listbloodgroup.first;
   String dropdownValueCaste = listcastecategory.first;
-  String dropdownValueBlock = listBlock.first;
+
   String dropdownValueDepartment = listDepartment.first;
   String setcaste = "";
   String setbloodgroup = "";
-  String setblock = "";
+
   String setdepartment = "";
 
   @override
@@ -190,16 +180,6 @@ class _StudentDataState extends State<StudentData> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: dropdownMenu(listBlock, dropdownValueBlock,
-                      (String? value) {
-                    setState(() {
-                      dropdownValueBlock = value!;
-                      setblock = dropdownValueBlock;
-                    });
-                  }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
                   child: dropdownMenu(listDepartment, dropdownValueDepartment,
                       (String? value) {
                     setState(() {
@@ -207,11 +187,6 @@ class _StudentDataState extends State<StudentData> {
                       setdepartment = dropdownValueDepartment;
                     });
                   }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: writedata("Enter Room Number", TextInputType.number,
-                      _roomnoController),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -235,8 +210,8 @@ class _StudentDataState extends State<StudentData> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: writedata(
-                      "Native Place", TextInputType.name, _addresController),
+                  child: writedata("Permanent Address", TextInputType.name,
+                      _addresController),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -273,7 +248,6 @@ class _StudentDataState extends State<StudentData> {
                                     _parentcontactnoController.text.trim()),
                                 _addresController.text.trim(),
                                 setbloodgroup,
-                                setblock + _roomnoController.text,
                                 setdepartment,
                                 int.parse(_hostelIdController.text.trim()),
                                 approv)

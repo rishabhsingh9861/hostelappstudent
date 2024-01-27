@@ -54,32 +54,32 @@ class _FacilitiesPageState extends State<FacilitiesPage> {
                       return ListView.builder(
                         itemCount: docIDs.length,
                         itemBuilder: (context, index) {
-                          return Card(
-                            color: const Color.fromARGB(255, 196, 220, 240),
-                            elevation: 8,
-                            margin: const EdgeInsets.symmetric(vertical: 8),
-                            child: ListTile(
-                              trailing: IconButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => FacilitiesList(
-                                        facilitiesID: docIDs[index],
-                                      ),
-                                    ),
-                                  );
-                                },
-                                icon: const Icon(
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FacilitiesList(
+                                    facilitiesID: docIDs[index],
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Card(
+                              color: const Color.fromARGB(255, 196, 220, 240),
+                              elevation: 8,
+                              margin: const EdgeInsets.symmetric(vertical: 8),
+                              child: ListTile(
+                                trailing: const Icon(
                                   CupertinoIcons.chevron_forward,
                                 ),
-                              ),
-                              title: Text(
-                                docIDs[index],
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  fontFamily: "Nunito",
+                                title: Text(
+                                  docIDs[index],
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    fontFamily: "Nunito",
+                                  ),
                                 ),
                               ),
                             ),
