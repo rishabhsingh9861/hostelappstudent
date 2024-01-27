@@ -27,15 +27,15 @@ class _RectorsState extends State<Rectors> {
               itemCount: snapshot.data!.docs.length,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                String reqId = snapshot.data!.docs[index].id;
-                requiredId.add(reqId);
+                // String reqId = snapshot.data!.docs[index].id;
+                // requiredId.add(reqId);
                 final reqData =
                     snapshot.data!.docs[index].data() as Map<String, dynamic>;
                 String rectorName = reqData['Rector Name'] as String;
                 String rectorImage = reqData['Rector Image'] as String;
                 String rectorEmail = reqData['Rector Email'] as String;
                 String position = reqData['Position'] as String;
-                int rectorNumber = reqData['Rector Number'] as int;
+           int rectorNumber = reqData['Rector Number'] as int? ?? 0;
 
                 return material(rectorNumber, rectorEmail, rectorImage,
                     rectorName, position);
