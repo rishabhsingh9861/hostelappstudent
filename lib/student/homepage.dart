@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:vjtihostel/committe/committe_page.dart';
 import 'package:vjtihostel/committe/facilitiespage.dart';
 import 'package:vjtihostel/onboard.dart';
-import 'package:vjtihostel/student/Drawer/certificate.dart';
+import 'package:vjtihostel/student/Drawer/Forms/hostelAndMess.dart';
 import 'package:vjtihostel/student/complaints.dart';
 import 'package:vjtihostel/student/constant/const.dart';
 import 'package:vjtihostel/student/genrateid.dart';
@@ -87,6 +86,7 @@ class _HomePageState extends State<HomePage> {
               ));
             }
 
+
             final reqData = snapshot.data?.data() as Map<String, dynamic>?;
             if (reqData == null) {
               return const Center(
@@ -98,6 +98,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ));
             }
+
 
             String name = reqData['Name'] ?? '';
             String hostelid = reqData['Hostel ID'] ?? '';
@@ -275,13 +276,37 @@ class _HomePageState extends State<HomePage> {
                           const SizedBox(
                             height: 5,
                           ),
-                          const Text(
-                            'Contact No : 123456789 ', //
+                          Text(
+                            'Student Contact No : $studentnumber', //
                             style: idStyle,
                           ),
                           const SizedBox(
                             height: 5,
                           ),
+                          Row(
+                            children: [
+                              const Text(
+                                'Call Parent',
+                                style: idStyle,
+                              ),
+                              const SizedBox(
+                                width: 50,
+                              ),
+                              InkWell(
+                                onTap: () async {
+                                  final call = 'tel:$parentnumber';
+                                  if (!await launchUrlString(call)) {
+                                    await canLaunchUrlString(call);
+                                  }
+                                },
+                                child: SizedBox(
+                                    height: 25,
+                                    width: 25,
+                                    child: Image.asset(
+                                        'assets/images/phoneicon.png')),
+                              ),
+                            ],
+                          )
                         ],
                       ),
                     ),
@@ -327,19 +352,50 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class Drawers extends StatelessWidget {
+class Drawers extends StatefulWidget {
   const Drawers({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    void signUserOut() async {
-      FirebaseAuth.instance.signOut().then((value) {
-        Navigator.of(context).popUntil((route) => route.isFirst);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => const Onboard()));
+  State<Drawers> createState() => _DrawersState();
+}
+
+class _DrawersState extends State<Drawers> {
+  String url =
+      'https://firebasestorage.googleapis.com/v0/b/vjti-hostel-f8c43.appspot.com/o/Icons%2Ffaceicon.jpg?alt=media&token=7e0a62d6-f43f-4e8d-ac34-d06ec750b482';
+
+  void signUserOut() async {
+    FirebaseAuth.instance.signOut().then((value) {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const Onboard()));
+    });
+  }
+
+  Future<void> getuserdata() async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('HostelStudents')
+        .doc(email)
+        .collection('StudentIDCard')
+        .doc('idcard')
+        .get();
+
+    if (snapshot.exists) {
+      Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
+
+      setState(() {
+        url = userData['Passport Photo'];
       });
     }
+  }
 
+  @override
+  void initState() {
+    super.initState();
+    getuserdata();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!;
     String email = user.email.toString();
     return Drawer(
@@ -348,11 +404,10 @@ class Drawers extends StatelessWidget {
         child: Column(
           children: [
             UserAccountsDrawerHeader(
-              currentAccountPicture: const CircleAvatar(
+              currentAccountPicture: CircleAvatar(
                 radius: 40,
                 backgroundColor: Colors.white,
-                backgroundImage: NetworkImage(
-                    "https://icon-library.com/images/profile-icon-vector/profile-icon-vector-7.jpg"),
+                backgroundImage: NetworkImage(url),
               ),
               decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 184, 200, 228),
@@ -411,7 +466,7 @@ class Drawers extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => FacilitiesPage()));
+                    MaterialPageRoute(builder: (_) => const FacilitiesPage()));
               },
               child: listtile("Facilities"),
             ),
@@ -421,7 +476,7 @@ class Drawers extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const Certificates(),
+                    builder: (context) => HostelAndMess(email: email),
                   ),
                 );
               },
@@ -435,7 +490,7 @@ class Drawers extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => CommitteePage(),
+                    builder: (_) => const CommitteePage(),
                   ),
                 );
               },

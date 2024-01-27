@@ -1,35 +1,201 @@
-// ignore_for_file: non_constant_identifier_names, file_names
+// ignore_for_file: non_constant_identifier_names, file_names, use_build_context_synchronously
 
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:vjtihostel/student/constant/const.dart';
 
 class HostelAndMess extends StatefulWidget {
-  const HostelAndMess({super.key});
+  const HostelAndMess({
+    Key? key,
+    required this.email,
+  }) : super(key: key);
+  final String email;
 
   @override
   State<HostelAndMess> createState() => _HostelAndMessState();
 }
 
+List<String> listCertificate = <String>[
+  'Certificate Type',
+  'Hostel and Mess Certificate',
+  'Expenditure Certifiacte',
+];
+
+String uniqueFilename = 'Upload Fees Receipt';
+
 class _HostelAndMessState extends State<HostelAndMess> {
-  TextEditingController name = TextEditingController();
-  TextEditingController year = TextEditingController();
-  TextEditingController brach = TextEditingController();
-  TextEditingController regNO = TextEditingController();
-  TextEditingController roomNo = TextEditingController();
+  CollectionReference db =
+      FirebaseFirestore.instance.collection('HostelStudents');
+  CollectionReference db1 =
+      FirebaseFirestore.instance.collection('CertificateRequest');
 
-  void validateFields() {
-    String Name = name.text.toString();
-    String Year = year.text.toString();
-    String branch = brach.text.toString();
-    String RegNo = regNO.text.toString();
+  String dropdownValueCertificate = listCertificate.first;
+  String certificate = "";
+  String downloadUrl = '';
 
-    if (Name != "" && Year != "" && branch != "" && RegNo != "") {
-      // here data will be stored in the database
-    } else {
-      const snackBar = SnackBar(
+  Future<File?> pickFile() async {
+    FilePickerResult? pickedFile = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
+
+    if (pickedFile != null) {
+      File file = File(pickedFile.files.single.path!);
+      return file;
+    }
+
+    return null;
+  }
+
+  Future<void> uploadFile(File? file) async {
+    if (file == null) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const AlertDialog(
+            content: Text('PDF not selected'),
+          );
+        },
+      );
+      return;
+    }
+
+    try {
+      uniqueFilename = file.path.split('/').last;
+      Reference referenceDirPdf =
+          FirebaseStorage.instance.ref().child('FeesReceipt');
+      Reference referencePdfToUpload = referenceDirPdf.child(uniqueFilename);
+
+      showDialog(
+        context: context,
+        builder: (_) {
+          return const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Please wait Uploading',
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.green,
+                    decoration: TextDecoration.none),
+              ),
+              CircularProgressIndicator(
+                color: Colors.green,
+              ),
+            ],
+          );
+        },
+      );
+
+      // Set content type explicitly to 'application/pdf'
+      await referencePdfToUpload.putFile(
+        file,
+        SettableMetadata(
+          contentType: 'application/pdf',
+        ),
+      );
+
+      downloadUrl = await referencePdfToUpload.getDownloadURL();
+
+      setState(() {});
+    } catch (error) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const AlertDialog(
+            content: Text('PDF not uploaded'),
+          );
+        },
+      );
+    } finally {
+      Navigator.of(context).pop();
+    }
+  }
+
+  void validateFields() async {
+    try {
+      DocumentReference certificateRequestDoc = db1.doc('requests');
+
+      DocumentSnapshot idCardSnapshot = await db
+          .doc(widget.email)
+          .collection('StudentIDCard')
+          .doc('idcard')
+          .get();
+
+      if (idCardSnapshot.exists) {
+        Map<String, dynamic>? idCardData =
+            idCardSnapshot.data() as Map<String, dynamic>?;
+
+        if (idCardData != null) {
+          String name = idCardData['Name'] ?? '';
+          String year = idCardData['Year'] ?? '';
+          int regNo = idCardData['Registration No.'] ?? 0;
+          String roomNo = idCardData['Room No'] ?? '';
+
+          if (certificate.isNotEmpty) {
+            await certificateRequestDoc
+                .set({
+                  'Certificates': FieldValue.arrayUnion([
+                    {
+                      'Name': name,
+                      'Year': year,
+                      'RegNo': regNo,
+                      'RoomNo': roomNo,
+                      'CertificateType': certificate,
+                      'Timestamp': Timestamp.now(),
+                      'FeesReceiptUrl': downloadUrl,
+                    }
+                  ]),
+                }, SetOptions(merge: true))
+                .then((value) => showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const AlertDialog(
+                        content: Text('Sent for verification!'),
+                      );
+                    }))
+                .then((value) => Navigator.pop(context));
+
+            // const snackBar = SnackBar(
+            //   backgroundColor: Colors.green,
+            //   duration: Duration(seconds: 3),
+            //   content: Text('Sent for verification!'),
+            // );
+
+            // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+            // Clear the selected certificate and filename
+            // certificate = '';
+            // uniqueFilename = 'Upload Fees Receipt';
+          } else {
+            const snackBar = SnackBar(
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+              content: Text('Select a Certificate Type'),
+            );
+
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+        } else {
+          // Handle the case where idCardData is null
+        }
+      } else {
+        const snackBar = SnackBar(
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+          content: Text('First generate your ID card'),
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } catch (e) {
+      final snackBar = SnackBar(
         backgroundColor: Colors.red,
-        duration: Duration(seconds: 3),
-        content: Text('Fill All The Fields'),
+        duration: const Duration(seconds: 3),
+        content: Text('Error fetching data: $e'),
       );
 
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -52,132 +218,99 @@ class _HostelAndMessState extends State<HostelAndMess> {
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 200,
-                  width: 200,
-                  child: Image.network(
-                      "https://icon-library.com/images/fill-out-form-icon/fill-out-form-icon-10.jpg"),
-                ),
-                const Text(
-                  "Hostel and Mess ",
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontFamily: "Nunito",
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                hostelDetails(
-                    hinttext: "Enter Your Full Name",
-                    labletext: "Name",
-                    icons: const Icon(CupertinoIcons.person),
-                    controller: name),
-                const SizedBox(
-                  height: 10,
-                ),
-                hostelDetails(
-                    hinttext: "Enter the year you are studing in eg: 2nd Year",
-                    labletext: "Year",
-                    icons: const Icon(CupertinoIcons.tag),
-                    controller: year),
-                const SizedBox(
-                  height: 10,
-                ),
-                hostelDetails(
-                    hinttext: "Enter Your Branch",
-                    labletext: "Branch",
-                    icons: const Icon(CupertinoIcons.hammer),
-                    controller: brach),
-                const SizedBox(
-                  height: 10,
-                ),
-                hostelDetails(
-                  hinttext: "Enter Your Reg No",
-                  labletext: "Reg No",
-                  icons: const Icon(CupertinoIcons.number),
-                  controller: regNO,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                hostelDetails(
-                  hinttext: "Enter Your Room No",
-                  labletext: "Room No",
-                  icons: const Icon(CupertinoIcons.home),
-                  controller: roomNo,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                hostelDetails(
-                  hinttext: "Applying For i.e: Certificate type",
-                  labletext: "Certificate Type",
-                  icons: const Icon(CupertinoIcons.doc),
-                  controller: roomNo,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => const Color(0xff90AAD6),
+        child: Stack(children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 200,
+                    width: 200,
+                    child: Image.network(
+                        "https://icon-library.com/images/fill-out-form-icon/fill-out-form-icon-10.jpg"),
+                  ),
+                  const Text(
+                    "Apply for Certificate ",
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontFamily: "Nunito",
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: dropdownMenu(
+                      listCertificate,
+                      dropdownValueCertificate,
+                      (String? value) {
+                        setState(() {
+                          dropdownValueCertificate = value!;
+                          certificate = dropdownValueCertificate;
+                        });
+                      },
                     ),
                   ),
-                  onPressed: () {
-                    validateFields();
-                  },
-                  child: const Text(
-                    "SUBMIT",
-                    style: TextStyle(color: Colors.white),
+                  const SizedBox(
+                    height: 10,
                   ),
-                )
-              ],
+                  InkWell(
+                    onTap: () async {
+                      File? file = await pickFile();
+                      uploadFile(file);
+                    },
+                    child: Container(
+                      height:
+                          58, // Specify a fixed height or use another appropriate constraint
+                      width: 250,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          width: 1,
+                          color: const Color.fromARGB(255, 97, 139, 163),
+                        ),
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            uniqueFilename,
+                            style: const TextStyle(
+                              fontFamily: "Nunito",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith(
+                        (states) => const Color(0xff90AAD6),
+                      ),
+                    ),
+                    onPressed: () {
+                      validateFields();
+                    },
+                    child: const Text(
+                      "SUBMIT",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
+        ]),
       ),
     );
   }
-}
-
-TextField hostelDetails({
-  required String hinttext,
-  required String labletext,
-  required Icon icons,
-  required TextEditingController controller,
-}) {
-  return TextField(
-    controller: controller,
-    decoration: InputDecoration(
-      hintText: hinttext,
-      labelText: labletext,
-      labelStyle:
-          const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-      icon: icons,
-      border: const OutlineInputBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
-      ),
-      enabledBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black),
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
-      ),
-      focusedBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black, width: 2),
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
-      ),
-    ),
-  );
 }
