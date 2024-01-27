@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:vjtihostel/student/constant/const.dart';
+
 // new....
 class PendingComplaints extends StatefulWidget {
   const PendingComplaints({Key? key}) : super(key: key);
@@ -116,6 +118,7 @@ class ComplaintCategory extends StatelessWidget {
           var complaints = snapshot.data!.docs;
 
           return ListView.builder(
+            shrinkWrap: true,
             itemCount: complaints.length,
             itemBuilder: (context, index) {
               var complaint = complaints[index];
@@ -127,64 +130,66 @@ class ComplaintCategory extends StatelessWidget {
               String roomNo = complaintData['Room Number'] ?? '';
               Timestamp time = complaintData['Time'] ?? Timestamp.now();
               bool isComplete = complaintData['Status'] == 'Solved';
-              String formattedDate = DateFormat.yMMMd().add_jms().format(time.toDate());
+              String formattedDate =
+                  DateFormat.yMMMd().add_jms().format(time.toDate());
 
               return isComplete
                   ? Container() // If status is complete, don't display the complaint
                   : Card(
-                elevation: 3.0,
-                margin: const EdgeInsets.all(8.0),
-                child: ListTile(
-                  title: Text('Problem: $problemDescription'),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Room No: $roomNo'),
-                      Text('Timestamp: $formattedDate'),
-                    ],
-                  ),
-                  leading: GestureDetector(
-                    onTap: () {
-                      _showFullImage(context, photoUrl);
-                    },
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(photoUrl),
-                    ),
-                  ),
-                  trailing: Column(
-                    children: [
-                      Radio(
-                        value: true,
-                        groupValue: isComplete,
-                        onChanged: (bool? value) async {
-                          // Handle radio button change
-                          // Update the complaint status in Firestore
-                          await FirebaseFirestore.instance
-                              .collection(category) // Use the determined collection path
-                              .doc(complaint.id)
-                              .update({
-                            'Status': 'Solved',
-                            'SolvedTimestamp': FieldValue.serverTimestamp(),
-                          });
-                          complaintData['Status'] = 'Solved';
-                          complaintData['SolvedTimestamp'] = FieldValue.serverTimestamp();
-                          // Copy the document to 'Solved $category' collection
-                          await FirebaseFirestore.instance
-                              .collection('Solved $category') // Use the determined collection path
-                              .add(complaintData);
+                      elevation: 3.0,
+                      margin: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        title: Text('Problem: $problemDescription'),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Room No: $roomNo'),
+                            Text('Timestamp: $formattedDate'),
+                            SizedBox(height: 10,),
+                            Radio(
+                              value: true,
+                              groupValue: isComplete,
+                              onChanged: (bool? value) async {
+                                await FirebaseFirestore.instance
+                                    .collection(category)
+                                    .doc(complaint.id)
+                                    .update({
+                                  'Status': 'Solved',
+                                  'SolvedTimestamp':
+                                      FieldValue.serverTimestamp(),
+                                });
+                                complaintData['Status'] = 'Solved';
+                                complaintData['SolvedTimestamp'] =
+                                    FieldValue.serverTimestamp();
+                                // Copy the document to 'Solved $category' collection
+                                await FirebaseFirestore.instance
+                                    .collection(
+                                        'Solved $category') // Use the determined collection path
+                                    .add(complaintData);
 
-                          // Delete the document from '$category' collection
-                          await FirebaseFirestore.instance
-                              .collection(category) // Use the determined collection path
-                              .doc(complaint.id)
-                              .delete();
-                        },
-                      ),
-                      Text('Solved'),
-                    ],
-                  ),
-                ),
-              );
+                                // Delete the document from '$category' collection
+                                await FirebaseFirestore.instance
+                                    .collection(
+                                        category) // Use the determined collection path
+                                    .doc(complaint.id)
+                                    .delete();
+                              },
+                            ),
+                            Text(
+                              'Solved',
+                              style: textsty,
+                            )
+                          ],
+                        ),
+                        leading: GestureDetector(
+                          onTap: () {
+                            _showFullImage(context, photoUrl);
+                          },
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(photoUrl),
+                          ),
+                        ),
+                      ));
             },
           );
         },
@@ -206,7 +211,6 @@ class ComplaintCategory extends StatelessWidget {
     );
   }
 }
-
 
 class ComplaintCard extends StatelessWidget {
   final String name;
@@ -256,11 +260,11 @@ class ComplaintCard extends StatelessWidget {
             backgroundImage: NetworkImage(photoUrl),
           ),
         ),
-
       ),
     );
   }
 }
+
 class ComplaintListItem extends StatelessWidget {
   final String title;
   final String value;

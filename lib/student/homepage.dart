@@ -86,7 +86,6 @@ class _HomePageState extends State<HomePage> {
               ));
             }
 
-
             final reqData = snapshot.data?.data() as Map<String, dynamic>?;
             if (reqData == null) {
               return const Center(
@@ -99,15 +98,15 @@ class _HomePageState extends State<HomePage> {
               ));
             }
 
-
             String name = reqData['Name'] ?? '';
             String hostelid = reqData['Hostel ID'] ?? '';
-            String roomo = reqData['Room NO.'] ?? '';
+            String roomo = reqData['Room No'] ?? '';
             int registration = reqData['Registration No.'] ?? 0;
             String addres = reqData['Adress'] ?? '';
             String bloodgrp = reqData['Blood Group'] as String? ?? '';
             String pphoto = reqData['Passport Photo'] as String? ?? '';
             int parentnumber = reqData['Parent Contact Number'] as int? ?? 0;
+            int studentnumber = reqData['Student contact number'] as int? ?? 0;
 
             return SafeArea(
               child: SingleChildScrollView(
