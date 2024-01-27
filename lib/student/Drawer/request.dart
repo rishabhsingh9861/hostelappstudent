@@ -24,8 +24,11 @@ class Request extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
+              const SizedBox(
+                height: 10,
+              ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Requestcontainer(
                     Requestname: "Leave Request",
@@ -53,28 +56,28 @@ class Request extends StatelessWidget {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Requestcontainer(
-                  //   Requestname: "Complaints ",
-                  //   image: "Complaint.png",
-                  //   function: () {},
-                  // ),
-                  Requestcontainer(
-                    Requestname: "Amenities",
-                    image: "Amenities1.jpg",
-                    function: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Amenities(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     // Requestcontainer(
+              //     //   Requestname: "Complaints ",
+              //     //   image: "Complaint.png",
+              //     //   function: () {},
+              //     // ),
+              //     Requestcontainer(
+              //       Requestname: "Amenities",
+              //       image: "Amenities1.jpg",
+              //       function: () {
+              //         Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //             builder: (context) => const Amenities(),
+              //           ),
+              //         );
+              //       },
+              //     ),
+              //   ],
+              // ),
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.center,
               //   children: [
@@ -126,7 +129,7 @@ class Request extends StatelessWidget {
       required String image,
       required VoidCallback? function}) {
     return Container(
-      margin: const EdgeInsets.all(10),
+      // margin: const EdgeInsets.all(5),
       height: 280,
       width: 180,
       decoration: BoxDecoration(

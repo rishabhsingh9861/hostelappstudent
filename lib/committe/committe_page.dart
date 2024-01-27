@@ -119,7 +119,7 @@ class MembersPage extends StatelessWidget {
         backgroundColor: const Color(0xff90AAD6),
         centerTitle: true,
         title: Text(
-          committeeId,
+          committeename,
           style: const TextStyle(
             fontFamily: "Nunito",
             fontWeight: FontWeight.bold,

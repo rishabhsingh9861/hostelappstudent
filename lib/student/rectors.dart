@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class Rectors extends StatefulWidget {
-  const Rectors({super.key,});
+  const Rectors({
+    super.key,
+  });
 
   @override
   State<Rectors> createState() => _RectorsState();
@@ -15,8 +17,6 @@ class _RectorsState extends State<Rectors> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-
-
         stream: FirebaseFirestore.instance
             .collection('Rectors')
             .orderBy('Rank', descending: false)
@@ -31,11 +31,11 @@ class _RectorsState extends State<Rectors> {
                 requiredId.add(reqId);
                 final reqData =
                     snapshot.data!.docs[index].data() as Map<String, dynamic>;
-                String rectorName = reqData['Cheif Rector Name'] as String;
-                String rectorImage = reqData['Cheif rector Image'] as String;
-                String rectorEmail = reqData['Cheif Rector email'] as String;
-                String position = reqData['Position1'] as String;
-                int rectorNumber = reqData['Cheif Rector Number'] as int;
+                String rectorName = reqData['Rector Name'] as String;
+                String rectorImage = reqData['Rector Image'] as String;
+                String rectorEmail = reqData['Rector Email'] as String;
+                String position = reqData['Position'] as String;
+                int rectorNumber = reqData['Rector Number'] as int;
 
                 return material(rectorNumber, rectorEmail, rectorImage,
                     rectorName, position);
@@ -46,7 +46,6 @@ class _RectorsState extends State<Rectors> {
             return const Center(child: CircularProgressIndicator());
           }
         });
-
   }
 
   Widget material(int phoneno, String emailto, String assetimage,
@@ -54,15 +53,15 @@ class _RectorsState extends State<Rectors> {
     int phoneNumber = phoneno;
     String email = emailto;
     return Material(
-    //  color: Colors.blueGrey,
+      //  color: Colors.blueGrey,
       child: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Container(
           height: 400,
           width: 350,
           decoration: BoxDecoration(
-            border: Border.all(
-                  width: 3, color: const Color.fromARGB(255, 0, 0, 0)),
+            border:
+                Border.all(width: 3, color: const Color.fromARGB(255, 0, 0, 0)),
             borderRadius: BorderRadius.circular(15),
           ),
           child: Column(
@@ -90,16 +89,16 @@ class _RectorsState extends State<Rectors> {
                     children: [
                       Text(
                         nametext,
-                        style: const TextStyle(
-                            color: Colors.black, fontSize: 30),
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 30),
                       ),
                       const SizedBox(
                         height: 5,
                       ),
                       Text(
                         positiontext,
-                        style: const TextStyle(
-                            color: Colors.black, fontSize: 20),
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 20),
                       )
                     ],
                   ),
