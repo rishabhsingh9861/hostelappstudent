@@ -49,6 +49,7 @@ dependencies:
   file_picker: ^6.1.1
   syncfusion_flutter_pdfviewer: ^24.1.45
   cached_network_image: ^3.2.0
+  quickalert: ^1.0.2
   
   
 

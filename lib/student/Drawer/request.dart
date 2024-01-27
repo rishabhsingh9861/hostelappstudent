@@ -128,7 +128,7 @@ class Request extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(10),
       height: 280,
-      width: 160,
+      width: 180,
       decoration: BoxDecoration(
         color: const Color.fromARGB(95, 189, 185, 185),
         border: Border.all(color: Colors.black),

@@ -29,85 +29,88 @@ String email = user.email.toString();
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: const Color(0xff90AAD6),
-          centerTitle: true,
-          title: const Text(
-            "VJTI HOSTEL",
-            style: TextStyle(
-              fontFamily: "Nunito",
-              fontWeight: FontWeight.bold,
-            ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: const Color(0xff90AAD6),
+        centerTitle: true,
+        title: const Text(
+          "VJTI HOSTEL",
+          style: TextStyle(
+            fontFamily: "Nunito",
+            fontWeight: FontWeight.bold,
           ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const GenerateId(),
-                    ),
-                  );
-                },
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const GenerateId(),
+                  ),
+                );
+              },
+              child: Hero(
+                tag: "ID",
                 child: Image.asset(
                   'assets/images/idcard.png',
                   scale: 10,
                 ),
               ),
-            )
-          ],
-        ),
-        drawer: const Drawers(),
-        body: FutureBuilder<DocumentSnapshot>(
-          future: FirebaseFirestore.instance
-              .collection('HostelStudents')
-              .doc(email)
-              .collection('StudentIDCard')
-              .doc('idcard')
-              .get(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              }
+            ),
+          )
+        ],
+      ),
+      drawer: const Drawers(),
+      body: FutureBuilder<DocumentSnapshot>(
+        future: FirebaseFirestore.instance
+            .collection('HostelStudents')
+            .doc(email)
+            .collection('StudentIDCard')
+            .doc('idcard')
+            .get(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
 
-              if (!snapshot.hasData || snapshot.data == null) {
-                return const Center(
-                    child: Text(
-                  'You have skipped the registration page pls contact hostel office',
-                  style: textsty,
-                ));
-              }
-
-              final reqData = snapshot.data?.data() as Map<String, dynamic>?;
-              if (reqData == null) {
-                return const Center(
-                    child: Padding(
-                  padding: EdgeInsets.all(8.0),
+            if (!snapshot.hasData || snapshot.data == null) {
+              return const Center(
                   child: Text(
-                    'Please Generate Id card',
-                    style: textsty,
-                  ),
-                ));
-              }
+                'You have skipped the registration page pls contact hostel office',
+                style: textsty,
+              ));
+            }
 
-              String name = reqData['Name'] ?? '';
-              String hostelid = reqData['Hostel ID'] ?? '';
-              String roomo = reqData['Room No'] ?? '';
-              int registration = reqData['Registration No.'] ?? 0;
-              String addres = reqData['Adress'] ?? '';
-              String bloodgrp = reqData['Blood Group'] as String? ?? '';
-              String pphoto = reqData['Passport Photo'] as String? ?? '';
-              int parentnumber = reqData['Parent Contact Number'] as int? ?? 0;
-              int studentnumber =
-                  reqData['Student contact number'] as int? ?? 0;
 
-              return SingleChildScrollView(
+            final reqData = snapshot.data?.data() as Map<String, dynamic>?;
+            if (reqData == null) {
+              return const Center(
+                  child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Please Generate Id card',
+                  style: textsty,
+                ),
+              ));
+            }
+
+
+            String name = reqData['Name'] ?? '';
+            String hostelid = reqData['Hostel ID'] ?? '';
+            String roomo = reqData['Room NO.'] ?? '';
+            int registration = reqData['Registration No.'] ?? 0;
+            String addres = reqData['Adress'] ?? '';
+            String bloodgrp = reqData['Blood Group'] as String? ?? '';
+            String pphoto = reqData['Passport Photo'] as String? ?? '';
+            int parentnumber = reqData['Parent Contact Number'] as int? ?? 0;
+
+            return SafeArea(
+              child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,7 +121,10 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       children: [
                         Expanded(
-                            child: Image.asset("assets/images/vjtiLogo.png")),
+                          child: Hero(
+                              tag: "vjtiLogo",
+                              child: Image.asset("assets/images/vjtiLogo.png")),
+                        ),
                         const Expanded(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -182,7 +188,13 @@ class _HomePageState extends State<HomePage> {
                             const SizedBox(
                               width: 10,
                             ),
-                            SizedBox(
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 2,
+                                ),
+                              ),
                               height: 170,
                               width: 160,
                               child: Image(
@@ -194,13 +206,16 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
-                        const Text(
-                          "HOSTEL ID CARD",
-                          style: TextStyle(
-                            fontFamily: "Anton",
-                            color: Colors.red,
-                            fontSize: 21,
-                            letterSpacing: 4,
+                        Container(
+                          margin: EdgeInsets.only(left: 20, top: 10, right: 5),
+                          child: const Text(
+                            "HOSTEL ID CARD",
+                            style: TextStyle(
+                              fontFamily: "Anton",
+                              color: Colors.red,
+                              fontSize: 21,
+                              letterSpacing: 4,
+                            ),
                           ),
                         ),
                         Padding(
@@ -211,6 +226,9 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ],
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 30.0),
@@ -323,12 +341,12 @@ class _HomePageState extends State<HomePage> {
                     // ),
                   ],
                 ),
-              );
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
+              ),
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
       ),
     );
   }

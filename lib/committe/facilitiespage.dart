@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FacilitiesPage extends StatefulWidget {
@@ -24,9 +25,17 @@ class _FacilitiesPageState extends State<FacilitiesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Facilities'),
+        backgroundColor: const Color(0xff90AAD6),
+        centerTitle: true,
+        title: const Text(
+          "Facilities",
+          style: TextStyle(
+            fontFamily: "Nunito",
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
-      body: Center(
+      body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -46,27 +55,33 @@ class _FacilitiesPageState extends State<FacilitiesPage> {
                         itemCount: docIDs.length,
                         itemBuilder: (context, index) {
                           return Card(
-                            elevation: 3,
+                            color: const Color.fromARGB(255, 196, 220, 240),
+                            elevation: 8,
                             margin: const EdgeInsets.symmetric(vertical: 8),
                             child: ListTile(
+                              trailing: IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => FacilitiesList(
+                                        facilitiesID: docIDs[index],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                icon: const Icon(
+                                  CupertinoIcons.chevron_forward,
+                                ),
+                              ),
                               title: Text(
                                 docIDs[index],
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
+                                  fontFamily: "Nunito",
                                 ),
                               ),
-                              onTap: () {
-                                // Handle the tap event
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => FacilitiesList(
-                                      facilitiesID: docIDs[index],
-                                    ),
-                                  ),
-                                );
-                              },
                             ),
                           );
                         },
@@ -91,10 +106,21 @@ class FacilitiesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+      //   title: Text(facilitiesID),
+      //   backgroundColor: const Color.fromRGBO(
+      //       255, 255, 255, 1), // Use a professional color for the app bar
+      // ),
       appBar: AppBar(
-        title: Text(facilitiesID),
-        backgroundColor: const Color.fromRGBO(
-            255, 255, 255, 1), // Use a professional color for the app bar
+        backgroundColor: const Color(0xff90AAD6),
+        centerTitle: true,
+        title: Text(
+          facilitiesID,
+          style: const TextStyle(
+            fontFamily: "Nunito",
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: Center(
         child: FutureBuilder(
@@ -138,11 +164,12 @@ class FacilitiesList extends StatelessWidget {
                             Text(
                               photo.name,
                               style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25,
-                                color: Colors.black87, // Use a dark text color
-                              ),
-                              textAlign: TextAlign.center,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25,
+                                  color: Colors.black87,
+                                  fontFamily: "Nunito" // Use a dark text color
+                                  ),
+                              textAlign: TextAlign.start,
                             ),
                             const SizedBox(height: 8),
                             Container(
@@ -150,10 +177,10 @@ class FacilitiesList extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color: Colors
                                     .black, // Use a light background color
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(30),
                               ),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(30),
                                 child: Image.network(
                                   photo.photoUrl,
                                   fit: BoxFit.cover,
@@ -165,9 +192,10 @@ class FacilitiesList extends StatelessWidget {
                               photo.description,
                               style: const TextStyle(
                                 fontSize: 20,
-                                color: Colors.black, // Use a subdued text color
+                                color: Colors.black,
+                                // Use a subdued text color
                               ),
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.start,
                             ),
                           ],
                         ),

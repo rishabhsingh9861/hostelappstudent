@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, library_private_types_in_public_api
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -16,8 +17,19 @@ class _CommitteePageState extends State<CommitteePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+      //   title: const Text('Committee'),
+      // ),
       appBar: AppBar(
-        title: const Text('Committee'),
+        backgroundColor: const Color(0xff90AAD6),
+        centerTitle: true,
+        title: const Text(
+          "COMMITTEE",
+          style: TextStyle(
+            fontFamily: "Nunito",
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: Center(
         child: Padding(
@@ -47,28 +59,33 @@ class _CommitteePageState extends State<CommitteePage> {
                           String committename = reqData['Name'] as String;
 
                           return Card(
-                            elevation: 3,
+                            color: const Color.fromARGB(255, 196, 220, 240),
+                            elevation: 8,
                             margin: const EdgeInsets.symmetric(vertical: 8),
                             child: ListTile(
+                              trailing: IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MembersPage(
+                                        committeeId: docIDs[index],
+                                        committeename: committename,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                icon: const Icon(
+                                  CupertinoIcons.chevron_forward,
+                                ),
+                              ),
                               title: Text(
                                 committename,
                                 style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    fontFamily: "Nunito"),
                               ),
-                              onTap: () {
-                                // Handle the tap event
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => MembersPage(
-                                      committeeId: docIDs[index],
-                                      committeename: committename,
-                                    ),
-                                  ),
-                                );
-                              },
                             ),
                           );
                         },
@@ -99,7 +116,15 @@ class MembersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(committeename),
+        backgroundColor: const Color(0xff90AAD6),
+        centerTitle: true,
+        title: Text(
+          committeeId,
+          style: const TextStyle(
+            fontFamily: "Nunito",
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: Center(
         child: FutureBuilder(
@@ -121,17 +146,9 @@ class MembersPage extends StatelessWidget {
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: const Color.fromRGBO(255, 255, 255, 1),
+                        color: Color.fromARGB(255, 218, 216, 216),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(width: 0.5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
+                        border: Border.all(width: 1),
                       ),
                       child: ListTile(
                         title: Row(
@@ -153,6 +170,7 @@ class MembersPage extends StatelessWidget {
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 25,
+                                      fontFamily: "Nunito",
                                     ),
                                   ),
                                   const SizedBox(height: 8),
@@ -167,8 +185,9 @@ class MembersPage extends StatelessWidget {
                                   ),
                                   SizedBox(
                                     height: 30,
-                                    width: 350,
                                     child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         InkWell(
                                           onTap: () async {
@@ -178,24 +197,30 @@ class MembersPage extends StatelessWidget {
                                               await canLaunchUrlString(gmail);
                                             }
                                           },
-                                          child: Image.asset(
-                                              'assets/images/gmailicon.png'),
+                                          child: const Icon(
+                                            CupertinoIcons.mail_solid,
+                                            color: Colors.black,
+                                            size: 30,
+                                          ),
                                         ),
                                         const SizedBox(
-                                          width: 100,
+                                          width: 50,
                                         ),
                                         InkWell(
-                                          onTap: () async {
-                                            final phoneNumber =
-                                                member.phoneNumber;
-                                            final call = 'tel:$phoneNumber';
-                                            if (!await launchUrlString(call)) {
-                                              await canLaunchUrlString(call);
-                                            }
-                                          },
-                                          child: Image.asset(
-                                              'assets/images/phoneicon.png'),
-                                        ),
+                                            onTap: () async {
+                                              final phoneNumber =
+                                                  member.phoneNumber;
+                                              final call = 'tel:$phoneNumber';
+                                              if (!await launchUrlString(
+                                                  call)) {
+                                                await canLaunchUrlString(call);
+                                              }
+                                            },
+                                            child: const Icon(
+                                              CupertinoIcons.phone,
+                                              color: Colors.black,
+                                              size: 30,
+                                            )),
                                       ],
                                     ),
                                   ),
