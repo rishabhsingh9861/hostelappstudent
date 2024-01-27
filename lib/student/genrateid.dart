@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vjtihostel/student/constant/const.dart';
+import 'package:vjtihostel/student/constant/data.dart';
 import 'package:vjtihostel/student/viewfeesrecipt.dart';
 
 class GenerateId extends StatefulWidget {
@@ -27,14 +28,27 @@ List<String> listyear = <String>[
   'Final Year',
 ];
 
+List<String> listBlock = <String>[
+  'Select Block',
+  'A',
+  'B',
+  'C',
+  'D',
+  'E',
+  'T',
+  'Flat',
+];
+
 class _GenerateIdState extends State<GenerateId> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _roomnumber = TextEditingController();
   final _hostelid = TextEditingController();
+  final _roomnoController = TextEditingController();
 
   String dropdownValueYear = listyear.first;
   String setyear = "";
+  String dropdownValueBlock = listBlock.first;
+  String setblock = "";
   String uniqueFilename = 'Upload Fess Receipt';
 
   Future<File?> pickFile() async {
@@ -79,9 +93,14 @@ class _GenerateIdState extends State<GenerateId> {
             children: [
               Text(
                 'Please wait Uploading',
-                style: TextStyle(fontSize: 20, decoration: TextDecoration.none),
+                style: TextStyle(
+                    fontSize: 20,
+                    decoration: TextDecoration.none,
+                    color: Colors.green),
               ),
-              CircularProgressIndicator(),
+              CircularProgressIndicator(
+                color: Colors.green,
+              ),
             ],
           );
         },
@@ -116,7 +135,7 @@ class _GenerateIdState extends State<GenerateId> {
   void dispose() {
     _nameController.dispose();
     _hostelid.dispose();
-    _roomnumber.dispose();
+    _roomnoController.dispose();
     super.dispose();
   }
 
@@ -180,6 +199,21 @@ class _GenerateIdState extends State<GenerateId> {
                     });
                   }),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: dropdownMenu(listBlock, dropdownValueBlock,
+                      (String? value) {
+                    setState(() {
+                      dropdownValueBlock = value!;
+                      setblock = dropdownValueBlock;
+                    });
+                  }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: writedata("Enter Room Number", TextInputType.number,
+                      _roomnoController),
+                ),
                 Row(
                   // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -225,9 +259,10 @@ class _GenerateIdState extends State<GenerateId> {
                                         'Please wait Uploading',
                                         style: TextStyle(
                                             fontSize: 20,
+                                            color: Colors.green,
                                             decoration: TextDecoration.none),
                                       ),
-                                      CircularProgressIndicator(),
+                                      CircularProgressIndicator(color: Colors.green,),
                                     ],
                                   );
                                 },
@@ -347,12 +382,15 @@ class _GenerateIdState extends State<GenerateId> {
                             borderRadius: BorderRadius.circular(25),
                           ),
                           child: Center(
-                            child: Text(
-                              uniqueFilename,
-                              style: const TextStyle(
-                                fontFamily: "Nunito",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                uniqueFilename,
+                                style: const TextStyle(
+                                  fontFamily: "Nunito",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
                           ),
@@ -367,7 +405,6 @@ class _GenerateIdState extends State<GenerateId> {
                     //         "http://cdn.onlinewebfonts.com/svg/img_215257.png"),
                     //   ),
                     // ),
-
                   ],
                 ),
                 const SizedBox(
@@ -389,6 +426,8 @@ class _GenerateIdState extends State<GenerateId> {
                                       url: downloadUrl,
                                       year: setyear,
                                       imgurl: imageUrl,
+                                      roomnumber:
+                                          setblock + _roomnoController.text,
                                     )));
                       } else {
                         showDialog(

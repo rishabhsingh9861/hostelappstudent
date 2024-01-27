@@ -152,7 +152,7 @@ class _ComplaintsState extends State<Complaints> {
       Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
       name = userData['Name'];
       contactNo = userData['Student contact number'];
-      roomo = userData['Room NO.'];
+      roomo = userData['Room No'];
     }
   }
 

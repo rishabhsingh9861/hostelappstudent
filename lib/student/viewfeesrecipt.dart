@@ -12,10 +12,12 @@ class FeesReceiptViewer extends StatefulWidget {
     Key? key,
     required this.url,
     required this.imgurl,
+    required this.roomnumber,
     required this.year,
   }) : super(key: key);
   final String url;
   final String imgurl;
+  final String roomnumber;
 
   final String year;
 
@@ -68,7 +70,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
         'Room NO.': roomno,
         'Adress': address,
         'Blood Group': bloodgrp,
-        'Department':department,    
+        'Department': department,
         'Student contact number': studentcontactnumber,
         'Parent Contact Number': parentcontactnumber,
         'Fess Recipt': url,
@@ -99,8 +101,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
           bloodgroup = userData['Blood Group'] as String;
           name = userData['Name'] as String;
           hostelid = userData['Hostel Id'] as int;
-          roomno = userData['Room No'] as String;
-       String   dept = userData['Department'] as String;
+          String dept = userData['Department'] as String;
           studentnumber = userData['Student contact number'] as int;
           registrationnumber = userData['Registration No.'] as int;
           parentsNumber = userData['Parent Contact Number'] as int;
@@ -149,7 +150,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                                 style: textstyy,
                               ),
                               Text(
-                                'Room No.: $roomno',
+                                'Room No.:${widget.roomnumber}',
                                 style: textstyy,
                               ),
                               Text(
@@ -220,7 +221,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                                   widget.year,
                                   hostelid,
                                   registrationnumber,
-                                  roomno,
+                                  widget.roomnumber,
                                   address,
                                   bloodgroup,
                                   dept,
