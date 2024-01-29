@@ -2,9 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-import 'package:vjtihostel/student/constant/const.dart';
 
-// new....
 class PendingComplaints extends StatefulWidget {
   const PendingComplaints({Key? key}) : super(key: key);
 
@@ -85,13 +83,23 @@ class ComplaintCategoryCard extends StatelessWidget {
   }
 }
 
-// final user = FirebaseAuth.instance.currentUser!;
-// String email = user.email.toString();
-
-class ComplaintCategory extends StatelessWidget {
+class ComplaintCategory extends StatefulWidget {
   final String category;
 
   const ComplaintCategory({Key? key, required this.category}) : super(key: key);
+
+  @override
+  _ComplaintCategoryState createState() => _ComplaintCategoryState();
+}
+
+class _ComplaintCategoryState extends State<ComplaintCategory> {
+  late List<bool> isCompleteList;
+
+  @override
+  void initState() {
+    super.initState();
+    isCompleteList = List.filled(0, false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,11 +108,11 @@ class ComplaintCategory extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('$category Complaints'),
+        title: Text('${widget.category} Complaints'),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection(category)
+            .collection(widget.category)
             .where('Email', isEqualTo: email)
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -117,80 +125,86 @@ class ComplaintCategory extends StatelessWidget {
           // Extracting data from the snapshot
           var complaints = snapshot.data!.docs;
 
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: complaints.length,
-            itemBuilder: (context, index) {
-              var complaint = complaints[index];
-              var complaintData = complaint.data() as Map<String, dynamic>;
+          if (isCompleteList.length != complaints.length) {
+            // Initialize isCompleteList based on the length of complaints
+            isCompleteList = List.filled(complaints.length, false);
+          }
 
-              // Extracting fields with null checks
-              String photoUrl = complaintData['Photo Url'] ?? '';
-              String problemDescription = complaintData['Problem'] ?? '';
-              String roomNo = complaintData['Room Number'] ?? '';
-              Timestamp time = complaintData['Time'] ?? Timestamp.now();
-              bool isComplete = complaintData['Status'] == 'Solved';
-              String formattedDate =
-                  DateFormat.yMMMd().add_jms().format(time.toDate());
+          return Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: complaints.length,
+                  itemBuilder: (context, index) {
+                    var sortedComplaints = List.from(complaints);
+                    sortedComplaints.sort((a, b) {
+                      Timestamp timestampA = a['Time'];
+                      Timestamp timestampB = b['Time'];
+                      return timestampB.compareTo(timestampA); // Descending order
+                    });
 
-              return isComplete
-                  ? Container() // If status is complete, don't display the complaint
-                  : Card(
+                    var complaint = sortedComplaints[index];
+                    var complaintData = complaint.data() as Map<String, dynamic>;
+
+                    // Extracting fields with null checks
+                    String photoUrl = complaintData['Photo Url'] ?? '';
+                    String problemDescription = complaintData['Problem'] ?? '';
+                    String roomNo = complaintData['Room Number'] ?? '';
+                    Timestamp time = complaintData['Time'] ?? Timestamp.now();
+                    bool isComplete = complaintData['Status'] == 'Solved';
+                    String formattedDate = DateFormat.yMMMd().add_jms().format(time.toDate());
+
+                    return isComplete
+                        ? Container() // If status is complete, don't display the complaint
+                        : Card(
                       elevation: 3.0,
                       margin: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        title: Text('Problem: $problemDescription'),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Room No: $roomNo'),
-                            Text('Timestamp: $formattedDate'),
-                            SizedBox(height: 10,),
-                            Radio(
-                              value: true,
-                              groupValue: isComplete,
-                              onChanged: (bool? value) async {
-                                await FirebaseFirestore.instance
-                                    .collection(category)
-                                    .doc(complaint.id)
-                                    .update({
-                                  'Status': 'Solved',
-                                  'SolvedTimestamp':
-                                      FieldValue.serverTimestamp(),
-                                });
-                                complaintData['Status'] = 'Solved';
-                                complaintData['SolvedTimestamp'] =
-                                    FieldValue.serverTimestamp();
-                                // Copy the document to 'Solved $category' collection
-                                await FirebaseFirestore.instance
-                                    .collection(
-                                        'Solved $category') // Use the determined collection path
-                                    .add(complaintData);
-
-                                // Delete the document from '$category' collection
-                                await FirebaseFirestore.instance
-                                    .collection(
-                                        category) // Use the determined collection path
-                                    .doc(complaint.id)
-                                    .delete();
-                              },
+                      child: Column(
+                        children: [
+                          ListTile(
+                            title: Text('Problem: $problemDescription'),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Room No: $roomNo'),
+                                Text('Timestamp: $formattedDate'),
+                              ],
                             ),
-                            Text(
-                              'Solved',
-                              style: textsty,
-                            )
-                          ],
-                        ),
-                        leading: GestureDetector(
-                          onTap: () {
-                            _showFullImage(context, photoUrl);
-                          },
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(photoUrl),
+                            leading: GestureDetector(
+                              onTap: () {
+                                _showFullImage(context, photoUrl);
+                              },
+                              child: CircleAvatar(
+                                backgroundImage: NetworkImage(photoUrl),
+                              ),
+                            ),
+                            trailing: Column(
+                              children: [
+                                Checkbox(
+                                  value: isCompleteList[index],
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      isCompleteList[index] = value ?? false;
+                                    });
+                                  },
+                                ),
+                                Text('Solved'),
+                              ],
+                            ),
                           ),
-                        ),
-                      ));
-            },
+                          ElevatedButton(
+                            onPressed: () {
+                              _submitComplaintStatus(context, widget.category, [complaint]);
+                            },
+                            child: Text('Submit'),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           );
         },
       ),
@@ -210,77 +224,37 @@ class ComplaintCategory extends StatelessWidget {
       },
     );
   }
-}
 
-class ComplaintCard extends StatelessWidget {
-  final String name;
-  final String problemDescription;
-  final String problemCategory;
-  final String emailId;
-  final String roomNo;
-  final int contactNumber;
-  final String formattedDate;
-  final String photoUrl;
-  final VoidCallback onImageTap;
+  void _submitComplaintStatus(
+      BuildContext context, String category, List<QueryDocumentSnapshot> complaints) async {
+    for (int i = 0; i < complaints.length; i++) {
+      if (isCompleteList[i]) {
+        var complaint = complaints[i];
+        var complaintData = complaint.data() as Map<String, dynamic>;
 
-  const ComplaintCard({
-    Key? key,
-    required this.name,
-    required this.problemDescription,
-    required this.problemCategory,
-    required this.emailId,
-    required this.roomNo,
-    required this.contactNumber,
-    required this.formattedDate,
-    required this.photoUrl,
-    required this.onImageTap,
-  }) : super(key: key);
-//new
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 3.0,
-      margin: const EdgeInsets.all(8.0),
-      child: ListTile(
-        title: Text('Name: $name'),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Problem: $problemDescription'),
-            Text('Category: $problemCategory'),
-            Text('Email: $emailId'),
-            Text('Room No: $roomNo'),
-            Text('Contact Number: $contactNumber'),
-            Text('Timestamp: $formattedDate'),
-          ],
-        ),
-        leading: GestureDetector(
-          onTap: onImageTap,
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(photoUrl),
-          ),
-        ),
-      ),
-    );
+        // Update the complaint status in Firestore
+        await FirebaseFirestore.instance
+            .collection(category)
+            .doc(complaint.id)
+            .update({
+          'Status': 'Solved',
+          'SolvedTimestamp': FieldValue.serverTimestamp(),
+        });
+
+        complaintData['Status'] = 'Solved';
+        complaintData['SolvedTimestamp'] = FieldValue.serverTimestamp();
+
+        // Copy the document to 'Solved $category' collection
+        await FirebaseFirestore.instance
+            .collection('Solved $category')
+            .add(complaintData);
+
+        // Delete the document from '$category' collection
+        await FirebaseFirestore.instance
+            .collection(category)
+            .doc(complaint.id)
+            .delete();
+      }
+    }
   }
-}
-
-class ComplaintListItem extends StatelessWidget {
-  final String title;
-  final String value;
-
-  const ComplaintListItem({
-    Key? key,
-    required this.title,
-    required this.value,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text('$title: $value');
-  }
-}
-
-bool isComplaintComplete(Map<String, dynamic> complaintData) {
-  return complaintData['Status'] == 'Solved';
 }
