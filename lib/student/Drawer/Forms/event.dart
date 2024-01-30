@@ -1,4 +1,234 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_application_1/leave_req.dart';
+import 'package:flutter_application_1/photos.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'event.dart';
+import 'package:firebase_core/firebase_core.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: const LeaveRequestPage(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+  Map<DateTime, List<Event>> events = {};
+  final TextEditingController _eventController = TextEditingController();
+
+  late final ValueNotifier<List<Event>> _selectedEvents;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDay = _focusedDay;
+    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  void _onDaySelected(DateTime selectedDay, DateTime focussedDay) {
+    if (!isSameDay(_selectedDay, selectedDay)) {
+      setState(() {
+        _selectedDay = selectedDay;
+        _focusedDay = focussedDay;
+        _selectedEvents.value = _getEventsForDay(selectedDay);
+      });
+    }
+  }
+
+  List<Event> _getEventsForDay(DateTime day) {
+    return events[day] ?? [];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Calendar",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            ListTile(
+              title: Text('Calendar'),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+              },
+            ),
+            ListTile(
+              title: Text('Past Year Photos'),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PastYearPhotosPage()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  scrollable: true,
+                  title: Text("Event Name"),
+                  content: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: TextField(
+                      controller: _eventController,
+                    ),
+                  ),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        events.addAll({
+                          _selectedDay!: [Event(_eventController.text)]
+                        });
+                        Navigator.of(context).pop();
+                        _selectedEvents.value = _getEventsForDay(_selectedDay!);
+                      },
+                      child: const Text(
+                        "Submit",
+                      ),
+                    )
+                  ],
+                );
+              });
+        },
+        child: Icon(
+          Icons.add,
+        ),
+      ),
+      body: content(),
+    );
+  }
+
+  Widget content() {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        children: [
+          Text(
+            "Selected Day: " + _focusedDay.toString().split(" ")[0],
+            style: TextStyle(fontSize: 17, color: Colors.blueGrey),
+          ),
+          TableCalendar(
+            firstDay: DateTime.utc(2010, 10, 16),
+            lastDay: DateTime.utc(2030, 3, 14),
+            focusedDay: _focusedDay,
+            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+            startingDayOfWeek: StartingDayOfWeek.monday,
+            eventLoader: _getEventsForDay,
+            headerStyle: const HeaderStyle(
+              formatButtonVisible: false,
+              titleCentered: true,
+            ),
+            onDaySelected: _onDaySelected,
+            onPageChanged: (focusedDay) {
+              _focusedDay = focusedDay;
+            },
+          ),
+          const SizedBox(height: 8),
+          Expanded(
+            child: ValueListenableBuilder<List<Event>>(
+                valueListenable: _selectedEvents,
+                builder: (context, value, _) {
+                  return ListView.builder(
+                      itemCount: value.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 4),
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ListTile(
+                              onTap: () => print(""),
+                              title: Text("${value[index]}"),
+                            ));
+                      });
+                }),
+          )
+        ],
+      ),
+    );
+  }
+}
+/*
+
+return Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 10,
+        ),
+        body: SfCalendar(
+          view: CalendarView.month,
+          dataSource: MeetingDataSource(getAppointments()),
+        ));
+
+List<Appointment> getAppointments() {
+  List<Appointment> meetings = <Appointment>[];
+  final DateTime today = DateTime.now();
+  final DateTime startTime =
+      DateTime(today.year, today.month, today.day, 9, 0, 0);
+  final DateTime endTime = startTime.add(const Duration(hours: 2));
+
+  meetings.add(Appointment(
+    startTime: startTime,
+    endTime: endTime,
+    subject: "Conference",
+    color: Colors.blue,
+  ));
+
+  return meetings;
+}
+
+class MeetingDataSource extends CalendarDataSource {
+  MeetingDataSource(List<Appointment> source) {
+    appointments = source;
+  }
+}
+*/
 
 
 
