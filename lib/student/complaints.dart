@@ -7,10 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:quickalert/models/quickalert_type.dart';
-import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:vjtihostel/student/constant/const.dart';
-
 //new..
 class Complaints extends StatefulWidget {
   const Complaints({
@@ -30,6 +27,7 @@ List<String> listproblemcategory = <String>[
   'Plumbing',
   'Structural',
   'Cleaning',
+  'Mess',
 ];
 
 class _ComplaintsState extends State<Complaints> {
@@ -51,15 +49,15 @@ class _ComplaintsState extends State<Complaints> {
   }
 
   Future<void> sendProblemdata(
-    String photourl,
-    String problemDescription,
-    String problemCategory,
-    String emailid,
-    String name,
-    String roomNo,
-    int contactNumber,
-    Timestamp time,
-  ) async {
+      String photourl,
+      String problemDescription,
+      String problemCategory,
+      String emailid,
+      String name,
+      String roomNo,
+      int contactNumber,
+      Timestamp time,
+      ) async {
     String collectionPath = ''; // Initialize an empty string
 
     // Determine the collection path based on the selected category
@@ -79,8 +77,11 @@ class _ComplaintsState extends State<Complaints> {
       case 'Cleaning':
         collectionPath = 'Cleaning';
         break;
+      case 'Mess':
+        collectionPath = 'Mess';
+        break;
       default:
-        // Handle the default case or any other categories
+      // Handle the default case or any other categories
         break;
     }
 
@@ -110,15 +111,15 @@ class _ComplaintsState extends State<Complaints> {
   }
 
   Future<void> sendProblemtoemplyee(
-    String photourl,
-    String problemDescription,
-    String problemCategory,
-    String emailid,
-    String name,
-    String roomNo,
-    int contactNumber,
-    Timestamp time,
-  ) async {
+      String photourl,
+      String problemDescription,
+      String problemCategory,
+      String emailid,
+      String name,
+      String roomNo,
+      int contactNumber,
+      Timestamp time,
+      ) async {
     await FirebaseFirestore.instance
         .collection('HostelStudents')
         .doc(widget.email)
@@ -152,7 +153,7 @@ class _ComplaintsState extends State<Complaints> {
       Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
       name = userData['Name'];
       contactNo = userData['Student contact number'];
-      roomo = userData['Room No'];
+      roomo = userData['Room NO.'];
     }
   }
 
@@ -165,9 +166,8 @@ class _ComplaintsState extends State<Complaints> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: appbars(
-        'Complaint',
+        'Complain',
       ),
       body: SingleChildScrollView(
         reverse: true,
@@ -178,6 +178,7 @@ class _ComplaintsState extends State<Complaints> {
               const SizedBox(
                 height: 10,
               ),
+
               const SizedBox(
                 height: 10,
               ),
@@ -187,16 +188,15 @@ class _ComplaintsState extends State<Complaints> {
                   children: [
                     TextFormField(
                       decoration: InputDecoration(
-                          label: const Text('Problem Description',
-                              style: TextStyle(color: Colors.black)),
-                          focusColor: Colors.amber,
+                          label: const Text('Problem Description'),
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide:
-                                  const BorderSide(color: Colors.black)),
+                              borderSide: const BorderSide(
+                                  color: Color.fromARGB(255, 88, 120, 146))),
                           focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.black),
-                              borderRadius: BorderRadius.circular(25))),
+                              borderSide:
+                              const BorderSide(color: Colors.greenAccent),
+                              borderRadius: BorderRadius.circular(12))),
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       minLines: 1,
@@ -214,9 +214,11 @@ class _ComplaintsState extends State<Complaints> {
                   setproblem = dropdownValueProblem;
                 });
               }),
+
               const SizedBox(
                 height: 10,
               ),
+
               Row(
                 children: [
                   InkWell(
@@ -226,31 +228,44 @@ class _ComplaintsState extends State<Complaints> {
                           source: ImageSource.gallery);
 
                       if (file == null) {
-                        QuickAlert.show(
+                        showDialog(
                           context: context,
-                          type: QuickAlertType.error,
-                          text: 'Image Not Selected ',
-                          autoCloseDuration: const Duration(seconds: 2),
-                          showConfirmBtn: false,
+                          builder: (context) {
+                            return const AlertDialog(
+                              content: Text('Image not selected'),
+                            );
+                          },
                         );
                       } else {
                         String uniqueFilename =
-                            DateTime.now().millisecondsSinceEpoch.toString();
+                        DateTime.now().millisecondsSinceEpoch.toString();
 
                         Reference refrenceroot = FirebaseStorage.instance.ref();
                         Reference referenceDirImages =
-                            refrenceroot.child('Images');
+                        refrenceroot.child('Images');
                         Reference refrenceImageToUpload =
-                            referenceDirImages.child(uniqueFilename);
+                        referenceDirImages.child(uniqueFilename);
 
                         try {
-                          QuickAlert.show(
+                          showDialog(
                             context: context,
-                            type: QuickAlertType.loading,
-                            text: 'Please Wait Uploading Your Image',
-                            autoCloseDuration: null,
-                            showConfirmBtn: false,
+                            builder: (_) {
+                              return const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Please wait Uploading',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        decoration: TextDecoration.none),
+                                  ),
+                                  CircularProgressIndicator(),
+                                ],
+                              );
+                            },
                           );
+
                           await refrenceImageToUpload.putFile(
                               File(file.path),
                               SettableMetadata(
@@ -258,26 +273,30 @@ class _ComplaintsState extends State<Complaints> {
                               ));
 
                           imageUrl =
-                              await refrenceImageToUpload.getDownloadURL();
+                          await refrenceImageToUpload.getDownloadURL();
                         } catch (error) {
-                          QuickAlert.show(
+                          // Print or log the error for debugging purposes
+
+                          showDialog(
                             context: context,
-                            type: QuickAlertType.error,
-                            text: 'Image Not Uploaded',
-                            autoCloseDuration: const Duration(seconds: 2),
-                            showConfirmBtn: false,
+                            builder: (context) {
+                              return const AlertDialog(
+                                content: Text('Image not uploaded'),
+                              );
+                            },
                           );
                         } finally {
                           Navigator.of(context)
                               .pop(); // Dismiss the "Please wait Uploading" dialog
                         }
 
-                        QuickAlert.show(
+                        showDialog(
                           context: context,
-                          type: QuickAlertType.success,
-                          text: 'Image Uploaded Successfully!',
-                          autoCloseDuration: const Duration(seconds: 2),
-                          showConfirmBtn: false,
+                          builder: (context) {
+                            return const AlertDialog(
+                              content: Text('Image uploaded successfully'),
+                            );
+                          },
                         );
                       }
 
@@ -327,37 +346,38 @@ class _ComplaintsState extends State<Complaints> {
                   )
                 ],
               ),
+
               const SizedBox(
                 height: 30,
               ),
+
               ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => const Color(0xff90AAD6))),
+                            (states) => const Color(0xff90AAD6))),
                 onPressed: () {
                   sendProblemdata(
-                          imageUrl.toString(),
-                          _problemController.text.trim(),
-                          setproblem.toString(),
-                          widget.email.toString(),
-                          name.toString(),
-                          roomo,
-                          int.parse(contactNo.toString()),
-                          timestamp)
+                      imageUrl.toString(),
+                      _problemController.text.trim(),
+                      setproblem.toString(),
+                      widget.email.toString(),
+                      name.toString(),
+                      roomo,
+                      int.parse(contactNo.toString()),
+                      timestamp)
                       .then((value) => showDialog(
-                              context: context,
-                              builder: (context) {
-                                return const AlertDialog(
-                                  content: Text(
-                                      'Problem Sent Sucessfully'), //problem sent
-                                );
-                              }).then((value) {
-                            int count = 1;
-                            Navigator.of(context).popUntil((_) => count-- < 0);
-                          }));
+                      context: context,
+                      builder: (context) {
+                        return const AlertDialog(
+                          content: Text('Problem Sent Sucessfully'), //problem sent
+                        );
+                      }).then((value) {
+                    int count = 1;
+                    Navigator.of(context).popUntil((_) => count-- < 0);
+                  }));
                 },
                 child: const Text(
-                  "Send Problem", // send text
+                  "Send Problem",// send text
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -371,3 +391,4 @@ class _ComplaintsState extends State<Complaints> {
     );
   }
 }
+
