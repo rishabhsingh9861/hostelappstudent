@@ -140,11 +140,13 @@ class _ComplaintCategoryState extends State<ComplaintCategory> {
                     sortedComplaints.sort((a, b) {
                       Timestamp timestampA = a['Time'];
                       Timestamp timestampB = b['Time'];
-                      return timestampB.compareTo(timestampA); // Descending order
+                      return timestampB
+                          .compareTo(timestampA); // Descending order
                     });
 
                     var complaint = sortedComplaints[index];
-                    var complaintData = complaint.data() as Map<String, dynamic>;
+                    var complaintData =
+                        complaint.data() as Map<String, dynamic>;
 
                     // Extracting fields with null checks
                     String photoUrl = complaintData['Photo Url'] ?? '';
@@ -152,55 +154,58 @@ class _ComplaintCategoryState extends State<ComplaintCategory> {
                     String roomNo = complaintData['Room Number'] ?? '';
                     Timestamp time = complaintData['Time'] ?? Timestamp.now();
                     bool isComplete = complaintData['Status'] == 'Solved';
-                    String formattedDate = DateFormat.yMMMd().add_jms().format(time.toDate());
+                    String formattedDate =
+                        DateFormat.yMMMd().add_jms().format(time.toDate());
 
                     return isComplete
                         ? Container() // If status is complete, don't display the complaint
                         : Card(
-                      elevation: 3.0,
-                      margin: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          ListTile(
-                            title: Text('Problem: $problemDescription'),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            elevation: 3.0,
+                            margin: const EdgeInsets.all(8.0),
+                            child: Column(
                               children: [
-                                Text('Room No: $roomNo'),
-                                Text('Timestamp: $formattedDate'),
-                              ],
-                            ),
-                            leading: GestureDetector(
-                              onTap: () {
-                                _showFullImage(context, photoUrl);
-                              },
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage(photoUrl),
-                              ),
-                            ),
-                            trailing: Column(
-                              children: [
-                                Checkbox(
-                                  value: isCompleteList[index],
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      isCompleteList[index] = value ?? false;
-                                    });
-                                  },
+                                ListTile(
+                                  title: Text('Problem: $problemDescription'),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Room No: $roomNo'),
+                                      Text('Timestamp: $formattedDate'),
+                                    ],
+                                  ),
+                                  leading: GestureDetector(
+                                    onTap: () {
+                                      _showFullImage(context, photoUrl);
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage(photoUrl),
+                                    ),
+                                  ),
+                                  trailing: Column(
+                                    children: [
+                                      Checkbox(
+                                        value: isCompleteList[index],
+                                        onChanged: (bool? value) {
+                                          setState(() {
+                                            isCompleteList[index] =
+                                                value ?? false;
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                Text('Solved'),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    _submitComplaintStatus(
+                                        context, widget.category, [complaint]);
+                                  },
+                                  child: Text('Submit'),
+                                ),
                               ],
                             ),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              _submitComplaintStatus(context, widget.category, [complaint]);
-                            },
-                            child: Text('Submit'),
-                          ),
-                        ],
-                      ),
-                    );
+                          );
                   },
                 ),
               ),
@@ -225,8 +230,8 @@ class _ComplaintCategoryState extends State<ComplaintCategory> {
     );
   }
 
-  void _submitComplaintStatus(
-      BuildContext context, String category, List<QueryDocumentSnapshot> complaints) async {
+  void _submitComplaintStatus(BuildContext context, String category,
+      List<QueryDocumentSnapshot> complaints) async {
     for (int i = 0; i < complaints.length; i++) {
       if (isCompleteList[i]) {
         var complaint = complaints[i];

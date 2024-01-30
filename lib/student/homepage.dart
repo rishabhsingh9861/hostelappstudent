@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:vjtihostel/committe/committe_page.dart';
 import 'package:vjtihostel/committe/facilitiespage.dart';
 import 'package:vjtihostel/onboard.dart';
+import 'package:vjtihostel/student/Drawer/Forms/event.dart';
 import 'package:vjtihostel/student/Drawer/Forms/hostelAndMess.dart';
 import 'package:vjtihostel/student/complaints.dart';
 import 'package:vjtihostel/student/constant/const.dart';
@@ -206,7 +207,7 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                         Container(
-                          margin: EdgeInsets.only(left: 20, top: 10, right: 5),
+                          margin: const EdgeInsets.only(left: 20, top: 10, right: 5),
                           child: const Text(
                             "HOSTEL ID CARD",
                             style: TextStyle(
@@ -482,7 +483,12 @@ class _DrawersState extends State<Drawers> {
               child: listtile("Certificates"),
             ),
             div,
-            listtile("Events"),
+            InkWell(
+                onTap: () {
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (_) => ));
+                },
+                child: listtile("Events")),
             div,
             GestureDetector(
               onTap: () {
