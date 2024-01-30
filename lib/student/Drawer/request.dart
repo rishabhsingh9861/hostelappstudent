@@ -37,7 +37,7 @@ class Request extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const LeaveRequest(),
+                          builder: (context) => const LeaveRequestPage(),
                         ),
                       );
                     },
