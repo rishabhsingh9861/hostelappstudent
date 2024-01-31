@@ -49,7 +49,8 @@ class _RoomChangeState extends State<RoomChange> {
             String name = idCardData['Name'] ?? '';
             String year = idCardData['Year'] ?? '';
             int regNo = idCardData['Registration No.'] ?? 0;
-            String roomNo = idCardData['Room NO.'] ?? '';
+            String roomNo = idCardData['Room No'] ?? '';
+            String emailid = idCardData['Emailid'] ?? '';
             //String prefer = preferences.text.toString();
             String reasonText = reason.text.toString();
 
@@ -64,6 +65,7 @@ class _RoomChangeState extends State<RoomChange> {
                     'RoomNo': roomNo,
                    // 'Preferences': prefer,
                     'Reason': reasonText,
+                    'Email': emailid,
                     'Timestamp': Timestamp.now(),
                   }
                 ]),
