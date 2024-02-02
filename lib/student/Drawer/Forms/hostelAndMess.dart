@@ -10,9 +10,9 @@ import 'package:vjtihostel/student/constant/const.dart';
 
 class HostelAndMess extends StatefulWidget {
   const HostelAndMess({
-    Key? key,
+    super.key,
     required this.email,
-  }) : super(key: key);
+  });
   final String email;
 
   @override
@@ -134,6 +134,7 @@ class _HostelAndMessState extends State<HostelAndMess> {
           String year = idCardData['Year'] ?? '';
           int regNo = idCardData['Registration No.'] ?? 0;
           String roomNo = idCardData['Room No'] ?? '';
+          String photourl = idCardData['Passport Photo'] ?? '';
 
           if (certificate.isNotEmpty) {
             await certificateRequestDoc
@@ -144,6 +145,7 @@ class _HostelAndMessState extends State<HostelAndMess> {
                       'Year': year,
                       'RegNo': regNo,
                       'RoomNo': roomNo,
+                      'Photo': photourl,
                       'CertificateType': certificate,
                       'Timestamp': Timestamp.now(),
                       'FeesReceiptUrl': downloadUrl,
@@ -158,18 +160,6 @@ class _HostelAndMessState extends State<HostelAndMess> {
                       );
                     }))
                 .then((value) => Navigator.pop(context));
-
-            // const snackBar = SnackBar(
-            //   backgroundColor: Colors.green,
-            //   duration: Duration(seconds: 3),
-            //   content: Text('Sent for verification!'),
-            // );
-
-            // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-            // Clear the selected certificate and filename
-            // certificate = '';
-            // uniqueFilename = 'Upload Fees Receipt';
           } else {
             const snackBar = SnackBar(
               backgroundColor: Colors.red,
@@ -276,12 +266,14 @@ class _HostelAndMessState extends State<HostelAndMess> {
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            uniqueFilename,
-                            style: const TextStyle(
-                              fontFamily: "Nunito",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                          child: Center(
+                            child: Text(
+                              uniqueFilename,
+                              style: const TextStyle(
+                                fontFamily: "Nunito",
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ),

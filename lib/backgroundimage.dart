@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class BackgrounImage extends StatelessWidget {
   const BackgrounImage({
-    Key? key,
+    super.key,
     required this.assetimage,
     required this.child,
-  }) : super(key: key);
+  });
   final AssetImage assetimage;
   final Widget child;
 

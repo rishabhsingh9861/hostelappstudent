@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class CommitteePage extends StatefulWidget {
-  const CommitteePage({Key? key}) : super(key: key);
+  const CommitteePage({super.key});
 
   @override
   _CommitteePageState createState() => _CommitteePageState();
@@ -107,10 +107,10 @@ class MembersPage extends StatelessWidget {
   final String committeename;
 
   const MembersPage({
-    Key? key,
+    super.key,
     required this.committeeId,
     required this.committeename,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

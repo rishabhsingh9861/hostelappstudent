@@ -6,9 +6,9 @@ import 'package:vjtihostel/student/homepage.dart';
 
 class StudentData extends StatefulWidget {
   const StudentData({
-    Key? key,
+    super.key,
     required this.email,
-  }) : super(key: key);
+  });
   final String email;
 
   @override

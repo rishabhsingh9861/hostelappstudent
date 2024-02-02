@@ -14,9 +14,9 @@ import 'package:vjtihostel/student/constant/const.dart';
 //new..
 class Complaints extends StatefulWidget {
   const Complaints({
-    Key? key,
+    super.key,
     required this.email,
-  }) : super(key: key);
+  });
   final String email;
 
   @override

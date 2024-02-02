@@ -55,9 +55,9 @@ Widget dropdownMenu<T>(
 
 class HomeContainer extends StatelessWidget {
   const HomeContainer({
-    Key? key,
+    super.key,
     required this.texts,
-  }) : super(key: key);
+  });
   final String texts;
 
   @override

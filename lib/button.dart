@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
   const Button({
-    Key? key,
+    super.key,
     required this.txt,
     required this.textcolor,
     required this.leftcolor,
     required this.rightcolor,
     required this.highlighcolor,
     required this.fontsize,
-  }) : super(key: key);
+  });
   final String txt;
   final Color textcolor;
   final Color leftcolor;

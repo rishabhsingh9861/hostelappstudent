@@ -17,8 +17,8 @@ import 'package:vjtihostel/student/Drawer/request.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -207,7 +207,8 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                         Container(
-                          margin: const EdgeInsets.only(left: 20, top: 10, right: 5),
+                          margin: const EdgeInsets.only(
+                              left: 20, top: 10, right: 5),
                           child: const Text(
                             "HOSTEL ID CARD",
                             style: TextStyle(
@@ -485,8 +486,10 @@ class _DrawersState extends State<Drawers> {
             div,
             InkWell(
                 onTap: () {
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (_) => ));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const EventsCalendar()));
                 },
                 child: listtile("Events")),
             div,

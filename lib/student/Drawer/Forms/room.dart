@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 
 class RoomChange extends StatefulWidget {
   const RoomChange({
-    Key? key,
+    super.key,
     required this.email,
-  }) : super(key: key);
+  });
   final String email;
 
   @override

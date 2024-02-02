@@ -11,7 +11,7 @@ import 'package:vjtihostel/student/constant/data.dart';
 import 'package:vjtihostel/student/viewfeesrecipt.dart';
 
 class GenerateId extends StatefulWidget {
-  const GenerateId({Key? key}) : super(key: key);
+  const GenerateId({super.key});
 
   @override
   State<GenerateId> createState() => _GenerateIdState();

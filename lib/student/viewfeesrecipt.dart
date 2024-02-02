@@ -9,12 +9,12 @@ import 'package:vjtihostel/student/genrateid.dart';
 
 class FeesReceiptViewer extends StatefulWidget {
   const FeesReceiptViewer({
-    Key? key,
+    super.key,
     required this.url,
     required this.imgurl,
     required this.roomnumber,
     required this.year,
-  }) : super(key: key);
+  });
   final String url;
   final String imgurl;
   final String roomnumber;
