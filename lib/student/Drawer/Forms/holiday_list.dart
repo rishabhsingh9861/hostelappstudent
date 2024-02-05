@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:vjtihostel/student/Drawer/Forms/past_year_photos.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,28 @@ class HolidayList extends StatelessWidget {
         ),
         backgroundColor: Colors.blue,
         elevation: 50,
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            ListTile(
+              title: Text('Calendar'),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+              },
+            ),
+            ListTile(
+              title: Text('Past Year Photos'),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PastYearPhotosPage()),
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('Events').snapshots(),

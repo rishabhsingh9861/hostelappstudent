@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/leave_req.dart';
-import 'package:flutter_application_1/photos.dart';
+// import 'package:flutter_application_1/leave_req.dart';
+// import 'package:flutter_application_1/photos.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:vjtihostel/student/Drawer/Forms/event_collection.dart';
+import 'package:vjtihostel/student/Drawer/Forms/leaves.dart';
+import 'package:vjtihostel/student/Drawer/Forms/past_year_photos.dart';
+// ignore: unused_import
 import 'event.dart';
 import 'package:firebase_core/firebase_core.dart';
 
