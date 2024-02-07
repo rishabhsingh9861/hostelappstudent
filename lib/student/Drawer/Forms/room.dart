@@ -142,7 +142,7 @@ class _RoomChangeState extends State<RoomChange> {
         backgroundColor: const Color(0xff90AAD6),
         centerTitle: true,
         title: const Text(
-          "Room Change / Left Request",
+          "Vacant Room",
           style: TextStyle(
             fontFamily: "Nunito",
             fontWeight: FontWeight.bold,

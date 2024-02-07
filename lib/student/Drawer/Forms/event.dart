@@ -1,48 +1,16 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_application_1/leave_req.dart';
-// import 'package:flutter_application_1/photos.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:vjtihostel/student/Drawer/Forms/event_collection.dart';
-import 'package:vjtihostel/student/Drawer/Forms/leaves.dart';
 import 'package:vjtihostel/student/Drawer/Forms/past_year_photos.dart';
-// ignore: unused_import
-import 'event.dart';
-import 'package:firebase_core/firebase_core.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(const MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class Events extends StatefulWidget {
+  const Events({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<Events> createState() => _EventsState();
 }
 
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const LeaveRequestPage(),
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _EventsState extends State<Events> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   Map<DateTime, List<Event>> events = {};
@@ -90,18 +58,18 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ListView(
           children: [
             ListTile(
-              title: Text('Calendar'),
+              title: const Text('Calendar'),
               onTap: () {
                 Navigator.pop(context); // Close the drawer
               },
             ),
             ListTile(
-              title: Text('Past Year Photos'),
+              title: const Text('Past Year Photos'),
               onTap: () {
                 Navigator.pop(context); // Close the drawer
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PastYearPhotosPage()),
+                  MaterialPageRoute(builder: (context) => const PastYearPhotosPage()),
                 );
               },
             ),
@@ -115,9 +83,9 @@ class _MyHomePageState extends State<MyHomePage> {
               builder: (context) {
                 return AlertDialog(
                   scrollable: true,
-                  title: Text("Event Name"),
+                  title: const Text("Event Name"),
                   content: Padding(
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     child: TextField(
                       controller: _eventController,
                     ),
@@ -139,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               });
         },
-        child: Icon(
+        child: const Icon(
           Icons.add,
         ),
       ),
@@ -153,8 +121,8 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Column(
         children: [
           Text(
-            "Selected Day: " + _focusedDay.toString().split(" ")[0],
-            style: TextStyle(fontSize: 17, color: Colors.blueGrey),
+            "Selected Day: ${_focusedDay.toString().split(" ")[0]}",
+            style: const TextStyle(fontSize: 17, color: Colors.blueGrey),
           ),
           TableCalendar(
             firstDay: DateTime.utc(2010, 10, 16),
@@ -181,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       itemCount: value.length,
                       itemBuilder: (context, index) {
                         return Container(
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 4),
                             decoration: BoxDecoration(
                               border: Border.all(),
@@ -199,6 +167,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+
+
+
+
+
+
 /*
 
 return Scaffold(

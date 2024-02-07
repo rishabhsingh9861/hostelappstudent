@@ -7,22 +7,41 @@ class PastYearPhotosPage extends StatefulWidget {
   const PastYearPhotosPage({super.key});
 
   @override
-  State<PastYearPhotosPage> createState() => _MyWidgetState();
+  State<PastYearPhotosPage> createState() => _PastYearPhotosState();
 }
 
-class _MyWidgetState extends State<PastYearPhotosPage> {
+class _PastYearPhotosState extends State<PastYearPhotosPage> {
   // ignore: unused_field
   int _selectedYear = DateTime.now().year;
-  late String imgURL;
-  late String imgURL1;
+  String imgURL = "";
+  String imgURL1 = "";
   final storage = FirebaseStorage.instance;
+
+  Future<void> getImageURL() async {
+    // Get the reference to the image file in Firebase Storage
+    try {
+      final ref = storage.ref().child('Events/2023/holi.jpg');
+      final ref1 = storage.ref().child('Events/2023/diwali.jpg');
+      // Get the imageUrl to download URL
+      final url = await ref.getDownloadURL();
+      final url1 = await ref1.getDownloadURL();
+
+      print(url);
+      print(url1);
+      setState(() {
+        imgURL = url;
+        imgURL1 = url1;
+      });
+    } catch (error) {
+      print('Error fetching image URL: $error');
+    }
+  }
+
 
   @override
   void initState() {
     super.initState();
-    // Set the initial value of imageUrl to an empty string
-    imgURL = '';
-    imgURL1 = '';
+
     // Retrieve the image from Firebase Storage
     getImageURL();
   }
@@ -33,22 +52,6 @@ class _MyWidgetState extends State<PastYearPhotosPage> {
     super.dispose();
   }
 
-  Future<void> getImageURL() async {
-    // Get the reference to the image file in Firebase Storage
-    try {
-      final ref = storage.ref().child('Events/2023/holi.jpg');
-      final ref1 = storage.ref().child('Events/2023/diwali.jpg');
-      // Get the imageUrl to download URL
-      final url = await ref.getDownloadURL();
-      final url1 = await ref1.getDownloadURL();
-      setState(() {
-        imgURL = url;
-        imgURL1 = url1;
-      });
-    } catch (error) {
-      print('Error fetching image URL: $error');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

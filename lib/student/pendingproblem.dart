@@ -1,6 +1,9 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 class PendingComplaints extends StatefulWidget {
@@ -201,7 +204,7 @@ class _ComplaintCategoryState extends State<ComplaintCategory> {
                                     _submitComplaintStatus(
                                         context, widget.category, [complaint]);
                                   },
-                                  child: Text('Submit'),
+                                  child: const Text('Submit'),
                                 ),
                               ],
                             ),
@@ -222,7 +225,7 @@ class _ComplaintCategoryState extends State<ComplaintCategory> {
       builder: (BuildContext context) {
         return Dialog(
           child: Container(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Image.network(imageUrl),
           ),
         );

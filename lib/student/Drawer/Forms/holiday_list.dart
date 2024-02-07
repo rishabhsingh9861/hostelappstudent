@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -38,18 +40,18 @@ class HolidayList extends StatelessWidget {
         child: ListView(
           children: [
             ListTile(
-              title: Text('Calendar'),
+              title: const Text('Calendar'),
               onTap: () {
                 Navigator.pop(context); // Close the drawer
               },
             ),
             ListTile(
-              title: Text('Past Year Photos'),
+              title: const Text('Past Year Photos'),
               onTap: () {
                 Navigator.pop(context); // Close the drawer
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PastYearPhotosPage()),
+                  MaterialPageRoute(builder: (context) => const PastYearPhotosPage()),
                 );
               },
             ),
