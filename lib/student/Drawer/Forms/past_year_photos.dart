@@ -54,9 +54,15 @@ class _MyWidgetState extends State<PastYearPhotosPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Past Year Photos",
-            style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.blue,
+        title: const Text(
+          "Past Year Photos",
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontFamily: "Nunito",
+              fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: const Color.fromARGB(255, 176, 189, 211),
       ),
       drawer: Drawer(
         child: ListView(
@@ -65,6 +71,7 @@ class _MyWidgetState extends State<PastYearPhotosPage> {
       ),
       body: Column(
         children: [
+          SizedBox(height: 10),
           SizedBox(
             height: 300,
             child: Image(
