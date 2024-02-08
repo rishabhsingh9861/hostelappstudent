@@ -6,7 +6,9 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:vjtihostel/committe/committe_page.dart';
 import 'package:vjtihostel/committe/facilitiespage.dart';
 import 'package:vjtihostel/onboard.dart';
+// ignore: unused_import
 import 'package:vjtihostel/student/Drawer/Forms/event.dart';
+import 'package:vjtihostel/student/Drawer/Forms/holiday_list.dart';
 import 'package:vjtihostel/student/Drawer/Forms/hostelAndMess.dart';
 import 'package:vjtihostel/student/complaints.dart';
 import 'package:vjtihostel/student/constant/const.dart';
@@ -207,7 +209,8 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                         Container(
-                          margin: const EdgeInsets.only(left: 20, top: 10, right: 5),
+                          margin: const EdgeInsets.only(
+                              left: 20, top: 10, right: 5),
                           child: const Text(
                             "HOSTEL ID CARD",
                             style: TextStyle(
@@ -485,8 +488,13 @@ class _DrawersState extends State<Drawers> {
             div,
             InkWell(
                 onTap: () {
+<<<<<<< HEAD
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (_) => const Events()));
+=======
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => HolidayList()));
+>>>>>>> 56096043f6f6ba539c7063c8473d7b6da99ad12b
                 },
                 child: listtile("Events")),
             div,

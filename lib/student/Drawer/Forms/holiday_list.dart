@@ -31,9 +31,13 @@ class HolidayList extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           '2024 Holiday List',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontFamily: "Nunito",
+              fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: const Color.fromARGB(255, 176, 189, 211),
         elevation: 50,
       ),
       drawer: Drawer(

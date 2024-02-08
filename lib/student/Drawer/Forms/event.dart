@@ -3,6 +3,10 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:vjtihostel/student/Drawer/Forms/event_collection.dart';
 import 'package:vjtihostel/student/Drawer/Forms/past_year_photos.dart';
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 56096043f6f6ba539c7063c8473d7b6da99ad12b
 class Events extends StatefulWidget {
   const Events({super.key});
 

@@ -51,7 +51,7 @@ class _RoomChangeState extends State<RoomChange> {
             int regNo = idCardData['Registration No.'] ?? 0;
             String roomNo = idCardData['Room No'] ?? '';
             String emailid = idCardData['Emailid'] ?? '';
-            //String prefer = preferences.text.toString();
+          
             String reasonText = reason.text.toString();
 
             if (reasonText.isNotEmpty) {
