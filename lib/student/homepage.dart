@@ -488,13 +488,8 @@ class _DrawersState extends State<Drawers> {
             div,
             InkWell(
                 onTap: () {
-<<<<<<< HEAD
                   // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (_) => const Events()));
-=======
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => HolidayList()));
->>>>>>> 56096043f6f6ba539c7063c8473d7b6da99ad12b
+                  //     MaterialPageRoute(builder: (_) => ));
                 },
                 child: listtile("Events")),
             div,
