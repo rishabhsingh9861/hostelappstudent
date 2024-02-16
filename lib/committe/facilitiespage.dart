@@ -1,26 +1,16 @@
-// ignore_for_file: library_private_types_in_public_api
-
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FacilitiesPage extends StatefulWidget {
-  const FacilitiesPage({super.key});
+  const FacilitiesPage({Key? key}) : super(key: key);
 
   @override
   _FacilitiesPageState createState() => _FacilitiesPageState();
 }
 
 class _FacilitiesPageState extends State<FacilitiesPage> {
-  List<String> docIDs = [];
-
-  Future<void> getDocId() async {
-    QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection('Facilities').get();
-
-    docIDs = snapshot.docs.map((doc) => doc.id).toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,59 +28,61 @@ class _FacilitiesPageState extends State<FacilitiesPage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 16),
-              Expanded(
-                child: FutureBuilder(
-                  future: getDocId(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else {
-                      return ListView.builder(
-                        itemCount: docIDs.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => FacilitiesList(
-                                    facilitiesID: docIDs[index],
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Card(
-                              color: const Color.fromARGB(255, 196, 220, 240),
-                              elevation: 8,
-                              margin: const EdgeInsets.symmetric(vertical: 8),
-                              child: ListTile(
-                                trailing: const Icon(
-                                  CupertinoIcons.chevron_forward,
-                                ),
-                                title: Text(
-                                  docIDs[index],
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    fontFamily: "Nunito",
-                                  ),
-                                ),
-                              ),
+          child: FutureBuilder<QuerySnapshot>(
+            future: FirebaseFirestore.instance.collection('Facilities').get(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else {
+                final List<DocumentSnapshot> docs = snapshot.data!.docs;
+
+                return ListView.builder(
+                  itemCount: docs.length,
+                  itemBuilder: (context, index) {
+                    final doc = docs[index];
+                    final String facilitiesName = doc['name'] as String;
+
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FacilitiesList(
+                              facilitiesID: doc.id,
+                              facilitiesname: facilitiesName,
                             ),
-                          );
-                        },
-                      );
-                    }
+                          ),
+                        );
+                      },
+                      child: Card(
+                        color: const Color.fromARGB(255, 196, 220, 240),
+                        elevation: 8,
+                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        child: ListTile(
+                          trailing: const Icon(
+                            CupertinoIcons.chevron_forward,
+                          ),
+                          title: Text(
+                            facilitiesName,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              fontFamily: "Nunito",
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
                   },
-                ),
-              ),
-            ],
+                );
+              }
+            },
           ),
         ),
       ),
@@ -100,22 +92,22 @@ class _FacilitiesPageState extends State<FacilitiesPage> {
 
 class FacilitiesList extends StatelessWidget {
   final String facilitiesID;
+  final String facilitiesname;
 
-  const FacilitiesList({super.key, required this.facilitiesID});
+  const FacilitiesList({
+    Key? key,
+    required this.facilitiesID,
+    required this.facilitiesname,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(facilitiesID),
-      //   backgroundColor: const Color.fromRGBO(
-      //       255, 255, 255, 1), // Use a professional color for the app bar
-      // ),
       appBar: AppBar(
         backgroundColor: const Color(0xff90AAD6),
         centerTitle: true,
         title: Text(
-          facilitiesID,
+          facilitiesname,
           style: const TextStyle(
             fontFamily: "Nunito",
             fontWeight: FontWeight.bold,
@@ -123,33 +115,38 @@ class FacilitiesList extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: FutureBuilder(
-          future: getFacilities(facilitiesID),
+        child: FutureBuilder<QuerySnapshot>(
+          future: FirebaseFirestore.instance
+              .collection('Facilities')
+              .doc(facilitiesID)
+              .collection('Photos')
+              .orderBy('position')
+              .get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
-              List<Photo> photos = snapshot.data as List<Photo>;
+              final List<DocumentSnapshot> docs = snapshot.data!.docs;
+              final List<Photo> photos = docs.map((doc) => Photo.fromMap(doc.data() as Map<String, dynamic>)).toList();
+
               return ListView.builder(
                 itemCount: photos.length,
                 itemBuilder: (context, index) {
-                  Photo photo = photos[index];
+                  final photo = photos[index];
+
                   return Card(
                     elevation: 3,
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: const Color.fromRGBO(255, 255, 255,
-                            1), // Set the desired background color
+                        color: const Color.fromRGBO(255, 255, 255, 1),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(width: 0.5),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black
-                                .withOpacity(0.2), // Add a subtle shadow
+                            color: Colors.black.withOpacity(0.2),
                             spreadRadius: 2,
                             blurRadius: 4,
                             offset: const Offset(0, 2),
@@ -164,19 +161,18 @@ class FacilitiesList extends StatelessWidget {
                             Text(
                               photo.name,
                               style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25,
-                                  color: Colors.black87,
-                                  fontFamily: "Nunito" // Use a dark text color
-                                  ),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                color: Colors.black87,
+                                fontFamily: "Nunito",
+                              ),
                               textAlign: TextAlign.start,
                             ),
                             const SizedBox(height: 8),
                             Container(
                               height: 300,
                               decoration: BoxDecoration(
-                                color: Colors
-                                    .black, // Use a light background color
+                                color: Colors.black,
                                 borderRadius: BorderRadius.circular(30),
                               ),
                               child: ClipRRect(
@@ -193,7 +189,6 @@ class FacilitiesList extends StatelessWidget {
                               style: const TextStyle(
                                 fontSize: 20,
                                 color: Colors.black,
-                                // Use a subdued text color
                               ),
                               textAlign: TextAlign.start,
                             ),
@@ -209,21 +204,6 @@ class FacilitiesList extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<List<Photo>> getFacilities(String facilitiesID) async {
-    QuerySnapshot snapshot = await FirebaseFirestore.instance
-        .collection('Facilities')
-        .doc(facilitiesID)
-        .collection('Photos')
-        .orderBy('position')
-        .get();
-
-    List<Photo> photos = snapshot.docs
-        .map((doc) => Photo.fromMap(doc.data() as Map<String, dynamic>))
-        .toList();
-
-    return photos;
   }
 }
 

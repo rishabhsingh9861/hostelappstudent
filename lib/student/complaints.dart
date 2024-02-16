@@ -344,7 +344,7 @@ class _ComplaintsState extends State<Complaints> {
                       .get();
 
                   if (!idCardSnapshot.exists) {
-                    // Show alert if ID card does not exist
+                    
                     showDialog(
                       context: context,
                       builder: (context) {
@@ -369,7 +369,7 @@ class _ComplaintsState extends State<Complaints> {
                                 builder: (context) {
                                   return const AlertDialog(
                                     content: Text(
-                                        'Problem Sent Sucessfully'), //problem sent
+                                        'Problem Sent Sucessfully'), 
                                   );
                                 }).then((value) {
                               int count = 1;

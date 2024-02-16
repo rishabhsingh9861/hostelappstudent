@@ -514,6 +514,8 @@ class _DrawersState extends State<Drawers> {
               child: listtile("Rectors"),
             ),
             div,
+            listtile("About"),
+            div,
             listtile("Developer"),
             div,
             ElevatedButton(
