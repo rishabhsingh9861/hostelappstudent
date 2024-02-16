@@ -40,6 +40,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
 
   @override
   Widget build(BuildContext context) {
+    VoidCallbackAction();
     final user = FirebaseAuth.instance.currentUser!;
     String emailids = user.email.toString();
 

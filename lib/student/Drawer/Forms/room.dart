@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../constant/const.dart';
+
 class RoomChange extends StatefulWidget {
   const RoomChange({
     Key? key,
@@ -19,14 +21,58 @@ class RoomChange extends StatefulWidget {
 final user = FirebaseAuth.instance.currentUser!;
 String emailid = user.email.toString();
 
+List<String> listvacant = <String>[
+  'Select Reason',
+  'First Year Completed',
+  'Second Year Completed',
+  'Third Year Completed',
+  'Fourth Year Completed',
+];
+List<String> listbatch = [
+  'Select Batch',
+  '2024',
+  '2025',
+  '2026',
+  '2027',
+  '2028',
+  '2029',
+  '2030',
+  '2031',
+  '2032',
+  '2033',
+  '2034',
+  '2035',
+  '2036',
+  '2037',
+  '2038',
+  '2039',
+  '2040',
+  '2041',
+  '2042',
+  '2043',
+  '2044',
+  '2045',
+  '2046',
+  '2047',
+  '2048',
+  '2049',
+  '2050'
+];
+
+
 class _RoomChangeState extends State<RoomChange> {
   CollectionReference db =
       FirebaseFirestore.instance.collection('HostelStudents');
   CollectionReference db1 =
-      FirebaseFirestore.instance.collection('RoomChangeReq');
+      FirebaseFirestore.instance.collection('RoomVacantReq');
   //TextEditingController preferences = TextEditingController();
-  TextEditingController reason = TextEditingController();
+  // TextEditingController reason = TextEditingController();
   bool? click;
+
+  String dropdownValueVacant = listvacant.first;
+  String setvacant = "";
+  String dropdownValueBatch = listbatch.first;
+  String setBatch = "";
 
   void validateFields() async {
     try {
@@ -51,10 +97,12 @@ class _RoomChangeState extends State<RoomChange> {
             int regNo = idCardData['Registration No.'] ?? 0;
             String roomNo = idCardData['Room No'] ?? '';
             String emailid = idCardData['Emailid'] ?? '';
-          
-            String reasonText = reason.text.toString();
+            String photo = idCardData['Passport Photo'] ?? '';
 
-            if (reasonText.isNotEmpty) {
+            String reasonText = setvacant;
+            String batch = setBatch;
+
+            if (reasonText.isNotEmpty && batch.isNotEmpty) {
               // Create a new request or update the existing one
               await roomChangeRequestDoc.set({
                 'Requests': FieldValue.arrayUnion([
@@ -63,26 +111,41 @@ class _RoomChangeState extends State<RoomChange> {
                     'Year': year,
                     'RegNo': regNo,
                     'RoomNo': roomNo,
-                   // 'Preferences': prefer,
+                    // 'Preferences': prefer,
                     'Reason': reasonText,
+                    'Batch': batch,
                     'Email': emailid,
+                    'Photo': photo,
                     'Timestamp': Timestamp.now(),
                   }
                 ]),
               }, SetOptions(merge: true));
 
               // Data added successfully
-              const snackBar = SnackBar(
-                backgroundColor: Colors.green,
-                duration: Duration(seconds: 3),
-                content: Text('Sent for verification!'),
-              );
+              // const snackBar = SnackBar(
+              //   backgroundColor: Colors.green,
+              //   duration: Duration(seconds: 3),
+              //   content: Text('Sent for verification!'),
+              // );
 
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+   showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const AlertDialog(
+                              content: Text('Sent for verification!'),
+                            );
+                          },
+                        ).then((value) =>  Navigator.pop(context));
+    
+
+
+             
 
               // Clear the text fields
               // preferences.clear();
-              reason.clear();
+              // reason.clear();
             } else {
               const snackBar = SnackBar(
                 backgroundColor: Colors.red,
@@ -132,8 +195,6 @@ class _RoomChangeState extends State<RoomChange> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,22 +235,47 @@ class _RoomChangeState extends State<RoomChange> {
                 //   controller: preferences,
 
                 // ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'If Academics year completed , write only "Academics Year Completed" else specify your problem ',
-                    style: TextStyle(color: Colors.red),
-                  ),
+                // const Padding(
+                //   padding: EdgeInsets.all(8.0),
+                //   child: Text(
+                //     'If Academics year completed , write only "Academics Year Completed" else specify your problem ',
+                //     style: TextStyle(color: Colors.red),
+                //   ),
+                // ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: dropdownMenu(listvacant, dropdownValueVacant,
+                      (String? value) {
+                    setState(() {
+                      dropdownValueVacant = value!;
+                      setvacant = dropdownValueVacant;
+                    });
+                  }),
                 ),
+
                 const SizedBox(
                   height: 10,
                 ),
-                leaveDetails(
-                  hinttext: " ",
-                  labletext: "Reason for Room Change",
-                  icons: const Icon(CupertinoIcons.italic),
-                  controller: reason,
+
+
+       Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: dropdownMenu(listbatch, dropdownValueBatch,
+                      (String? value) {
+                    setState(() {
+                      dropdownValueBatch = value!;
+                      setBatch = dropdownValueBatch;
+                    });
+                  }),
                 ),
+
+                // leaveDetails(
+                //   hinttext: " ",
+                //   labletext: "Reason for Room Change",
+                //   icons: const Icon(CupertinoIcons.italic),
+                //   controller: reason,
+                // ),
                 const SizedBox(
                   height: 10,
                 ),

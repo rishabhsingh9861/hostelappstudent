@@ -334,27 +334,49 @@ class _ComplaintsState extends State<Complaints> {
                 style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith(
                         (states) => const Color(0xff90AAD6))),
-                onPressed: () {
-                  sendProblemdata(
-                          imageUrl.toString(),
-                          _problemController.text.trim(),
-                          setproblem.toString(),
-                          widget.email.toString(),
-                          name.toString(),
-                          roomo,
-                          int.parse(contactNo.toString()),
-                          timestamp)
-                      .then((value) => showDialog(
-                              context: context,
-                              builder: (context) {
-                                return const AlertDialog(
-                                  content: Text(
-                                      'Problem Sent Sucessfully'), //problem sent
-                                );
-                              }).then((value) {
-                            int count = 1;
-                            Navigator.of(context).popUntil((_) => count-- < 0);
-                          }));
+                onPressed: () async {
+                  DocumentSnapshot idCardSnapshot = await FirebaseFirestore
+                      .instance
+                      .collection('HostelStudents')
+                      .doc(widget.email)
+                      .collection('StudentIDCard')
+                      .doc('idcard')
+                      .get();
+
+                  if (!idCardSnapshot.exists) {
+                    // Show alert if ID card does not exist
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return const AlertDialog(
+                          content: Text('Please generate your ID card first!'),
+                        );
+                      },
+                    );
+                    return; // Exit function
+                  } else {
+                    sendProblemdata(
+                            imageUrl.toString(),
+                            _problemController.text.trim(),
+                            setproblem.toString(),
+                            widget.email.toString(),
+                            name.toString(),
+                            roomo,
+                            int.parse(contactNo.toString()),
+                            timestamp)
+                        .then((value) => showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const AlertDialog(
+                                    content: Text(
+                                        'Problem Sent Sucessfully'), //problem sent
+                                  );
+                                }).then((value) {
+                              int count = 1;
+                              Navigator.of(context)
+                                  .popUntil((_) => count-- < 0);
+                            }));
+                  }
                 },
                 child: const Text(
                   "Send Problem", // send text
