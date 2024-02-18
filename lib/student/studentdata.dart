@@ -249,12 +249,38 @@ class _StudentDataState extends State<StudentData> {
                     });
                   }),
                 ),
+                const Text(
+                  "Declaration clg Rules and Policy",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: "Nunito",
+                      fontWeight: FontWeight.bold),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        onChanged: (value) {},
+                        value: true,
+                      ),
+                      const Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing")
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => Color.fromARGB(255, 147, 182, 206),
+                        (states) => const Color.fromARGB(255, 147, 182, 206),
                       ),
                     ),
                     onPressed: () {
