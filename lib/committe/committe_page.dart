@@ -60,15 +60,15 @@ class _CommitteePageState extends State<CommitteePage> {
 
                           return InkWell(
                             onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MembersPage(
-                                        committeeId: docIDs[index],
-                                        committeename: committename,
-                                      ),
-                                    ),
-                                  );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MembersPage(
+                                    committeeId: docIDs[index],
+                                    committeename: committename,
+                                  ),
+                                ),
+                              );
                             },
                             child: Card(
                               color: const Color.fromARGB(255, 196, 220, 240),
