@@ -31,12 +31,12 @@ class _VjtiloginState extends State<Vjtilogin> {
 
       if (guser == null) {
         // User canceled the sign-in process
-     //   print("Sign-in process canceled");
+        //   print("Sign-in process canceled");
         return;
       }
 
       final String email = guser.email;
-     // print("User email: $email");
+      // print("User email: $email");
 
       if (email.endsWith('vjti.ac.in')) {
         final GoogleSignInAuthentication gauth = await guser.authentication;
@@ -47,35 +47,33 @@ class _VjtiloginState extends State<Vjtilogin> {
         );
 
         // Check if the user is still signed in before accessing the user data
-     //   if (FirebaseAuth.instance.currentUser != null) {
-          await FirebaseAuth.instance.signInWithCredential(credential);
+        //   if (FirebaseAuth.instance.currentUser != null) {
+        await FirebaseAuth.instance.signInWithCredential(credential);
 
-           await fetchUsernames();
-          // print("Fetched usernames: $userList");
+        await fetchUsernames();
+        // print("Fetched usernames: $userList");
 
-          // Wait for data to be fetched
-          if (userList.any((user) => user['id'] == email)) {
-            // User email found in the database, navigate to HomePage
-         //   print("User email found in the database, navigating to HomePage");
-            // ignore: use_build_context_synchronously
-             Navigator.of(context).popUntil((route) => route.isFirst);
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (_) =>  const HomePage( )));
-          } else
-          
-           {
-            // User email not found in the database, navigate to StudentData
-           // print(   "User email not found in the database, navigating to StudentData");
-            // ignore: use_build_context_synchronously
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (_) => StudentData(
-                  email: email,
-                ),
+        // Wait for data to be fetched
+        if (userList.any((user) => user['id'] == email)) {
+          // User email found in the database, navigate to HomePage
+          //   print("User email found in the database, navigating to HomePage");
+          // ignore: use_build_context_synchronously
+          Navigator.of(context).popUntil((route) => route.isFirst);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => const HomePage()));
+        } else {
+          // User email not found in the database, navigate to StudentData
+          // print(   "User email not found in the database, navigating to StudentData");
+          // ignore: use_build_context_synchronously
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => StudentData(
+                email: email,
               ),
-            );
-          }
+            ),
+          );
+        }
         // }
       } else {
         showDialog(
@@ -120,7 +118,7 @@ class _VjtiloginState extends State<Vjtilogin> {
         }).toList();
       });
     } catch (e) {
-    //  print("Error fetching usernames: $e");
+      //  print("Error fetching usernames: $e");
     }
   }
 
@@ -129,36 +127,40 @@ class _VjtiloginState extends State<Vjtilogin> {
     return SafeArea(
       child: Scaffold(
         body: BackgrounImage(
-          assetimage: const AssetImage("assets/images/vjtigirlhostel.jpg"),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              InkWell(
-                onTap: () {
-                  signInWithGoogle();
-                },
-                child: Padding(
+          assetimage: const AssetImage("assets/images/VjtiPG.jpg"),
+          child: Container(
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
                   padding: const EdgeInsets.all(30.0),
                   child: _isSigningIn
                       ? const Center(
                           child:
                               CircularProgressIndicator()) // Show circular progress indicator
-                      : const Button(
-                          txt: "Login With VJTI Email Id",
-                          fontsize: 20.0,
-                          textcolor: Color(0xFFFFFFFF),
-                          leftcolor: Color(0xFF4B4C17),
-                          rightcolor: Color(0xFF0C1010),
-                          highlighcolor: Color.fromARGB(255, 255, 255, 255),
+                      : ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateColor.resolveWith(
+                                  (states) => const Color.fromARGB(
+                                      255, 114, 113, 113))),
+                          onPressed: () {
+                            signInWithGoogle();
+                          },
+                          child: const Text(
+                            "Login With VJTI Email Id",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
                         ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
     );
   }
-
-  
 }

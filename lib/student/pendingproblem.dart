@@ -35,7 +35,7 @@ class _ComplaintsState extends State<PendingComplaints> {
                     'Carpentry',
                     'Plumbing',
                     'Structural',
-                    'Cleaning',
+                    'Housekeeping',
                   ])
                     ComplaintCategoryCard(
                       category: category,

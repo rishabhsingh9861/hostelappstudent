@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:vjtihostel/backgroundimage.dart';
 import 'package:vjtihostel/button.dart';
@@ -12,34 +11,31 @@ class Onboard extends StatelessWidget {
     return SafeArea(
         child: Scaffold(
             body: BackgrounImage(
-      assetimage: const AssetImage("assets/images/vjtihostel.jpg"),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-
-         
-
-
-              InkWell(
-            onTap: () {
-              Navigator.push(context,
-             MaterialPageRoute(builder: (context) => const Vjtilogin()));
-            },
-            child: const Padding(
-              padding: EdgeInsets.all(30.0),
-              child: Button(
-                
-           txt: "NEXT",
-           fontsize: 30.0,
-           textcolor: Color(0xFFFFFFFF),
-           leftcolor: Color(0xFF4B4C17),
-           rightcolor: Color(0xFF0C1010),
-           highlighcolor: Color.fromARGB(255, 255, 255, 255),
+      assetimage: const AssetImage("assets/images/VJTIPG2.jpeg"),
+      child: Container(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            ElevatedButton(
+              style: ButtonStyle(
+                  elevation: MaterialStateProperty.all(5),
+                  backgroundColor: MaterialStateColor.resolveWith(
+                      (states) => Color.fromARGB(255, 255, 255, 255))),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Vjtilogin()));
+              },
+              child: const Text(
+                "NEXT",
+                style: TextStyle(fontSize: 25, color: Colors.black),
               ),
             ),
-          ),
-        
-        ],
+            const SizedBox(
+              height: 25,
+            )
+          ],
+        ),
       ),
     )));
   }

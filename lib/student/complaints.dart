@@ -29,7 +29,7 @@ List<String> listproblemcategory = <String>[
   'Carpentry',
   'Plumbing',
   'Structural',
-  'Cleaning',
+  'Housekeeping',
 ];
 
 class _ComplaintsState extends State<Complaints> {
@@ -76,8 +76,8 @@ class _ComplaintsState extends State<Complaints> {
       case 'Structural':
         collectionPath = 'Structural';
         break;
-      case 'Cleaning':
-        collectionPath = 'Cleaning';
+      case 'Housekeeping':
+        collectionPath = 'Housekeeping';
         break;
       default:
         // Handle the default case or any other categories
