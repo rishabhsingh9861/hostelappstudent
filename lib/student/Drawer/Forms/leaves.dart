@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vjtihostel/student/Drawer/Forms/amenities.dart';
 import 'package:vjtihostel/student/constant/const.dart';
+import 'package:intl/intl.dart';
 
 class LeaveRequestPage extends StatefulWidget {
   const LeaveRequestPage({super.key});
@@ -49,225 +50,234 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
           builder: (context, snapshot) {
             return Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 120,
-                    width: 150,
-                    // decoration: const BoxDecoration(
-                    //   color: Colors.white,
-                    // ),
-                    child: Image.asset("assets/images/leaverequest.png"),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 40),
-                    child: dropdownMenu(listReasonLeave, dropdownValueLeave,
-                        (String? value) {
-                      setState(() {
-                        dropdownValueLeave = value!;
-                        setbleave = dropdownValueLeave;
-                      });
-                    }),
-                  ),
-                  TextField(
-                    controller: _startDateController,
-                    decoration: const InputDecoration(labelText: 'Start Date'),
-                    onTap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime(2101),
-                      );
-
-                      if (pickedDate != null) {
-                        _startDateController.text =
-                            pickedDate.toLocal().toString();
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: _endDateController,
-                    decoration: const InputDecoration(labelText: 'End Date'),
-                    onTap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime(2101),
-                      );
-
-                      if (pickedDate != null) {
-                        _endDateController.text =
-                            pickedDate.toLocal().toString();
-                      }
-                    },
-                  ),
-                  // const SizedBox(height: 16),
-                  // TextField(
-                  //   controller: _reasonController,
-                  //   decoration: const InputDecoration(labelText: 'Reason'),
-                  // ),
-
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  leaveDetails(
-                    hinttext: " ",
-                    labletext: "Reason for Leave",
-                    icons: const Icon(CupertinoIcons.italic),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      InkWell(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 120,
+                      width: 150,
+                      // decoration: const BoxDecoration(
+                      //   color: Colors.white,
+                      // ),
+                      child: Image.asset("assets/images/leaverequest.png"),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 40),
+                      child: dropdownMenu(listReasonLeave, dropdownValueLeave,
+                          (String? value) {
+                        setState(() {
+                          dropdownValueLeave = value!;
+                          setbleave = dropdownValueLeave;
+                        });
+                      }),
+                    ),
+                    TextField(
+                        controller: _startDateController,
+                        decoration:
+                            const InputDecoration(labelText: 'Start Date'),
                         onTap: () async {
-                          ImagePicker imagePicker = ImagePicker();
-                          XFile? file = await imagePicker.pickImage(
-                              source: ImageSource.gallery);
+                          DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2101),
+                            initialDatePickerMode: DatePickerMode.day,
+                          );
 
-                          if (file == null) {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return const AlertDialog(
-                                  content: Text('Image not selected'),
-                                );
-                              },
-                            );
-                          } else {
-                            String uniqueFilename = DateTime.now()
-                                .millisecondsSinceEpoch
-                                .toString();
+                          if (pickedDate != null) {
+                            String formattedDate = DateFormat('yyyy-MM-dd')
+                                .format(pickedDate); // Format the picked date
+                            _startDateController.text = formattedDate;
+                          }
+                        }),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: _endDateController,
+                      decoration: const InputDecoration(labelText: 'End Date'),
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2101),
+                          initialDatePickerMode: DatePickerMode.day,
+                        );
 
-                            Reference refrenceroot =
-                                FirebaseStorage.instance.ref();
-                            Reference referenceDirImages =
-                                refrenceroot.child('LeaveReasonImages');
-                            Reference refrenceImageToUpload =
-                                referenceDirImages.child(uniqueFilename);
+                        if (pickedDate != null) {
+                          String formattedDate = DateFormat('yyyy-MM-dd')
+                              .format(pickedDate); // Format the picked date
+                          _endDateController.text = formattedDate;
+                        }
+                      },
+                    ),
+                    // const SizedBox(height: 16),
+                    // TextField(
+                    //   controller: _reasonController,
+                    //   decoration: const InputDecoration(labelText: 'Reason'),
+                    // ),
 
-                            try {
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    leaveDetails(
+                      hinttext: " ",
+                      labletext: "Reason for Leave",
+                      icons: const Icon(CupertinoIcons.italic),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            ImagePicker imagePicker = ImagePicker();
+                            XFile? file = await imagePicker.pickImage(
+                                source: ImageSource.gallery);
+
+                            if (file == null) {
                               showDialog(
                                 context: context,
-                                builder: (_) {
-                                  return const Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Please wait Uploading',
-                                        style: TextStyle(
-                                            color: Colors.green,
-                                            fontSize: 20,
-                                            decoration: TextDecoration.none),
-                                      ),
-                                      CircularProgressIndicator(
-                                        color: Colors.green,
-                                      ),
-                                    ],
+                                builder: (context) {
+                                  return const AlertDialog(
+                                    content: Text('Image not selected'),
                                   );
                                 },
                               );
+                            } else {
+                              String uniqueFilename = DateTime.now()
+                                  .millisecondsSinceEpoch
+                                  .toString();
 
-                              await refrenceImageToUpload.putFile(
-                                  File(file.path),
-                                  SettableMetadata(
-                                    contentType: "image/jpeg",
-                                  ));
+                              Reference refrenceroot =
+                                  FirebaseStorage.instance.ref();
+                              Reference referenceDirImages =
+                                  refrenceroot.child('LeaveReasonImages');
+                              Reference refrenceImageToUpload =
+                                  referenceDirImages.child(uniqueFilename);
 
-                              imageUrl =
-                                  await refrenceImageToUpload.getDownloadURL();
-                            } catch (error) {
-                              // Print or log the error for debugging purposes
+                              try {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return const Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Please wait Uploading',
+                                          style: TextStyle(
+                                              color: Colors.green,
+                                              fontSize: 20,
+                                              decoration: TextDecoration.none),
+                                        ),
+                                        CircularProgressIndicator(
+                                          color: Colors.green,
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+
+                                await refrenceImageToUpload.putFile(
+                                    File(file.path),
+                                    SettableMetadata(
+                                      contentType: "image/jpeg",
+                                    ));
+
+                                imageUrl = await refrenceImageToUpload
+                                    .getDownloadURL();
+                              } catch (error) {
+                                // Print or log the error for debugging purposes
+
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return const AlertDialog(
+                                      content: Text('Image not uploaded'),
+                                    );
+                                  },
+                                );
+                              } finally {
+                                Navigator.of(context).pop();
+                              }
 
                               showDialog(
                                 context: context,
                                 builder: (context) {
                                   return const AlertDialog(
-                                    content: Text('Image not uploaded'),
+                                    content:
+                                        Text('Image uploaded successfully'),
                                   );
                                 },
                               );
-                            } finally {
-                              Navigator.of(context).pop();
                             }
 
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return const AlertDialog(
-                                  content: Text('Image uploaded successfully'),
-                                );
-                              },
-                            );
-                          }
-
-                          setState(() {
-                            imageUrl;
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 40),
-                          child: Container(
-                            height: 60,
-                            width: 180,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(width: 1, color: Colors.black),
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: const Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Icon(CupertinoIcons.photo),
-                                ),
-                                SizedBox(width: 5),
-                                Text(
-                                  'Attach Proof',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontFamily: "Nunito",
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ],
+                            setState(() {
+                              imageUrl;
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 40),
+                            child: Container(
+                              height: 60,
+                              width: 180,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border:
+                                    Border.all(width: 1, color: Colors.black),
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              child: const Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(5.0),
+                                    child: Icon(CupertinoIcons.photo),
+                                  ),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    'Attach Proof',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontFamily: "Nunito",
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      SizedBox(
-                        height: 75,
-                        width: 75,
-                        child: Image.network(imageUrl),
-                      )
-                    ],
-                  ),
-
-                  const SizedBox(height: 32),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => const Color(0xff90AAD6),
-                      ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        SizedBox(
+                          height: 75,
+                          width: 75,
+                          child: Image.network(imageUrl),
+                        )
+                      ],
                     ),
-                    onPressed: () {
-                      _submitLeaveRequest();
-                    },
-                    child: const Text('Submit Request'),
-                  ),
-                ],
+
+                    const SizedBox(height: 32),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => const Color(0xff90AAD6),
+                        ),
+                      ),
+                      onPressed: () {
+                        _submitLeaveRequest();
+                      },
+                      child: const Text('Submit Request'),
+                    ),
+                  ],
+                ),
               ),
             );
           }),
@@ -293,7 +303,6 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
       'reason': reason,
       'status':
           'Pending', // Initial status is pending, it can be updated upon approval
-          
     };
 
     // Add the leave request data to Firestore
