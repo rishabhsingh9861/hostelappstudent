@@ -9,6 +9,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vjtihostel/student/Drawer/Forms/amenities.dart';
 import 'package:vjtihostel/student/constant/const.dart';
@@ -225,11 +227,18 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                                   },
                                 );
 
-                                await refrenceImageToUpload.putFile(
-                                    File(file.path),
-                                    SettableMetadata(
-                                      contentType: "image/jpeg",
-                                    ));
+                                List<int> compressedImage =
+                                (await FlutterImageCompress.compressWithFile(
+                                  file.path,
+                                  quality: 20,
+                                )) as List<int>;
+
+                                await refrenceImageToUpload.putData(
+                                  Uint8List.fromList(compressedImage),
+                                  SettableMetadata(
+                                    contentType: "image/jpeg",
+                                  ),
+                                );
 
                                 imageUrl = await refrenceImageToUpload
                                     .getDownloadURL();
