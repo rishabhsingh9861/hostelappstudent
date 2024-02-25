@@ -1,26 +1,24 @@
 // ignore_for_file: use_key_in_widget_constructors
-
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vjtihostel/student/Drawer/Forms/past_year_photos.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MyApp());
-}
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp();
+//   runApp(MyApp());
+// }
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Holiday Events',
-      showSemanticsDebugger: false,
-      home: HolidayList(),
-    );
-  }
-}
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return const MaterialApp(
+//       title: 'Holiday Events',
+//       showSemanticsDebugger: false,
+//       home: HolidayList(),
+//     );
+//   }
+// }
 
 class HolidayList extends StatelessWidget {
   const HolidayList({super.key});
@@ -49,15 +47,19 @@ class HolidayList extends StatelessWidget {
                 Navigator.pop(context); // Close the drawer
               },
             ),
-            ListTile(
-              title: const Text('Past Year Photos'),
+            InkWell(
               onTap: () {
-                Navigator.pop(context); // Close the drawer
+                // print('hello');
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const PastYearPhotosPage()),
                 );
               },
+              child: Container(
+                child: ListTile(
+                  title: const Text('Past Year Photos'),
+                ),
+              ),
             ),
           ],
         ),
