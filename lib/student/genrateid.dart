@@ -275,7 +275,7 @@ class _GenerateIdState extends State<GenerateId> {
                               List<int> compressedImage =
                                   (await FlutterImageCompress.compressWithFile(
                                 file.path,
-                                quality: 20, // Adjust the quality as needed
+                                quality: 20, 
                               )) as List<int>;
 
                               await refrenceImageToUpload.putData(

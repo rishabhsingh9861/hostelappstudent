@@ -5,6 +5,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,15 +23,12 @@ class LeaveRequestPage extends StatefulWidget {
 
 List<String> listReasonLeave = <String>[
   'Type Of Leave',
-  'Casual leave ',
-  'Medical leave ',
-  '1 day Leave ',
-  '2 day Leave',
-  '1 Week Leave',
-  '2 Week Leave',
-  '1 Month Leave',
-  '2 Month Leave',
+  'Official leave  ',
+  'Unofficial leave',
 ];
+
+final user = FirebaseAuth.instance.currentUser!;
+String email = user.email.toString();
 
 class _LeaveRequestPageState extends State<LeaveRequestPage> {
   final TextEditingController _startDateController = TextEditingController();
@@ -40,6 +38,46 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
   String setbleave = "";
   String imageUrl =
       'https://firebasestorage.googleapis.com/v0/b/vjti-hostel-f8c43.appspot.com/o/Icons%2Ficon.png?alt=media&token=2da3e303-790a-4b1e-aee2-cf974c14e386';
+
+  String name = "";
+  String registration = "";
+  String photo = "";
+  String contactno = "";
+  String roomno = "";
+  int parentsno = 0;
+  int hostelid = 0;
+  String department = "";
+  String address = "";
+  String year = "";
+
+  void getuserdata() async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('HostelStudents')
+        .doc(email)
+        .collection('StudentIDCard')
+        .doc('idcard')
+        .get();
+
+    if (snapshot.exists) {
+      Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
+      name = userData['Name'];
+      contactno = userData['Student contact number'];
+      photo = userData['Passport Photo'];
+      registration = userData['Registration No.'];
+      roomno = userData['Room No'];
+      parentsno = userData['Parent Contact Number'];
+      hostelid = userData['Hostel ID'];
+      department = userData['Department'];
+      address = userData['Adress'];
+      year = userData['Year'];
+    }
+  }
+
+  @override
+  void initState() {
+    getuserdata();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -298,11 +336,21 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
 
     // Create a map of the leave request data
     Map<String, dynamic> leaveRequestData = {
-      'start_date': startDate,
+      'start_date': startDate, 
       'end_date': endDate,
       'reason': reason,
-      'status':
-          'Pending', // Initial status is pending, it can be updated upon approval
+      'Name': name,
+      'Hostelid': hostelid,
+      'Registration No': registration,
+      'Department': department,
+      'Parents No': parentsno,
+      'Student No': contactno,
+      'Room No': roomno,
+      'Addres': address,
+      'Year': year,
+      'Photo': photo,
+
+    
     };
 
     // Add the leave request data to Firestore
