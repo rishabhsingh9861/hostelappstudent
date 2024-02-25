@@ -32,6 +32,8 @@ List<String> listReasonLeave = <String>[
 final user = FirebaseAuth.instance.currentUser!;
 String email = user.email.toString();
 
+
+
 class _LeaveRequestPageState extends State<LeaveRequestPage> {
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
@@ -42,12 +44,12 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
       'https://firebasestorage.googleapis.com/v0/b/vjti-hostel-f8c43.appspot.com/o/Icons%2Ficon.png?alt=media&token=2da3e303-790a-4b1e-aee2-cf974c14e386';
 
   String name = "";
-  String registration = "";
+  int registration = 0;
   String photo = "";
-  String contactno = "";
+  int contactno = 0;
   String roomno = "";
   int parentsno = 0;
-  int hostelid = 0;
+  String hostelid = "";
   String department = "";
   String address = "";
   String year = "";
@@ -319,6 +321,8 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                         ),
                       ),
                       onPressed: () {
+                        print(name);
+                        print(registration);
                         _submitLeaveRequest();
                       },
                       child: const Text('Submit Request'),
@@ -345,7 +349,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
 
     // Create a map of the leave request data
     Map<String, dynamic> leaveRequestData = {
-      'start_date': startDate, 
+      'start_date': startDate,
       'end_date': endDate,
       'reason': reason,
       'Name': name,
@@ -358,8 +362,6 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
       'Addres': address,
       'Year': year,
       'Photo': photo,
-
-    
     };
 
     // Add the leave request data to Firestore

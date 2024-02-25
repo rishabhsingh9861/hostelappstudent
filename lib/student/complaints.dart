@@ -254,6 +254,23 @@ class _ComplaintsState extends State<Complaints> {
                             showConfirmBtn: false,
                           );
 
+
+
+                                 List<int> compressedImage =
+                                  (await FlutterImageCompress.compressWithFile(
+                                file.path,
+                                quality: 20, 
+                              )) as List<int>;
+
+                              await refrenceImageToUpload.putData(
+                                Uint8List.fromList(compressedImage),
+                                SettableMetadata(
+                                  contentType: "image/jpeg",
+                                ),
+                              );
+
+
+
                           List<int> compressedImage =
                           (await FlutterImageCompress.compressWithFile(
                             file.path,
