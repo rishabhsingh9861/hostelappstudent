@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
@@ -251,12 +253,19 @@ class _ComplaintsState extends State<Complaints> {
                             autoCloseDuration: null,
                             showConfirmBtn: false,
                           );
-                          await refrenceImageToUpload.putFile(
-                              File(file.path),
-                              SettableMetadata(
-                                contentType: "image/jpeg",
-                              ));
 
+                          List<int> compressedImage =
+                          (await FlutterImageCompress.compressWithFile(
+                            file.path,
+                            quality: 20,
+                          )) as List<int>;
+
+                          await refrenceImageToUpload.putData(
+                            Uint8List.fromList(compressedImage),
+                            SettableMetadata(
+                              contentType: "image/jpeg",
+                            ),
+                          );
                           imageUrl =
                               await refrenceImageToUpload.getDownloadURL();
                         } catch (error) {
