@@ -8,6 +8,7 @@ import 'package:vjtihostel/committe/facilitiespage.dart';
 import 'package:vjtihostel/onboard.dart';
 import 'package:vjtihostel/student/Drawer/Forms/holiday_list.dart';
 import 'package:vjtihostel/student/Drawer/Forms/hostelAndMess.dart';
+import 'package:vjtihostel/student/Drawer/announcement.dart';
 import 'package:vjtihostel/student/complaints.dart';
 import 'package:vjtihostel/student/constant/const.dart';
 import 'package:vjtihostel/student/genrateid.dart';
@@ -432,6 +433,18 @@ class _DrawersState extends State<Drawers> {
                 ),
               ),
             ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) =>  ChatScreen()));
+              },
+              child: listtile(
+                "Announcements",
+              ),
+            ),
+            div,
             GestureDetector(
               onTap: () {
                 Navigator.push(
