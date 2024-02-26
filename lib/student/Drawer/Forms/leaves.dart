@@ -317,16 +317,15 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                     ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateColor.resolveWith(
-                          (states) => const Color(0xff90AAD6),
+                              (states) => const Color(0xff90AAD6),
                         ),
                       ),
-                      onPressed: () {
-                        print(name);
-                        print(registration);
-                        _submitLeaveRequest();
-                      },
+
+                      onPressed: _submitLeaveRequest, // Assign the method here
+
                       child: const Text('Submit Request'),
                     ),
+
                   ],
                 ),
               ),
@@ -339,12 +338,35 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
     // Get the entered information
     String startDate = _startDateController.text;
     String endDate = _endDateController.text;
-    String reason = _reasonController.text;
+    String reason = dropdownValueLeave;
 
     // Validate if all fields are filled
-    if (startDate.isEmpty || endDate.isEmpty || reason.isEmpty) {
+    if (startDate.isEmpty || endDate.isEmpty || reason == 'Type Of Leave') {
       // Show an error message or handle accordingly
       return;
+    }
+
+    // Check if the start date is before the end date
+    if (DateTime.parse(startDate).isAfter(DateTime.parse(endDate))) {
+      // Show an error message indicating that the start date should be before the end date
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Start date must be before end date.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+      return; // Exit the method if the condition is not met
     }
 
     // Create a map of the leave request data
@@ -352,6 +374,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
       'start_date': startDate,
       'end_date': endDate,
       'reason': reason,
+
       'Name': name,
       'Hostelid': hostelid,
       'Registration No': registration,
@@ -362,16 +385,68 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
       'Addres': address,
       'Year': year,
       'Photo': photo,
+
+
     };
 
-    // Add the leave request data to Firestore
-    await FirebaseFirestore.instance
-        .collection('LeaveApproval')
-        .add(leaveRequestData);
+    try {
+      // Add the leave request data to Firestore
+      await FirebaseFirestore.instance
+          .collection('LeaveApproval')
+          .add(leaveRequestData);
 
-    // Show a success message or navigate to another screen
-    // You can customize this part based on your application flow
+      // Show a success message or navigate to another screen
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Success'),
+            content: Text('Leave request submitted successfully.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+
+      // Clear the form fields after submission
+      _startDateController.clear();
+      _endDateController.clear();
+      _reasonController.clear(); // Clear Reason for Leave
+      setState(() {
+        dropdownValueLeave = listReasonLeave.first;
+
+        imageUrl = 'https://firebasestorage.googleapis.com/v0/b/vjti-hostel-f8c43.appspot.com/o/Icons%2Ficon.png?alt=media&token=2da3e303-790a-4b1e-aee2-cf974c14e386'; // Reset image URL
+      });
+    } catch (error) {
+      // Handle any errors that occur during the process
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to submit leave request.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
+
+
+
 }
 
 
@@ -388,155 +463,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
 
 
 
-// import 'dart:io';
-
-// import 'package:firebase_storage/firebase_storage.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'package:vjtihostel/student/constant/const.dart';
-
-// class LeaveRequest extends StatefulWidget {
-//   const LeaveRequest({super.key});
-
-//   @override
-//   State<LeaveRequest> createState() => _LeaveRequestState();
-// }
 
 
 
-// class _LeaveRequestState extends State<LeaveRequest> {
-//   String dropdownValueLeave = listReasonLeave.first;
-//   String setbleave = "";
-//   String imageUrl =
-//       'https://firebasestorage.googleapis.com/v0/b/vjti-hostel-f8c43.appspot.com/o/Icons%2Ficon.png?alt=media&token=2da3e303-790a-4b1e-aee2-cf974c14e386';
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-//       appBar: AppBar(
-//         backgroundColor: const Color(0xff90AAD6),
-//         centerTitle: true,
-//         title: const Text(
-//           "Leave Request",
-//           style: TextStyle(
-//             fontFamily: "Nunito",
-//             fontWeight: FontWeight.bold,
-//           ),
-//         ),
-//       ),
-//       body: SafeArea(
-//         child: Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           child: SingleChildScrollView(
-//             child: Column(
-//               children: [
-//           
-//                 // leaveDetails(
-//                 //   hinttext: "Enter Your Full Name ",
-//                 //   labletext: "Name",
-//                 //   icons: const Icon(CupertinoIcons.person),
-//                 // ),
-//                 // const SizedBox(
-//                 //   height: 10,
-//                 // ),
-//                 // leaveDetails(
-//                 //   hinttext: "Enter Your Hostel ID Number ",
-//                 //   labletext: "ID Number",
-//                 //   icons: const Icon(CupertinoIcons.number),
-//                 // ),
-//                 // const SizedBox(
-//                 //   height: 10,
-//                 // ),
-//                 // leaveDetails(
-//                 //   hinttext: "Enter Your Email Address",
-//                 //   labletext: "Email ID",
-//                 //   icons: const Icon(CupertinoIcons.mail),
-//                 // ),
-//                 // const SizedBox(
-//                 //   height: 5,
-//                 // ),
-//                 // const Divider(),
-//                 // const SizedBox(
-//                 //   height: 5,
-//                 // ),
-
-//                 Padding(
-//                   padding: const EdgeInsets.only(left: 40),
-//                   child: dropdownMenu(listReasonLeave, dropdownValueLeave,
-//                       (String? value) {
-//                     setState(() {
-//                       dropdownValueLeave = value!;
-//                       setbleave = dropdownValueLeave;
-//                     });
-//                   }),
-//                 ),
-
-//                 // leaveDetails(
-//                 //   hinttext: " e.g., Casual, Medical, Vacation",
-//                 //   labletext: "Enter Type Of Leave",
-//                 //   icons: const Icon(CupertinoIcons.person),
-//                 // ),
-//                 const SizedBox(
-//                   height: 10,
-//                 ),
-//                
-//                 const SizedBox(
-//                   height: 10,
-//                 ),
-//                 ElevatedButton(
-//                   style: ButtonStyle(
-//                     backgroundColor: MaterialStateColor.resolveWith(
-//                       (states) => const Color(0xff90AAD6),
-//                     ),
-//                   ),
-//                   onPressed: () {},
-//                   child: const Text(
-//                     "Submit",
-//                     style: TextStyle(color: Colors.white),
-//                   ),
-//                 )
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// TextField leaveDetails({
-//   required String hinttext,
-//   required String labletext,
-//   required Icon icons,
-//   // required TextEditingController controller,
-// }) {
-//   return TextField(
-//     // controller: controller,
-//     decoration: InputDecoration(
-//       hintText: hinttext,
-//       labelText: labletext,
-//       labelStyle:
-//           const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-//       icon: icons,
-//       border: const OutlineInputBorder(
-//         borderRadius: BorderRadius.all(
-//           Radius.circular(20),
-//         ),
-//       ),
-//       enabledBorder: const OutlineInputBorder(
-//         borderSide: BorderSide(color: Colors.black),
-//         borderRadius: BorderRadius.all(
-//           Radius.circular(20),
-//         ),
-//       ),
-//       focusedBorder: const OutlineInputBorder(
-//         borderSide: BorderSide(color: Colors.black, width: 2),
-//         borderRadius: BorderRadius.all(
-//           Radius.circular(20),
-//         ),
-//       ),
-//     ),
-//   );
-// }
