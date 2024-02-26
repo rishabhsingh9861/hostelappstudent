@@ -9,6 +9,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vjtihostel/student/Drawer/Forms/amenities.dart';
 import 'package:vjtihostel/student/constant/const.dart';
@@ -30,6 +32,8 @@ List<String> listReasonLeave = <String>[
 final user = FirebaseAuth.instance.currentUser!;
 String email = user.email.toString();
 
+
+
 class _LeaveRequestPageState extends State<LeaveRequestPage> {
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
@@ -40,12 +44,12 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
       'https://firebasestorage.googleapis.com/v0/b/vjti-hostel-f8c43.appspot.com/o/Icons%2Ficon.png?alt=media&token=2da3e303-790a-4b1e-aee2-cf974c14e386';
 
   String name = "";
-  String registration = "";
+  int registration = 0;
   String photo = "";
-  String contactno = "";
+  int contactno = 0;
   String roomno = "";
   int parentsno = 0;
-  int hostelid = 0;
+  String hostelid = "";
   String department = "";
   String address = "";
   String year = "";
@@ -223,11 +227,18 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                                   },
                                 );
 
-                                await refrenceImageToUpload.putFile(
-                                    File(file.path),
-                                    SettableMetadata(
-                                      contentType: "image/jpeg",
-                                    ));
+                                List<int> compressedImage =
+                                (await FlutterImageCompress.compressWithFile(
+                                  file.path,
+                                  quality: 20,
+                                )) as List<int>;
+
+                                await refrenceImageToUpload.putData(
+                                  Uint8List.fromList(compressedImage),
+                                  SettableMetadata(
+                                    contentType: "image/jpeg",
+                                  ),
+                                );
 
                                 imageUrl = await refrenceImageToUpload
                                     .getDownloadURL();
@@ -309,7 +320,9 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                               (states) => const Color(0xff90AAD6),
                         ),
                       ),
+
                       onPressed: _submitLeaveRequest, // Assign the method here
+
                       child: const Text('Submit Request'),
                     ),
 
@@ -358,7 +371,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
 
     // Create a map of the leave request data
     Map<String, dynamic> leaveRequestData = {
-      'start_date': startDate, 
+      'start_date': startDate,
       'end_date': endDate,
       'reason': reason,
 
@@ -373,7 +386,6 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
       'Year': year,
       'Photo': photo,
 
-    
 
     };
 
