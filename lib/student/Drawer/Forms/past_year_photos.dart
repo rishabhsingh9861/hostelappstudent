@@ -1,33 +1,27 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:flutter_application_1/main.dart';
+import 'package:firebase_core/firebase_core.dart'; // Import Firebase Core
 
 class PastYearPhotosPage extends StatefulWidget {
-  const PastYearPhotosPage({super.key});
+  const PastYearPhotosPage({Key? key}) : super(key: key);
 
   @override
   State<PastYearPhotosPage> createState() => _PastYearPhotosState();
 }
 
 class _PastYearPhotosState extends State<PastYearPhotosPage> {
-  // ignore: unused_field
   int _selectedYear = DateTime.now().year;
   String imgURL = "";
   String imgURL1 = "";
   final storage = FirebaseStorage.instance;
 
   Future<void> getImageURL() async {
-    // Get the reference to the image file in Firebase Storage
     try {
       final ref = storage.ref().child('Events/2023/holi.jpg');
       final ref1 = storage.ref().child('Events/2023/diwali.jpg');
-      // Get the imageUrl to download URL
       final url = await ref.getDownloadURL();
       final url1 = await ref1.getDownloadURL();
 
-      print(url);
-      print(url1);
       setState(() {
         imgURL = url;
         imgURL1 = url1;
@@ -37,21 +31,15 @@ class _PastYearPhotosState extends State<PastYearPhotosPage> {
     }
   }
 
-
   @override
   void initState() {
     super.initState();
-
-    // Retrieve the image from Firebase Storage
+    // Initialize Firebase if not initialized yet
+    if (Firebase.apps.isEmpty) {
+      Firebase.initializeApp();
+    }
     getImageURL();
   }
-
-  @override
-  void dispose() {
-    storage.ref().delete(); // Delete the reference, if necessary
-    super.dispose();
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +96,7 @@ class _PastYearPhotosState extends State<PastYearPhotosPage> {
             setState(() {
               _selectedYear = year;
             });
-            Navigator.pop(context); // Close the drawer
+            Navigator.pop(context);
           },
         ),
       );

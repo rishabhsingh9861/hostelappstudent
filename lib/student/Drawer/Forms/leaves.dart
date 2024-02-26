@@ -362,6 +362,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
       'Addres': address,
       'Year': year,
       'Photo': photo,
+      'Proof': imageUrl,
     };
 
     // Add the leave request data to Firestore

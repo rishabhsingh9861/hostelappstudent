@@ -182,7 +182,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       leading: imageUrl != null
                           ? Image.network(
                               imageUrl,
-                              // height: 450, 
+                              // height: 450, <
+                             
                               // width: 250, 
                               // fit: BoxFit
                               //     .cover, // Adjust the image fit as needed

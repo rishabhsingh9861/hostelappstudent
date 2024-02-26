@@ -23,6 +23,7 @@ List<String> listCertificate = <String>[
   'Certificate Type',
   'Hostel and Mess Certificate',
   'Expenditure Certifiacte',
+  'Passport Verifiaction Certificate'
 ];
 
 String uniqueFilename = 'Upload Fees Receipt';

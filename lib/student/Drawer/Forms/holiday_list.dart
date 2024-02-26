@@ -1,4 +1,6 @@
 // ignore_for_file: use_key_in_widget_constructors
+
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vjtihostel/student/Drawer/Forms/past_year_photos.dart';
@@ -52,7 +54,8 @@ class HolidayList extends StatelessWidget {
                 // print('hello');
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const PastYearPhotosPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const PastYearPhotosPage()),
                 );
               },
               child: Container(
@@ -65,7 +68,10 @@ class HolidayList extends StatelessWidget {
         ),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('Events').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('Events')
+            .orderBy('eventDate')
+            .snapshots(),
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
