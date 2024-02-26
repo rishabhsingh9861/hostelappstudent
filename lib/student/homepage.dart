@@ -1,60 +1,379 @@
-// ignore_for_file: use_build_context_synchronously
-
-// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
-
-import 'dart:io';
-
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:vjtihostel/student/Drawer/Forms/amenities.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+import 'package:vjtihostel/committe/committe_page.dart';
+import 'package:vjtihostel/committe/facilitiespage.dart';
+import 'package:vjtihostel/onboard.dart';
+import 'package:vjtihostel/student/Drawer/Forms/holiday_list.dart';
+import 'package:vjtihostel/student/Drawer/Forms/hostelAndMess.dart';
+import 'package:vjtihostel/student/Drawer/announcement.dart';
+import 'package:vjtihostel/student/complaints.dart';
 import 'package:vjtihostel/student/constant/const.dart';
-import 'package:intl/intl.dart';
+import 'package:vjtihostel/student/genrateid.dart';
+import 'package:vjtihostel/student/pendingproblem.dart';
+import 'package:vjtihostel/student/rectors.dart';
+import 'package:vjtihostel/student/Drawer/request.dart';
 
-class LeaveRequestPage extends StatefulWidget {
-  const LeaveRequestPage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  _LeaveRequestPageState createState() => _LeaveRequestPageState();
+  State<HomePage> createState() => _HomePageState();
 }
-
-List<String> listReasonLeave = <String>[
-  'Type Of Leave',
-  'Official leave  ',
-  'Unofficial leave',
-];
 
 final user = FirebaseAuth.instance.currentUser!;
 String email = user.email.toString();
 
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: const Color(0xff90AAD6),
+        centerTitle: true,
+        title: const Text(
+          "VJTI HOSTEL",
+          style: TextStyle(
+            fontFamily: "Nunito",
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const GenerateId(),
+                  ),
+                );
+              },
+              child: Hero(
+                tag: "ID",
+                child: Image.asset(
+                  'assets/images/idcard.png',
+                  scale: 10,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+      drawer: const Drawers(),
+      body: FutureBuilder<DocumentSnapshot>(
+        future: FirebaseFirestore.instance
+            .collection('HostelStudents')
+            .doc(email)
+            .collection('StudentIDCard')
+            .doc('idcard')
+            .get(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
 
+            if (!snapshot.hasData || snapshot.data == null) {
+              return const Center(
+                  child: Text(
+                'You have skipped the registration page pls contact hostel office',
+                style: textsty,
+              ));
+            }
 
-class _LeaveRequestPageState extends State<LeaveRequestPage> {
-  final TextEditingController _startDateController = TextEditingController();
-  final TextEditingController _endDateController = TextEditingController();
-  final TextEditingController _reasonController = TextEditingController();
-  String dropdownValueLeave = listReasonLeave.first;
-  String setbleave = "";
-  String imageUrl =
-      'https://firebasestorage.googleapis.com/v0/b/vjti-hostel-f8c43.appspot.com/o/Icons%2Ficon.png?alt=media&token=2da3e303-790a-4b1e-aee2-cf974c14e386';
+            final reqData = snapshot.data?.data() as Map<String, dynamic>?;
+            if (reqData == null) {
+              return const Center(
+                  child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Please Generate Id card',
+                  style: textsty,
+                ),
+              ));
+            }
 
-  String name = "";
-  int registration = 0;
-  String photo = "";
-  int contactno = 0;
-  String roomno = "";
-  int parentsno = 0;
-  String hostelid = "";
-  String department = "";
-  String address = "";
-  String year = "";
+            String name = reqData['Name'] ?? '';
+            String hostelid = reqData['Hostel ID'] ?? '';
+            String roomo = reqData['Room No'] ?? '';
+            int registration = reqData['Registration No.'] ?? 0;
+            String addres = reqData['Adress'] ?? '';
+            String bloodgrp = reqData['Blood Group'] as String? ?? '';
+            String pphoto = reqData['Passport Photo'] as String? ?? '';
+            int parentnumber = reqData['Parent Contact Number'] as int? ?? 0;
+            int studentnumber = reqData['Student contact number'] as int? ?? 0;
 
-  void getuserdata() async {
+            return SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Hero(
+                              tag: "vjtiLogo",
+                              child: Image.asset("assets/images/vjtiLogo.png")),
+                        ),
+                        const Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Veermata Jijabai \n  Technological\n     Institute",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.red,
+                                  fontFamily: "Anton",
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "( An Autonomous Institute of Government of Maharashtra )",
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.blueGrey,
+                                  fontFamily: "Nunito",
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    div,
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Column(
+                              // mainAxisAlignment: MainAxisAlignment.start,
+                              // crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "V",
+                                  style: stylVJTI,
+                                ),
+                                Text(
+                                  "J",
+                                  style: stylVJTI,
+                                ),
+                                Text(
+                                  "T",
+                                  style: stylVJTI,
+                                ),
+                                Text(
+                                  "I",
+                                  style: stylVJTI,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 2,
+                                ),
+                              ),
+                              height: 170,
+                              width: 160,
+                              child: Image(
+                                image: NetworkImage(
+                                  pphoto,
+                                ),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(
+                              left: 20, top: 10, right: 5),
+                          child: const Text(
+                            "HOSTEL ID CARD",
+                            style: TextStyle(
+                              fontFamily: "Anton",
+                              color: Colors.red,
+                              fontSize: 21,
+                              letterSpacing: 4,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Hostel Id: $hostelid',
+                            style: idStyle,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Name: $name',
+                            style: idStyle,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'ID No : $registration',
+                            style: const TextStyle(
+                              fontSize: 19,
+                              color: Colors.black,
+                              fontFamily: "Nunito",
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Room  No. : $roomo',
+                            style: idStyle,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Address : $addres',
+                            style: idStyle,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Blood Group : $bloodgrp',
+                            style: idStyle,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Student Contact No : $studentnumber', //
+                            style: idStyle,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            children: [
+                              const Text(
+                                'Call Parent',
+                                style: idStyle,
+                              ),
+                              const SizedBox(
+                                width: 50,
+                              ),
+                              InkWell(
+                                onTap: () async {
+                                  final call = 'tel:$parentnumber';
+                                  if (!await launchUrlString(call)) {
+                                    await canLaunchUrlString(call);
+                                  }
+                                },
+                                child: SizedBox(
+                                    height: 25,
+                                    width: 25,
+                                    child: Image.asset(
+                                        'assets/images/phoneicon.png')),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    // Column(
+                    //   children: [
+                    //     Row(
+                    //       children: [
+                    //         const Padding(
+                    //           padding: EdgeInsets.all(8.0),
+                    //           child: Text(
+                    //             'Call Parent: ',
+                    //             style: textsty,
+                    //           ),
+                    //         ),
+                    //         GestureDetector(
+                    //           onTap: () async {
+                    //             final call = 'tel:$parentnumber';
+                    //             if (!await launchUrlString(call)) {
+                    //               await canLaunchUrlString(call);
+                    //             }
+                    //           },
+                    //           child: SizedBox(
+                    //             height: 30,
+                    //             width: 30,
+                    //             child:
+                    //                 Image.asset('assets/images/phoneicon.png'),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     )
+                    //   ],
+                    // ),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+    );
+  }
+}
+
+class Drawers extends StatefulWidget {
+  const Drawers({super.key});
+
+  @override
+  State<Drawers> createState() => _DrawersState();
+}
+
+class _DrawersState extends State<Drawers> {
+  String url =
+      'https://firebasestorage.googleapis.com/v0/b/vjti-hostel-f8c43.appspot.com/o/Icons%2Ffaceicon.jpg?alt=media&token=7e0a62d6-f43f-4e8d-ac34-d06ec750b482';
+
+  void signUserOut() async {
+    FirebaseAuth.instance.signOut().then((value) {
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const Onboard()));
+    });
+  }
+
+  Future<void> getuserdata() async {
     DocumentSnapshot snapshot = await FirebaseFirestore.instance
         .collection('HostelStudents')
         .doc(email)
@@ -64,387 +383,184 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
 
     if (snapshot.exists) {
       Map<String, dynamic> userData = snapshot.data() as Map<String, dynamic>;
-      name = userData['Name'];
-      contactno = userData['Student contact number'];
-      photo = userData['Passport Photo'];
-      registration = userData['Registration No.'];
-      roomno = userData['Room No'];
-      parentsno = userData['Parent Contact Number'];
-      hostelid = userData['Hostel ID'];
-      department = userData['Department'];
-      address = userData['Adress'];
-      year = userData['Year'];
+
+      setState(() {
+        url = userData['Passport Photo'];
+      });
     }
   }
 
   @override
   void initState() {
-    getuserdata();
     super.initState();
+    getuserdata();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appbars('Leave Request and Approval'),
-      body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('Events').snapshots(),
-          builder: (context, snapshot) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 120,
-                      width: 150,
-                      // decoration: const BoxDecoration(
-                      //   color: Colors.white,
-                      // ),
-                      child: Image.asset("assets/images/leaverequest.png"),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 40),
-                      child: dropdownMenu(listReasonLeave, dropdownValueLeave,
-                          (String? value) {
-                        setState(() {
-                          dropdownValueLeave = value!;
-                          setbleave = dropdownValueLeave;
-                        });
-                      }),
-                    ),
-                    TextField(
-                        controller: _startDateController,
-                        decoration:
-                            const InputDecoration(labelText: 'Start Date'),
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(2101),
-                            initialDatePickerMode: DatePickerMode.day,
-                          );
-
-                          if (pickedDate != null) {
-                            String formattedDate = DateFormat('yyyy-MM-dd')
-                                .format(pickedDate); // Format the picked date
-                            _startDateController.text = formattedDate;
-                          }
-                        }),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: _endDateController,
-                      decoration: const InputDecoration(labelText: 'End Date'),
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2101),
-                          initialDatePickerMode: DatePickerMode.day,
-                        );
-
-                        if (pickedDate != null) {
-                          String formattedDate = DateFormat('yyyy-MM-dd')
-                              .format(pickedDate); // Format the picked date
-                          _endDateController.text = formattedDate;
-                        }
-                      },
-                    ),
-                    // const SizedBox(height: 16),
-                    // TextField(
-                    //   controller: _reasonController,
-                    //   decoration: const InputDecoration(labelText: 'Reason'),
-                    // ),
-
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    leaveDetails(
-                      hinttext: " ",
-                      labletext: "Reason for Leave",
-                      icons: const Icon(CupertinoIcons.italic),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: () async {
-                            ImagePicker imagePicker = ImagePicker();
-                            XFile? file = await imagePicker.pickImage(
-                                source: ImageSource.gallery);
-
-                            if (file == null) {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return const AlertDialog(
-                                    content: Text('Image not selected'),
-                                  );
-                                },
-                              );
-                            } else {
-                              String uniqueFilename = DateTime.now()
-                                  .millisecondsSinceEpoch
-                                  .toString();
-
-                              Reference refrenceroot =
-                                  FirebaseStorage.instance.ref();
-                              Reference referenceDirImages =
-                                  refrenceroot.child('LeaveReasonImages');
-                              Reference refrenceImageToUpload =
-                                  referenceDirImages.child(uniqueFilename);
-
-                              try {
-                                showDialog(
-                                  context: context,
-                                  builder: (_) {
-                                    return const Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Please wait Uploading',
-                                          style: TextStyle(
-                                              color: Colors.green,
-                                              fontSize: 20,
-                                              decoration: TextDecoration.none),
-                                        ),
-                                        CircularProgressIndicator(
-                                          color: Colors.green,
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-
-                                List<int> compressedImage =
-                                (await FlutterImageCompress.compressWithFile(
-                                  file.path,
-                                  quality: 20,
-                                )) as List<int>;
-
-                                await refrenceImageToUpload.putData(
-                                  Uint8List.fromList(compressedImage),
-                                  SettableMetadata(
-                                    contentType: "image/jpeg",
-                                  ),
-                                );
-
-                                imageUrl = await refrenceImageToUpload
-                                    .getDownloadURL();
-                              } catch (error) {
-                                // Print or log the error for debugging purposes
-
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return const AlertDialog(
-                                      content: Text('Image not uploaded'),
-                                    );
-                                  },
-                                );
-                              } finally {
-                                Navigator.of(context).pop();
-                              }
-
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return const AlertDialog(
-                                    content:
-                                        Text('Image uploaded successfully'),
-                                  );
-                                },
-                              );
-                            }
-
-                            setState(() {
-                              imageUrl;
-                            });
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 40),
-                            child: Container(
-                              height: 60,
-                              width: 180,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border:
-                                    Border.all(width: 1, color: Colors.black),
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                              child: const Row(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.all(5.0),
-                                    child: Icon(CupertinoIcons.photo),
-                                  ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    'Attach Proof',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontFamily: "Nunito",
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        SizedBox(
-                          height: 75,
-                          width: 75,
-                          child: Image.network(imageUrl),
-                        )
-                      ],
-                    ),
-
-                    const SizedBox(height: 32),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith(
-                              (states) => const Color(0xff90AAD6),
-                        ),
-                      ),
-
-                      onPressed: _submitLeaveRequest, // Assign the method here
-
-                      child: const Text('Submit Request'),
-                    ),
-
-                  ],
+    final user = FirebaseAuth.instance.currentUser!;
+    String email = user.email.toString();
+    return Drawer(
+      backgroundColor: const Color.fromARGB(255, 176, 189, 211),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            UserAccountsDrawerHeader(
+              currentAccountPicture: CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.white,
+                backgroundImage: NetworkImage(url),
+              ),
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 184, 200, 228),
+              ),
+              accountName: Text(
+                user.displayName!,
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontFamily: "Nunito",
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            );
-          }),
+              accountEmail: Text(
+                user.email!,
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: Colors.black87,
+                  fontFamily: "Nunito",
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) =>  ChatScreen()));
+              },
+              child: listtile(
+                "Announcements",
+              ),
+            ),
+            div,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => Complaints(
+                              email: email,
+                            )));
+              },
+              child: listtile(
+                "Complaints",
+              ),
+            ),
+            div,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const PendingComplaints()));
+              },
+              child: listtile("Pending Complaints"),
+            ),
+            div,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Request()));
+              },
+              child: listtile("Request"),
+            ),
+            div,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const FacilitiesPage()));
+              },
+              child: listtile("Facilities"),
+            ),
+            div,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HostelAndMess(email: email),
+                  ),
+                );
+              },
+              child: listtile("Certificates"),
+            ),
+            div,
+            InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => HolidayList()));
+                },
+                child: listtile("Events")),
+            div,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const CommitteePage(),
+                  ),
+                );
+              },
+              child: listtile("Committee"),
+            ),
+            div,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const Rectors(),
+                  ),
+                );
+              },
+              child: listtile("Rectors"),
+            ),
+            div,
+            listtile("About"),
+            div,
+            listtile("Developer"),
+            div,
+            ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateColor.resolveWith((states) => Colors.red)),
+              onPressed: () {
+                signUserOut();
+              },
+              child: const Text(
+                "Sign Out",
+                style: TextStyle(color: Colors.white),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
+}
 
-  void _submitLeaveRequest() async {
-    // Get the entered information
-    String startDate = _startDateController.text;
-    String endDate = _endDateController.text;
-    String reason = dropdownValueLeave;
-
-    // Validate if all fields are filled
-    if (startDate.isEmpty || endDate.isEmpty || reason == 'Type Of Leave') {
-      // Show an error message or handle accordingly
-      return;
-    }
-
-    // Check if the start date is before the end date
-    if (DateTime.parse(startDate).isAfter(DateTime.parse(endDate))) {
-      // Show an error message indicating that the start date should be before the end date
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('Start date must be before end date.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-      return; // Exit the method if the condition is not met
-    }
-
-    // Create a map of the leave request data
-    Map<String, dynamic> leaveRequestData = {
-      'start_date': startDate,
-      'end_date': endDate,
-      'reason': reason,
-
-      'Name': name,
-      'Hostelid': hostelid,
-      'Registration No': registration,
-      'Department': department,
-      'Parents No': parentsno,
-      'Student No': contactno,
-      'Room No': roomno,
-      'Addres': address,
-      'Year': year,
-      'Photo': photo,
-
-
-    };
-
-    try {
-      // Add the leave request data to Firestore
-      await FirebaseFirestore.instance
-          .collection('LeaveApproval')
-          .add(leaveRequestData);
-
-      // Show a success message or navigate to another screen
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Success'),
-            content: Text('Leave request submitted successfully.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-
-      // Clear the form fields after submission
-      _startDateController.clear();
-      _endDateController.clear();
-      _reasonController.clear(); // Clear Reason for Leave
-      setState(() {
-        dropdownValueLeave = listReasonLeave.first;
-
-        imageUrl = 'https://firebasestorage.googleapis.com/v0/b/vjti-hostel-f8c43.appspot.com/o/Icons%2Ficon.png?alt=media&token=2da3e303-790a-4b1e-aee2-cf974c14e386'; // Reset image URL
-      });
-    } catch (error) {
-      // Handle any errors that occur during the process
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to submit leave request.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
-
-
-
+ListTile listtile(String title) {
+  return ListTile(
+    title: Text(
+      title,
+      style: const TextStyle(
+        fontSize: 21,
+        color: Colors.black87,
+        fontFamily: "Nunito",
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  );
 }
