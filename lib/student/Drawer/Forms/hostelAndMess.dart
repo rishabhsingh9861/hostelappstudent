@@ -22,8 +22,8 @@ class HostelAndMess extends StatefulWidget {
 List<String> listCertificate = <String>[
   'Certificate Type',
   'Hostel and Mess Certificate',
-  'Expenditure Certifiacte',
-  'Passport Verifiaction Certificate'
+  'Expenditure Certificate',
+  'Passport Verification Certificate'
 ];
 
 String uniqueFilename = 'Upload Fees Receipt';
@@ -139,26 +139,39 @@ class _HostelAndMessState extends State<HostelAndMess> {
           if (certificate.isNotEmpty) {
             await certificateRequestDoc
                 .set({
-                  'Certificates': FieldValue.arrayUnion([
-                    {
-                      'Name': name,
-                      'Year': year,
-                      'RegNo': regNo,
-                      'RoomNo': roomNo,
-                      'CertificateType': certificate,
-                      'Timestamp': Timestamp.now(),
-                      'FeesReceiptUrl': downloadUrl,
-                    }
-                  ]),
-                }, SetOptions(merge: true))
-                .then((value) => showDialog(
-                    context: context,
-                    builder: (context) {
-                      return const AlertDialog(
-                        content: Text('Sent for verification!'),
-                      );
-                    }))
-                .then((value) => Navigator.pop(context));
+              'Certificates': FieldValue.arrayUnion([
+                {
+                  'Name': name,
+                  'Year': year,
+                  'Registration No.': regNo,
+                  'Room No': roomNo,
+                  'Certificate Type': certificate,
+                  'Timestamp': Timestamp.now(),
+                  'FeesReceiptUrl': downloadUrl,
+                  'photo':idCardData['Passport Photo'],
+                  'Email':idCardData['Emailid']
+                }
+              ]),
+            }, SetOptions(merge: true))
+                .then((value) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return const AlertDialog(
+                    title: Text('Success'),
+                    content: Text(
+                        'Your request is submitted successfully. Approval will be sent to your mail.Please collect it after 2 days from office after approval'),
+                  );
+                },
+              ).then((value) {
+                setState(() {
+                  // Clear selected certificate and file name
+                  certificate = '';
+                  uniqueFilename = 'Upload Fees Receipt';
+                });
+                Navigator.pop(context);
+              });
+            });
 
             // const snackBar = SnackBar(
             //   backgroundColor: Colors.green,
@@ -181,8 +194,15 @@ class _HostelAndMessState extends State<HostelAndMess> {
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         } else {
-          // Handle the case where idCardData is null
-        }
+            const snackBar = SnackBar(
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+              content: Text('Select a Certificate Type'),
+            );
+
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+
       } else {
         const snackBar = SnackBar(
           backgroundColor: Colors.red,
