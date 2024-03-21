@@ -7,6 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 
+import 'package:vjtihostel/student/constant/const.dart';
+
 class LeaveRequestPage extends StatefulWidget {
   const LeaveRequestPage({Key? key}) : super(key: key);
 
@@ -81,9 +83,11 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Leave Request and Approval'),
-      ),
+      backgroundColor: Colors.white,
+      // appBar: AppBar(
+      //   title: Text('Leave Request and Approval'),
+      // ),
+      appBar: appbars("Leave Request and Approval"),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('Events').snapshots(),
         builder: (context, snapshot) {
@@ -103,26 +107,60 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 40),
-                    child: DropdownButton<String>(
-                      value: dropdownValueLeave,
-                      onChanged: (String? value) {
-                        setState(() {
-                          dropdownValueLeave = value!;
-                          setleave = dropdownValueLeave;
-                        });
-                      },
-                      items: listReasonLeave
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey[350],
+                      ),
+                      child: DropdownButton<String>(
+                        dropdownColor: const Color(0xffE9E3D5),
+                        value: dropdownValueLeave,
+                        onChanged: (String? value) {
+                          setState(() {
+                            dropdownValueLeave = value!;
+                            setleave = dropdownValueLeave;
+                          });
+                        },
+                        items: listReasonLeave
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
                     ),
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   TextField(
                     controller: _startDateController,
-                    decoration: const InputDecoration(labelText: 'Start Date'),
+                    decoration: const InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                        labelText: 'Start Date',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                        )),
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
                         context: context,
@@ -142,7 +180,29 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                   const SizedBox(height: 16),
                   TextField(
                     controller: _endDateController,
-                    decoration: const InputDecoration(labelText: 'End Date'),
+                    decoration: const InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                        labelText: 'End Date',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                        )),
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
                         context: context,
@@ -162,11 +222,33 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                   const SizedBox(height: 10),
                   TextField(
                     controller: _reasonController,
-                    decoration:
-                        const InputDecoration(labelText: 'Reason for Leave'),
+                    decoration: const InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          borderSide: BorderSide(
+                            color: Colors.black,
+                          ),
+                        ),
+                        labelText: 'Reason for Leave',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                        )),
                   ),
                   const SizedBox(height: 10),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       InkWell(
                         onTap: () async {
@@ -257,7 +339,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                           });
                         },
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 40),
+                          padding: const EdgeInsets.only(left: 0),
                           child: Container(
                             height: 60,
                             width: 180,
@@ -295,8 +377,21 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                   ),
                   const SizedBox(height: 32),
                   ElevatedButton(
+                    style: ButtonStyle(
+                      side: MaterialStateBorderSide.resolveWith((states) =>
+                          BorderSide(color: Colors.black, width: 2)),
+                      backgroundColor: MaterialStateColor.resolveWith(
+                        (states) => Colors.grey,
+                      ),
+                    ),
                     onPressed: _submitLeaveRequest,
-                    child: const Text('Submit Request'),
+                    child: const Text(
+                      'Submit Request',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                 ],
               ),

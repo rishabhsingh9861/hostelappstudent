@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:vjtihostel/student/constant/const.dart';
 
 class CommitteePage extends StatefulWidget {
   const CommitteePage({Key? key}) : super(key: key);
@@ -17,85 +18,84 @@ class _CommitteePageState extends State<CommitteePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appbars("COMMITTEE"),
       // appBar: AppBar(
-      //   title: const Text('Committee'),
+      //   backgroundColor: const Color(0xff90AAD6),
+      //   centerTitle: true,
+      //   title: const Text(
+      //     "COMMITTEE",
+      //     style: TextStyle(
+      //       fontFamily: "Nunito",
+      //       fontWeight: FontWeight.bold,
+      //     ),
+      //   ),
       // ),
-      appBar: AppBar(
-        backgroundColor: const Color(0xff90AAD6),
-        centerTitle: true,
-        title: const Text(
-          "COMMITTEE",
-          style: TextStyle(
-            fontFamily: "Nunito",
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 16),
-              Expanded(
-                child: FutureBuilder(
-                  future:
-                      FirebaseFirestore.instance.collection('Committee').get(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else {
-                      return ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          String reqId = snapshot.data!.docs[index].id;
-                          docIDs.add(reqId);
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 16),
+            Expanded(
+              child: FutureBuilder(
+                future:
+                    FirebaseFirestore.instance.collection('Committee').get(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        String reqId = snapshot.data!.docs[index].id;
+                        docIDs.add(reqId);
 
-                          final reqData = snapshot.data!.docs[index].data();
+                        final reqData = snapshot.data!.docs[index].data();
 
-                          String committename = reqData['Name'] as String;
+                        String committename = reqData['Name'] as String;
 
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MembersPage(
-                                    committeeId: docIDs[index],
-                                    committeename: committename,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Card(
-                              color: const Color.fromARGB(255, 196, 220, 240),
-                              elevation: 8,
-                              margin: const EdgeInsets.symmetric(vertical: 8),
-                              child: ListTile(
-                                trailing: const Icon(
-                                  CupertinoIcons.chevron_forward,
-                                ),
-                                title: Text(
-                                  committename,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      fontFamily: "Nunito"),
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MembersPage(
+                                  committeeId: docIDs[index],
+                                  committeename: committename,
                                 ),
                               ),
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.grey[350],
                             ),
-                          );
-                        },
-                      );
-                    }
-                  },
-                ),
+                            margin: const EdgeInsets.symmetric(vertical: 8),
+                            child: ListTile(
+                              trailing: const Icon(
+                                CupertinoIcons.chevron_forward,
+                              ),
+                              title: Text(
+                                committename,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    fontFamily: "Nunito"),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -115,17 +115,18 @@ class MembersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xff90AAD6),
-        centerTitle: true,
-        title: Text(
-          committeename,
-          style: const TextStyle(
-            fontFamily: "Nunito",
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: const Color(0xff90AAD6),
+      //   centerTitle: true,
+      //   title: Text(
+      //     committeename,
+      //     style: const TextStyle(
+      //       fontFamily: "Nunito",
+      //       fontWeight: FontWeight.bold,
+      //     ),
+      //   ),
+      // ),
+      appBar: appbars(committeename),
       body: Center(
         child: FutureBuilder(
           future: getMembers(committeeId),

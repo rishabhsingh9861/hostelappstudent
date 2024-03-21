@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 PreferredSizeWidget appbars(String text) {
   return AppBar(
-    backgroundColor: const Color(0xff90AAD6),
+    backgroundColor: const Color(0xffE9E3D5),
     // shape: const RoundedRectangleBorder(
     //     borderRadius: BorderRadius.vertical(bottom: Radius.circular(50))),
     centerTitle: true,
@@ -27,11 +27,12 @@ Widget dropdownMenu<T>(
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(7.0),
+        padding:
+            const EdgeInsets.only(left: 20.0, right: 25, top: 10, bottom: 10),
         child: DropdownButton<T>(
           elevation: 0,
-          iconEnabledColor: const Color.fromARGB(255, 69, 122, 158),
-          dropdownColor: const Color.fromARGB(255, 198, 209, 228),
+          iconEnabledColor: Colors.black,
+          dropdownColor: const Color(0xffE9E3D5),
           value: dropdownValue,
           onChanged: onChanged,
           borderRadius: BorderRadius.circular(25),

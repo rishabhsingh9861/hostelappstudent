@@ -141,6 +141,9 @@ class _VjtiloginState extends State<Vjtilogin> {
                               CircularProgressIndicator()) // Show circular progress indicator
                       : ElevatedButton(
                           style: ButtonStyle(
+                              side: MaterialStateBorderSide.resolveWith(
+                                  (states) => const BorderSide(
+                                      width: 3, color: Colors.black)),
                               backgroundColor: MaterialStateColor.resolveWith(
                                   (states) => const Color.fromARGB(
                                       255, 114, 113, 113))),

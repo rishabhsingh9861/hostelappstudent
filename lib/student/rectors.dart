@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:vjtihostel/student/constant/const.dart';
 
 class Rectors extends StatefulWidget {
   const Rectors({
@@ -16,36 +17,39 @@ class _RectorsState extends State<Rectors> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('Rectors')
-            .orderBy('Rank', descending: false)
-            .snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-            return ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                // String reqId = snapshot.data!.docs[index].id;
-                // requiredId.add(reqId);
-                final reqData =
-                    snapshot.data!.docs[index].data() as Map<String, dynamic>;
-                String rectorName = reqData['Rector Name'] as String;
-                String rectorImage = reqData['Rector Image'] as String;
-                String rectorEmail = reqData['Rector Email'] as String;
-                String position = reqData['Position'] as String;
-           int rectorNumber = reqData['Rector Number'] as int? ?? 0;
+    return Scaffold(
+      appBar: appbars("Rectors"),
+      body: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('Rectors')
+              .orderBy('Rank', descending: false)
+              .snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+              return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  // String reqId = snapshot.data!.docs[index].id;
+                  // requiredId.add(reqId);
+                  final reqData =
+                      snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                  String rectorName = reqData['Rector Name'] as String;
+                  String rectorImage = reqData['Rector Image'] as String;
+                  String rectorEmail = reqData['Rector Email'] as String;
+                  String position = reqData['Position'] as String;
+                  int rectorNumber = reqData['Rector Number'] as int? ?? 0;
 
-                return material(rectorNumber, rectorEmail, rectorImage,
-                    rectorName, position);
-              },
-            );
-          } else {
-            // Handle the case when there is no data or it's still loading
-            return const Center(child: CircularProgressIndicator());
-          }
-        });
+                  return material(rectorNumber, rectorEmail, rectorImage,
+                      rectorName, position);
+                },
+              );
+            } else {
+              // Handle the case when there is no data or it's still loading
+              return const Center(child: CircularProgressIndicator());
+            }
+          }),
+    );
   }
 
   Widget material(int phoneno, String emailto, String assetimage,
@@ -55,7 +59,7 @@ class _RectorsState extends State<Rectors> {
     return Material(
       //  color: Colors.blueGrey,
       child: Padding(
-        padding: const EdgeInsets.all(30.0),
+        padding: const EdgeInsets.all(20.0),
         child: Container(
           height: 400,
           width: 350,
@@ -90,7 +94,7 @@ class _RectorsState extends State<Rectors> {
                       Text(
                         nametext,
                         style:
-                            const TextStyle(color: Colors.black, fontSize: 30),
+                            const TextStyle(color: Colors.black, fontSize: 25),
                       ),
                       const SizedBox(
                         height: 5,

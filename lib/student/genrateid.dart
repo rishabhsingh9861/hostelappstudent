@@ -157,33 +157,39 @@ class _GenerateIdState extends State<GenerateId> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(left: 5, top: 5),
-                          height: 100,
-                          child: Hero(
-                              tag: "vjtiLogo",
-                              child: Image.asset("assets/images/vjtiLogo.png")),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 8.0, right: 8),
-                          child: Text(
-                            "Veermata Jijabai \n  Technological\n     Institute",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.red,
-                              fontFamily: "Anton",
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.all(5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(left: 5, top: 5),
+                              height: 100,
+                              child: Hero(
+                                  tag: "vjtiLogo",
+                                  child: Image.asset(
+                                      "assets/images/vjtiLogo.png")),
                             ),
-                          ),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 8.0, right: 8),
+                              child: Text(
+                                "Veermata Jijabai \n  Technological\n     Institute",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.red,
+                                  fontFamily: "Anton",
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                     Expanded(
-                      child: SizedBox(
-                        height: 280,
+                      child: Container(
+                        // color: Colors.black,
                         child: Hero(
                             tag: "ID",
                             child: Image.asset('assets/images/idcard.png')),
@@ -273,7 +279,7 @@ class _GenerateIdState extends State<GenerateId> {
                               );
 
                               List<int> compressedImage =
-                              (await FlutterImageCompress.compressWithFile(
+                                  (await FlutterImageCompress.compressWithFile(
                                 file.path,
                                 quality: 20,
                               )) as List<int>;
@@ -326,7 +332,7 @@ class _GenerateIdState extends State<GenerateId> {
                               color: Colors.white,
                               border: Border.all(
                                 width: 1,
-                                color: const Color.fromARGB(255, 97, 139, 163),
+                                color: Colors.black,
                               ),
                               borderRadius: BorderRadius.circular(25),
                             ),
@@ -388,7 +394,7 @@ class _GenerateIdState extends State<GenerateId> {
                             color: Colors.white,
                             border: Border.all(
                               width: 1,
-                              color: const Color.fromARGB(255, 97, 139, 163),
+                              color: Colors.black,
                             ),
                             borderRadius: BorderRadius.circular(25),
                           ),
@@ -423,8 +429,11 @@ class _GenerateIdState extends State<GenerateId> {
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
+                    side: MaterialStateBorderSide.resolveWith(
+                      (states) => BorderSide(color: Colors.black, width: 1),
+                    ),
                     backgroundColor: MaterialStateProperty.resolveWith(
-                      (states) => const Color.fromARGB(255, 108, 159, 201),
+                      (states) => Colors.grey,
                     ),
                   ),
                   onPressed: () {

@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vjtihostel/student/constant/const.dart';
 
 class FacilitiesPage extends StatefulWidget {
   const FacilitiesPage({Key? key}) : super(key: key);
@@ -14,17 +15,18 @@ class _FacilitiesPageState extends State<FacilitiesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xff90AAD6),
-        centerTitle: true,
-        title: const Text(
-          "Facilities",
-          style: TextStyle(
-            fontFamily: "Nunito",
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: const Color(0xff90AAD6),
+      //   centerTitle: true,
+      //   title: const Text(
+      //     "Facilities",
+      //     style: TextStyle(
+      //       fontFamily: "Nunito",
+      //       fontWeight: FontWeight.bold,
+      //     ),
+      //   ),
+      // ),
+      appBar: appbars("Facilities"),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -60,9 +62,12 @@ class _FacilitiesPageState extends State<FacilitiesPage> {
                           ),
                         );
                       },
-                      child: Card(
-                        color: const Color.fromARGB(255, 196, 220, 240),
-                        elevation: 8,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black),
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.grey[350],
+                        ),
                         margin: const EdgeInsets.symmetric(vertical: 8),
                         child: ListTile(
                           trailing: const Icon(
@@ -129,7 +134,10 @@ class FacilitiesList extends StatelessWidget {
               return Text('Error: ${snapshot.error}');
             } else {
               final List<DocumentSnapshot> docs = snapshot.data!.docs;
-              final List<Photo> photos = docs.map((doc) => Photo.fromMap(doc.data() as Map<String, dynamic>)).toList();
+              final List<Photo> photos = docs
+                  .map((doc) =>
+                      Photo.fromMap(doc.data() as Map<String, dynamic>))
+                  .toList();
 
               return ListView.builder(
                 itemCount: photos.length,
@@ -138,7 +146,8 @@ class FacilitiesList extends StatelessWidget {
 
                   return Card(
                     elevation: 3,
-                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: Container(
                       decoration: BoxDecoration(
                         color: const Color.fromRGBO(255, 255, 255, 1),

@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vjtihostel/student/Drawer/Forms/past_year_photos.dart';
+import 'package:vjtihostel/student/constant/const.dart';
 
 // void main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -28,45 +29,46 @@ class HolidayList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          '2024 Holiday List',
-          style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontFamily: "Nunito",
-              fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: const Color.fromARGB(255, 176, 189, 211),
-        elevation: 50,
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            ListTile(
-              title: const Text('Calendar'),
-              onTap: () {
-                Navigator.pop(context); // Close the drawer
-              },
-            ),
-            InkWell(
-              onTap: () {
-                // print('hello');
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const PastYearPhotosPage()),
-                );
-              },
-              child: Container(
-                child: ListTile(
-                  title: const Text('Past Year Photos'),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      // appBar: AppBar(
+      //   title: const Text(
+      //     '2024 Holiday List',
+      //     style: TextStyle(
+      //         color: Colors.black,
+      //         fontSize: 20,
+      //         fontFamily: "Nunito",
+      //         fontWeight: FontWeight.bold),
+      //   ),
+      //   backgroundColor: const Color.fromARGB(255, 176, 189, 211),
+      //   elevation: 50,
+      // ),
+      appBar: appbars("Holiday List"),
+      // drawer: Drawer(
+      //   child: ListView(
+      //     children: [
+      //       ListTile(
+      //         title: const Text('Calendar'),
+      //         onTap: () {
+      //           Navigator.pop(context); // Close the drawer
+      //         },
+      //       ),
+      //       InkWell(
+      //         onTap: () {
+      //           // print('hello');
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //                 builder: (context) => const PastYearPhotosPage()),
+      //           );
+      //         },
+      //         child: Container(
+      //           child: ListTile(
+      //             title: const Text('Past Year Photos'),
+      //           ),
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('Events')
@@ -105,9 +107,19 @@ class HolidayList extends StatelessWidget {
               // Convert timestamp to DateTime
               DateTime date = eventDate.toDate();
 
-              return ListTile(
-                title: Text(eventName),
-                subtitle: Text('Date: ${date.toLocal()}'),
+              return Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black,
+                  ),
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.grey[100],
+                ),
+                margin: EdgeInsets.all(5),
+                child: ListTile(
+                  title: Text(eventName),
+                  subtitle: Text('Date: ${date.toLocal()}'),
+                ),
               );
             },
           );
