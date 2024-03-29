@@ -59,7 +59,6 @@ List<String> listbatch = [
   '2050'
 ];
 
-
 class _RoomChangeState extends State<RoomChange> {
   CollectionReference db =
       FirebaseFirestore.instance.collection('HostelStudents');
@@ -130,18 +129,14 @@ class _RoomChangeState extends State<RoomChange> {
 
               // ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-   showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const AlertDialog(
-                              content: Text('Sent for verification!'),
-                            );
-                          },
-                        ).then((value) =>  Navigator.pop(context));
-    
-
-
-             
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return const AlertDialog(
+                    content: Text('Sent for verification!'),
+                  );
+                },
+              ).then((value) => Navigator.pop(context));
 
               // Clear the text fields
               // preferences.clear();
@@ -199,17 +194,18 @@ class _RoomChangeState extends State<RoomChange> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: const Color(0xff90AAD6),
-        centerTitle: true,
-        title: const Text(
-          "Vacant Room",
-          style: TextStyle(
-            fontFamily: "Nunito",
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: const Color(0xff90AAD6),
+      //   centerTitle: true,
+      //   title: const Text(
+      //     "Vacant Room",
+      //     style: TextStyle(
+      //       fontFamily: "Nunito",
+      //       fontWeight: FontWeight.bold,
+      //     ),
+      //   ),
+      // ),
+      appBar: appbars('Vacant Room'),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -227,22 +223,6 @@ class _RoomChangeState extends State<RoomChange> {
                 const SizedBox(
                   height: 10,
                 ),
-
-                // leaveDetails(
-                //   hinttext: " e.g. Branch wise",
-                //   labletext: "Roommate Preferences ",
-                //   icons: const Icon(CupertinoIcons.person),
-                //   controller: preferences,
-
-                // ),
-                // const Padding(
-                //   padding: EdgeInsets.all(8.0),
-                //   child: Text(
-                //     'If Academics year completed , write only "Academics Year Completed" else specify your problem ',
-                //     style: TextStyle(color: Colors.red),
-                //   ),
-                // ),
-
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: dropdownMenu(listvacant, dropdownValueVacant,
@@ -253,13 +233,10 @@ class _RoomChangeState extends State<RoomChange> {
                     });
                   }),
                 ),
-
                 const SizedBox(
                   height: 10,
                 ),
-
-
-       Padding(
+                Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: dropdownMenu(listbatch, dropdownValueBatch,
                       (String? value) {
@@ -269,13 +246,6 @@ class _RoomChangeState extends State<RoomChange> {
                     });
                   }),
                 ),
-
-                // leaveDetails(
-                //   hinttext: " ",
-                //   labletext: "Reason for Room Change",
-                //   icons: const Icon(CupertinoIcons.italic),
-                //   controller: reason,
-                // ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -285,7 +255,7 @@ class _RoomChangeState extends State<RoomChange> {
                   children: [
                     Checkbox(
                         value: click ?? false,
-                        activeColor: Colors.blueAccent,
+                        activeColor: Colors.grey,
                         onChanged: (newBool) {
                           setState(() {
                             click = newBool;
@@ -300,10 +270,15 @@ class _RoomChangeState extends State<RoomChange> {
                     )
                   ],
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
                 ElevatedButton(
                   style: ButtonStyle(
+                    side: MaterialStateBorderSide.resolveWith(
+                        (states) => BorderSide(color: Colors.black, width: 2)),
                     backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => const Color(0xff90AAD6),
+                      (states) => Colors.grey,
                     ),
                   ),
                   onPressed: () {
@@ -311,7 +286,7 @@ class _RoomChangeState extends State<RoomChange> {
                   },
                   child: const Text(
                     "Submit",
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.black, fontSize: 20),
                   ),
                 )
               ],
