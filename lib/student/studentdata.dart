@@ -60,7 +60,6 @@ class _StudentDataState extends State<StudentData> {
   final _parentcontactnoController = TextEditingController();
   final _studentcontactnoController = TextEditingController();
   final _addresController = TextEditingController();
-
   final _hostelIdController = TextEditingController();
 
   bool approv = false;

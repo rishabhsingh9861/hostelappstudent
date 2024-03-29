@@ -556,6 +556,7 @@ ListTile listtile(String title) {
     title: Text(
       title,
       style: const TextStyle(
+
         fontSize: 21,
         color: Colors.black87,
         fontFamily: "Nunito",
