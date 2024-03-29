@@ -9,147 +9,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:vjtihostel/student/constant/const.dart';
 
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp();
-//   runApp(MaterialApp(
-//     home: ChatScreen(),
-//   ));
-// }
-
 class ChatScreen extends StatefulWidget {
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final TextEditingController _controller = TextEditingController();
-  final ImagePicker _picker = ImagePicker();
-
-  File? _pickedImage;
-  File? _pickedPdf;
-  String? userName;
-
-  Future<void> _sendMessage(
-      String? message, String? imageUrl, String? pdfUrl) async {
-    // Add message to Firestore
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null ||
-        (message != null && message.isNotEmpty) ||
-        imageUrl != null ||
-        pdfUrl != null) {
-      // Get user's name from 'Rectors' collection
-      String? userName;
-      QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('Rectors')
-          .where('Rector Email', isEqualTo: user?.email)
-          .get();
-
-      if (snapshot.docs.isNotEmpty) {
-        Map<String, dynamic>? userData =
-            snapshot.docs[0].data() as Map<String, dynamic>;
-        userName = userData['Rector Name'];
-      }
-
-      await FirebaseFirestore.instance.collection('notices').add({
-        'userName': userName,
-        'userEmail': user?.email, // Include user email in the document
-        'text': message,
-        'imageUrl': imageUrl,
-        'pdfUrl': pdfUrl,
-        'createdAt': Timestamp.now(),
-      });
-    }
-  }
-
-  Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(
-      source: ImageSource.gallery,
-    );
-    if (pickedFile != null) {
-      setState(() {
-        _pickedImage = File(pickedFile.path);
-        _pickedPdf = null; // Clear picked PDF when picking image
-      });
-    }
-  }
-
-  Future<void> _pickPdf() async {
-    FilePickerResult? pickedPdfFile = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf'],
-    );
-    if (pickedPdfFile != null) {
-      setState(() {
-        _pickedPdf = File(pickedPdfFile.files.single.path!);
-        _pickedImage = null; // Clear picked image when picking PDF
-      });
-    }
-  }
-
-  Future<void> _uploadImageAndSendMessage() async {
-    if (_pickedImage != null) {
-      // Upload image to Firebase Storage
-      Reference ref = FirebaseStorage.instance
-          .ref()
-          .child('images/${DateTime.now().toString()}');
-      UploadTask uploadTask = ref.putFile(_pickedImage!);
-      TaskSnapshot snapshot = await uploadTask.whenComplete(() {});
-      String imageUrl = await snapshot.ref.getDownloadURL();
-
-      // Add message to Firestore with the image URL
-      _sendMessage('', imageUrl, null);
-
-      // Clear picked image and text field
-      setState(() {
-        _pickedImage = null;
-        _controller.clear();
-      });
-    } else if (_pickedPdf != null) {
-      // Upload PDF to Firebase Storage
-      Reference ref = FirebaseStorage.instance
-          .ref()
-          .child('pdfs/${DateTime.now().toString()}');
-      UploadTask uploadTask = ref.putFile(_pickedPdf!);
-      TaskSnapshot snapshot = await uploadTask.whenComplete(() {});
-      String pdfUrl = await snapshot.ref.getDownloadURL();
-
-      // Add message to Firestore with the PDF URL
-      _sendMessage('', null, pdfUrl);
-
-      // Clear picked PDF
-      setState(() {
-        _pickedPdf = null;
-        _controller.clear(); // Clear the text field after sending the message
-      });
-    }
-  }
-
-  Future<void> getuserdata(String emailid) async {
-    QuerySnapshot snapshot = await FirebaseFirestore.instance
-        .collection('Rectors')
-        .where('Rector Email', isEqualTo: emailid)
-        .get();
-
-    if (snapshot.docs.isNotEmpty) {
-      Map<String, dynamic>? userData =
-          snapshot.docs[0].data() as Map<String, dynamic>;
-      ;
-      setState(() {
-        userName = userData['Rector Name'];
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      getuserdata(user.email!); // Fetch user data on screen initialization
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -197,41 +62,6 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
-class ImagePreviewWidget extends StatelessWidget {
-  final File imageFile;
-  final VoidCallback onConfirm;
-  final VoidCallback onCancel;
-
-  ImagePreviewWidget({
-    required this.imageFile,
-    required this.onConfirm,
-    required this.onCancel,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (imageFile.path.isNotEmpty) Image.file(imageFile),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: onConfirm,
-              child: const Text('Confirm'),
-            ),
-            const SizedBox(width: 10),
-            ElevatedButton(
-              onPressed: onCancel,
-              child: const Text('Cancel'),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
 class MessageBubble extends StatelessWidget {
   MessageBubble({
     required this.sender,
@@ -268,8 +98,8 @@ class MessageBubble extends StatelessWidget {
                     bottomRight: Radius.circular(40),
                   ),
                 ),
-                height: 200,
-                width: 200,
+                height: 300,
+                width: 300,
                 child: image != null
                     ? ClipRRect(
                         borderRadius: const BorderRadius.only(
@@ -285,18 +115,40 @@ class MessageBubble extends StatelessWidget {
                     : Icon(Icons.picture_as_pdf), // Placeholder for PDF icon
               )
             else
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(width: 5, color: Colors.black),
-                  borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(40),
-                      bottomLeft: Radius.circular(40),
-                      bottomRight: Radius.circular(40)),
-                  color: Colors.black12,
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PdfViewer(pdfUrl: pdf!)));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 5, color: Colors.black),
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(40),
+                        bottomLeft: Radius.circular(40),
+                        bottomRight: Radius.circular(40)),
+                    color: Colors.black12,
+                  ),
+                  height: 100,
+                  width: 200,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'PDF',
+                        style: TextStyle(
+                          fontSize: 30.0,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Icon(Icons.picture_as_pdf)
+                    ],
+                  ),
                 ),
-                height: 200,
-                width: 300,
-                child: Center(child: Text("PDF Baki hai")),
               )
           // Container(
           //   height: 200,
@@ -365,11 +217,16 @@ class PdfViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('PDF Viewer'),
-      ),
-      body: SfPdfViewer.network(pdfUrl, enableDocumentLinkAnnotation: false),
+    return SafeArea(
+      child: Scaffold(
+          // appBar: AppBar(
+          //   title: const Text('PDF Viewer'),
+          // ),
+          body: SfPdfViewer.network(
+        pdfUrl,
+        // controller: _pdfViewerController,
+        enableDocumentLinkAnnotation: false,
+      )),
     );
   }
 }
