@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
+import 'package:vjtihostel/student/constant/const.dart';
 
 class PendingComplaints extends StatefulWidget {
   const PendingComplaints({Key? key}) : super(key: key);
@@ -19,44 +20,40 @@ class _ComplaintsState extends State<PendingComplaints> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pending Complaints'),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                children: <Widget>[
-                  for (String category in [
-                    'Electrical',
-                    'Carpentry',
-                    'Plumbing',
-                    'Structural',
-                    'Housekeeping',
-                  ])
-                    ComplaintCategoryCard(
-                      category: category,
-                      isSelected: selectedCategory == category,
-                      onTap: () {
-                        // Navigate to the corresponding page directly
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => ComplaintCategory(
-                              category: category,
-                            ),
+      appBar: appbars('Pending Complaints'),
+      body: Column(
+        // mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: <Widget>[
+                for (String category in [
+                  'Electrical',
+                  'Carpentry',
+                  'Plumbing',
+                  'Structural',
+                  'Housekeeping',
+                ])
+                  ComplaintCategoryCard(
+                    category: category,
+                    isSelected: selectedCategory == category,
+                    onTap: () {
+                      // Navigate to the corresponding page directly
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ComplaintCategory(
+                            category: category,
                           ),
-                        );
-                      },
-                    ),
-                ],
-              ),
-            ],
+                        ),
+                      );
+                    },
+                  ),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -76,8 +73,15 @@ class ComplaintCategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: isSelected ? Colors.blue : null,
+    return Container(
+      margin: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(10),
+        ),
+        color: Colors.grey[400],
+      ),
       child: ListTile(
         title: Text(category),
         onTap: onTap,
@@ -110,9 +114,10 @@ class _ComplaintCategoryState extends State<ComplaintCategory> {
     String email = user.email.toString();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.category} Complaints'),
-      ),
+      // appBar: AppBar(
+      //   title: Text('${widget.category} Complaints'),
+      // ),
+      appBar: appbars('${widget.category} Complaints'),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection(widget.category)

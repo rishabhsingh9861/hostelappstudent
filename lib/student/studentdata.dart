@@ -253,7 +253,7 @@ class _StudentDataState extends State<StudentData> {
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => const Color.fromARGB(255, 147, 182, 206),
+                        (states) => Colors.black,
                       ),
                     ),
                     onPressed: () {
@@ -286,6 +286,7 @@ class _StudentDataState extends State<StudentData> {
                       "Submit",
                       style: TextStyle(
                         color: Colors.white,
+                        fontSize: 20,
                       ),
                     ),
                   ),

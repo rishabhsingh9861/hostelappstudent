@@ -254,22 +254,18 @@ class _ComplaintsState extends State<Complaints> {
                             showConfirmBtn: false,
                           );
 
+                          List<int> compressedImage =
+                              (await FlutterImageCompress.compressWithFile(
+                            file.path,
+                            quality: 20,
+                          )) as List<int>;
 
-
-                                 List<int> compressedImage =
-                                  (await FlutterImageCompress.compressWithFile(
-                                file.path,
-                                quality: 20, 
-                              )) as List<int>;
-
-                              await refrenceImageToUpload.putData(
-                                Uint8List.fromList(compressedImage),
-                                SettableMetadata(
-                                  contentType: "image/jpeg",
-                                ),
-                              );
-
-
+                          await refrenceImageToUpload.putData(
+                            Uint8List.fromList(compressedImage),
+                            SettableMetadata(
+                              contentType: "image/jpeg",
+                            ),
+                          );
 
                           imageUrl =
                               await refrenceImageToUpload.getDownloadURL();
@@ -303,10 +299,11 @@ class _ComplaintsState extends State<Complaints> {
                       height: 60,
                       width: 280,
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 185, 213, 226),
+                        color: Colors.white,
                         border: Border.all(
-                            width: 3,
-                            color: const Color.fromARGB(255, 69, 114, 148)),
+                          width: 1,
+                          color: Colors.black,
+                        ),
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Row(
@@ -346,8 +343,12 @@ class _ComplaintsState extends State<Complaints> {
               ),
               ElevatedButton(
                 style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => const Color(0xff90AAD6))),
+                  side: MaterialStateBorderSide.resolveWith(
+                      (states) => BorderSide(color: Colors.black)),
+                  backgroundColor: MaterialStateColor.resolveWith(
+                    (states) => Colors.grey,
+                  ),
+                ),
                 onPressed: () async {
                   DocumentSnapshot idCardSnapshot = await FirebaseFirestore
                       .instance
@@ -358,7 +359,6 @@ class _ComplaintsState extends State<Complaints> {
                       .get();
 
                   if (!idCardSnapshot.exists) {
-                    
                     showDialog(
                       context: context,
                       builder: (context) {
@@ -382,8 +382,7 @@ class _ComplaintsState extends State<Complaints> {
                                 context: context,
                                 builder: (context) {
                                   return const AlertDialog(
-                                    content: Text(
-                                        'Problem Sent Sucessfully'), 
+                                    content: Text('Problem Sent Sucessfully'),
                                   );
                                 }).then((value) {
                               int count = 1;
@@ -394,7 +393,9 @@ class _ComplaintsState extends State<Complaints> {
                 },
                 child: const Text(
                   "Send Problem", // send text
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
                 ),
               ),
               const SizedBox(

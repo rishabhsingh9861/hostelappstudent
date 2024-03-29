@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xff90AAD6),
+        backgroundColor: const Color(0xffE9E3D5),
         centerTitle: true,
         title: const Text(
           "VJTI HOSTEL",
@@ -403,7 +403,7 @@ class _DrawersState extends State<Drawers> {
     final user = FirebaseAuth.instance.currentUser!;
     String email = user.email.toString();
     return Drawer(
-      backgroundColor: const Color.fromARGB(255, 176, 189, 211),
+      backgroundColor: Colors.white,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -413,9 +413,7 @@ class _DrawersState extends State<Drawers> {
                 backgroundColor: Colors.white,
                 backgroundImage: NetworkImage(url),
               ),
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 184, 200, 228),
-              ),
+              decoration: const BoxDecoration(color: Color(0xffE9E3D5)),
               accountName: Text(
                 user.displayName!,
                 style: const TextStyle(
@@ -502,7 +500,7 @@ class _DrawersState extends State<Drawers> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (_) => HolidayList()));
                 },
-                child: listtile("Events")),
+                child: listtile("Holiday List")),
             div,
             GestureDetector(
               onTap: () {
@@ -539,6 +537,8 @@ class _DrawersState extends State<Drawers> {
             div,
             ElevatedButton(
               style: ButtonStyle(
+                  side: MaterialStateBorderSide.resolveWith((states) =>
+                      BorderSide(color: Colors.red.shade900, width: 2)),
                   backgroundColor:
                       MaterialStateColor.resolveWith((states) => Colors.red)),
               onPressed: () {

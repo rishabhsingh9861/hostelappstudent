@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:vjtihostel/student/Drawer/Forms/leaves.dart';
 import 'package:vjtihostel/student/Drawer/Forms/room.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:vjtihostel/student/constant/const.dart';
 
 class Request extends StatelessWidget {
   const Request({super.key});
@@ -13,12 +14,13 @@ class Request extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser!;
     String email = user.email.toString();
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xff90AAD6),
-        title: const Text("Request"),
-        centerTitle: true,
-        foregroundColor: Colors.black,
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: const Color(0xff90AAD6),
+      //   title: const Text("Request"),
+      //   centerTitle: true,
+      //   foregroundColor: Colors.black,
+      // ),
+      appBar: appbars("Request"),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
@@ -55,67 +57,6 @@ class Request extends StatelessWidget {
                   ),
                 ],
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     // Requestcontainer(
-              //     //   Requestname: "Complaints ",
-              //     //   image: "Complaint.png",
-              //     //   function: () {},
-              //     // ),
-              //     Requestcontainer(
-              //       Requestname: "Amenities",
-              //       image: "Amenities1.jpg",
-              //       function: () {
-              //         Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //             builder: (context) => const Amenities(),
-              //           ),
-              //         );
-              //       },
-              //     ),
-              //   ],
-              // ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     Requestcontainer(
-              //       Requestname: "Amenities",
-              //       image: "Amenities1.jpg",
-              //       function: () {
-              //         Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //             builder: (context) => Amenities(),
-              //           ),
-              //         );
-              //       },
-              //     ),
-              //   ],
-              // ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     Requestcontainer(
-              //       Requestname: "Event Request",
-              //       image: "Event.jpg",
-              //       function: () {
-              //         Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //             builder: (context) => EventRequest(),
-              //           ),
-              //         );
-              //       },
-              //     ),
-              //     Requestcontainer(
-              //       Requestname: "Status Tracking",
-              //       image: "Status.webp",
-              //       function: () {},
-              //     ),
-              //   ],
-              // ),
             ],
           ),
         ),
@@ -161,10 +102,17 @@ class Request extends StatelessWidget {
             height: 16,
           ),
           ElevatedButton(
+            style: ButtonStyle(
+                side: MaterialStateBorderSide.resolveWith(
+                    (states) => BorderSide(color: Colors.black, width: 2)),
+                backgroundColor:
+                    MaterialStateColor.resolveWith((states) => Colors.grey)),
             onPressed: function,
             child: const Text(
-              "VIEW",
-              style: TextStyle(color: Colors.black),
+              "SEND",
+              style: TextStyle(
+                color: Colors.black,
+              ),
             ),
           )
         ],

@@ -9,6 +9,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:vjtihostel/student/constant/const.dart';
 
+
 class ChatScreen extends StatefulWidget {
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -149,6 +150,132 @@ class MessageBubble extends StatelessWidget {
                     ],
                   ),
                 ),
+              )
+          // Container(
+          //   height: 200,
+          //   width: 300,
+          //   decoration: BoxDecoration(
+          //     color: isMe
+          //         ? const Color.fromARGB(255, 78, 78, 78)
+          //         : Colors.grey,
+          //     borderRadius: isMe
+          //         ? const BorderRadius.only(
+          //             topLeft: Radius.circular(40),
+          //             bottomLeft: Radius.circular(40),
+          //             bottomRight: Radius.circular(40))
+          //         : const BorderRadius.only(
+          //             topRight: Radius.circular(40),
+          //             bottomLeft: Radius.circular(40),
+          //             bottomRight: Radius.circular(40),
+          //           ),
+          //   ),
+          //   child: ClipRRect(
+          //       borderRadius: isMe
+          //           ? const BorderRadius.only(
+          //               topLeft: Radius.circular(40),
+          //               bottomLeft: Radius.circular(40),
+          //               bottomRight: Radius.circular(40))
+          //           : const BorderRadius.only(
+          //               topRight: Radius.circular(40),
+          //               bottomLeft: Radius.circular(40),
+          //               bottomRight: Radius.circular(40),
+          //             ),
+          //       child: PdfViewer(pdfUrl: pdf!),),
+          // )
+          else
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade600, width: 3),
+                borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(20),
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20)),
+                color: Colors.grey[400],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  '$text ',
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
+          Text('$sender'),
+        ],
+      ),
+    );
+  }
+}
+
+class MessageBubble extends StatelessWidget {
+  MessageBubble({
+    required this.sender,
+    required this.text,
+    required this.isMe,
+    required this.image,
+    required this.pdf,
+  });
+  final String? text;
+  final String? sender;
+  final String? image;
+  final String? pdf;
+  final bool isMe;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (image != null || pdf != null)
+            if (image != null)
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      width: 4, color: Color.fromARGB(255, 78, 78, 78)),
+                  color: isMe
+                      ? const Color.fromARGB(255, 78, 78, 78)
+                      : Colors.grey,
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(40),
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
+                  ),
+                ),
+                height: 200,
+                width: 200,
+                child: image != null
+                    ? ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(40),
+                          bottomLeft: Radius.circular(40),
+                          bottomRight: Radius.circular(40),
+                        ),
+                        child: Image.network(
+                          image!,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Icon(Icons.picture_as_pdf), // Placeholder for PDF icon
+              )
+            else
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(width: 5, color: Colors.black),
+                  borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(40),
+                      bottomLeft: Radius.circular(40),
+                      bottomRight: Radius.circular(40)),
+                  color: Colors.black12,
+                ),
+                height: 200,
+                width: 300,
+                child: Center(child: Text("PDF Baki hai")),
               )
           // Container(
           //   height: 200,

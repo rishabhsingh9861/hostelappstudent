@@ -13,7 +13,7 @@ Widget writedata(
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(25),
         borderSide: const BorderSide(
-          color: Color.fromARGB(255, 69, 122, 158),
+          color: Colors.black,
         ),
       ),
       focusedBorder: OutlineInputBorder(
