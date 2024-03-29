@@ -137,8 +137,7 @@ class _HostelAndMessState extends State<HostelAndMess> {
           String roomNo = idCardData['Room No'] ?? '';
 
           if (certificate.isNotEmpty) {
-            await certificateRequestDoc
-                .set({
+            await certificateRequestDoc.set({
               'Certificates': FieldValue.arrayUnion([
                 {
                   'Name': name,
@@ -148,12 +147,11 @@ class _HostelAndMessState extends State<HostelAndMess> {
                   'Certificate Type': certificate,
                   'Timestamp': Timestamp.now(),
                   'FeesReceiptUrl': downloadUrl,
-                  'photo':idCardData['Passport Photo'],
-                  'Email':idCardData['Emailid']
+                  'photo': idCardData['Passport Photo'],
+                  'Email': idCardData['Emailid']
                 }
               ]),
-            }, SetOptions(merge: true))
-                .then((value) {
+            }, SetOptions(merge: true)).then((value) {
               showDialog(
                 context: context,
                 builder: (context) {
@@ -194,15 +192,14 @@ class _HostelAndMessState extends State<HostelAndMess> {
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         } else {
-            const snackBar = SnackBar(
-              backgroundColor: Colors.red,
-              duration: Duration(seconds: 3),
-              content: Text('Select a Certificate Type'),
-            );
+          const snackBar = SnackBar(
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 3),
+            content: Text('Select a Certificate Type'),
+          );
 
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
-
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
       } else {
         const snackBar = SnackBar(
           backgroundColor: Colors.red,
@@ -228,7 +225,7 @@ class _HostelAndMessState extends State<HostelAndMess> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: const Color(0xff90AAD6),
+        backgroundColor: const Color(0xffE9E3D5),
         title: const Text(
           "Certificate Request",
           style: TextStyle(
@@ -290,7 +287,7 @@ class _HostelAndMessState extends State<HostelAndMess> {
                         color: Colors.white,
                         border: Border.all(
                           width: 1,
-                          color: const Color.fromARGB(255, 97, 139, 163),
+                          color: Colors.black,
                         ),
                         borderRadius: BorderRadius.circular(25),
                       ),
@@ -314,8 +311,10 @@ class _HostelAndMessState extends State<HostelAndMess> {
                   ),
                   ElevatedButton(
                     style: ButtonStyle(
+                      side: MaterialStateBorderSide.resolveWith((states) =>
+                          BorderSide(color: Colors.black, width: 2)),
                       backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => const Color(0xff90AAD6),
+                        (states) => Colors.grey,
                       ),
                     ),
                     onPressed: () {

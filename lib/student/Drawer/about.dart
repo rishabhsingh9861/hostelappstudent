@@ -5,7 +5,7 @@ class AboutUsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff90AAD6),
+        backgroundColor: const Color(0xffE9E3D5),
         title: const Text('VJTI'),
         centerTitle: true,
         foregroundColor: Colors.black,
