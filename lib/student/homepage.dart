@@ -2,12 +2,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:vjtihostel/committe/committe_page.dart';
 import 'package:vjtihostel/committe/facilitiespage.dart';
 import 'package:vjtihostel/onboard.dart';
 import 'package:vjtihostel/student/Drawer/Forms/holiday_list.dart';
 import 'package:vjtihostel/student/Drawer/Forms/hostelAndMess.dart';
+import 'package:vjtihostel/student/Drawer/about.dart';
 import 'package:vjtihostel/student/Drawer/announcement.dart';
 import 'package:vjtihostel/student/complaints.dart';
 import 'package:vjtihostel/student/constant/const.dart';
@@ -524,7 +526,12 @@ class _DrawersState extends State<Drawers> {
               child: listtile("Rectors"),
             ),
             div,
-            listtile("About"),
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => AboutUsPage()));
+                },
+                child: listtile("About VJTI")),
             div,
             listtile("Developer"),
             div,
