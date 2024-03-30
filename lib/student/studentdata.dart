@@ -61,6 +61,7 @@ class _StudentDataState extends State<StudentData> {
   final _studentcontactnoController = TextEditingController();
   final _addresController = TextEditingController();
   final _hostelIdController = TextEditingController();
+    bool isChecked = false;
 
   bool approv = false;
   Future addUserDetails(
@@ -233,10 +234,15 @@ class _StudentDataState extends State<StudentData> {
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
-                      Checkbox(
-                        onChanged: (value) {},
-                        value: true,
-                      ),
+                    Checkbox(
+                            checkColor: Colors.white,
+                            value: isChecked,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                isChecked = value!;
+                              });
+                            },
+                          ),
                       const Expanded(
                         child: Column(
                           children: [
@@ -259,7 +265,7 @@ class _StudentDataState extends State<StudentData> {
                     onPressed: () {
                       // fetchUsernames();
 
-                      if (_formKey.currentState!.validate()) {
+                      if (_formKey.currentState!.validate() && isChecked) {
                         addUserDetails(
                                 "${_nameController.text} ${_middlenameController.text} ${_surnameController.text}"
                                     .trim(),
