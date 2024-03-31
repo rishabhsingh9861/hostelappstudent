@@ -2,6 +2,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import 'package:vjtihostel/student/constant/const.dart';
@@ -233,14 +235,13 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                                   emailids,
                                   timenow,
                                   approve)
-                              .then((value) => showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return const AlertDialog(
-                                          content: Text(
-                                              'Send For Verification Process'),
-                                        );
-                                      }).then((value) {
+                              .then((value) =>   QuickAlert.show(
+                          context: context,
+                          type: QuickAlertType.success,
+                          text: 'Send For Verification Process',
+                          autoCloseDuration: const Duration(seconds: 2),
+                          showConfirmBtn: false,
+                        ).then((value) {
                                     int count = 1;
                                     Navigator.of(context)
                                         .popUntil((_) => count-- < 0);
