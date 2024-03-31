@@ -1,3 +1,5 @@
+// ignore_for_file: empty_catches
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Import Firebase Core
@@ -10,7 +12,6 @@ class PastYearPhotosPage extends StatefulWidget {
 }
 
 class _PastYearPhotosState extends State<PastYearPhotosPage> {
-  int _selectedYear = DateTime.now().year;
   String imgURL = "";
   String imgURL1 = "";
   final storage = FirebaseStorage.instance;
@@ -27,7 +28,6 @@ class _PastYearPhotosState extends State<PastYearPhotosPage> {
         imgURL1 = url1;
       });
     } catch (error) {
-      print('Error fetching image URL: $error');
     }
   }
 
@@ -62,7 +62,7 @@ class _PastYearPhotosState extends State<PastYearPhotosPage> {
       ),
       body: Column(
         children: [
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           SizedBox(
             height: 300,
             child: Image(
@@ -94,7 +94,6 @@ class _PastYearPhotosState extends State<PastYearPhotosPage> {
           title: Text(year.toString()),
           onTap: () {
             setState(() {
-              _selectedYear = year;
             });
             Navigator.pop(context);
           },

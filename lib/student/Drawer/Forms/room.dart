@@ -2,7 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant/const.dart';
@@ -276,7 +275,7 @@ class _RoomChangeState extends State<RoomChange> {
                 ElevatedButton(
                   style: ButtonStyle(
                     side: MaterialStateBorderSide.resolveWith(
-                        (states) => BorderSide(color: Colors.black, width: 2)),
+                        (states) => const BorderSide(color: Colors.black, width: 2)),
                     backgroundColor: MaterialStateColor.resolveWith(
                       (states) => Colors.grey,
                     ),

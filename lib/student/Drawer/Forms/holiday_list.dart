@@ -3,7 +3,8 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vjtihostel/student/Drawer/Forms/past_year_photos.dart';
+// ignore: depend_on_referenced_packages
+import 'package:intl/intl.dart';
 import 'package:vjtihostel/student/constant/const.dart';
 
 // void main() async {
@@ -103,9 +104,11 @@ class HolidayList extends StatelessWidget {
             itemBuilder: (context, index) {
               String eventName = documents[index]['eventName'];
               Timestamp eventDate = documents[index]['eventDate'];
+                  DateTime dateTime = eventDate.toDate();
+                String formattedTime = DateFormat.yMd().format(dateTime);
 
               // Convert timestamp to DateTime
-              DateTime date = eventDate.toDate();
+              // DateTime date = eventDate.toDate();
 
               return Container(
                 decoration: BoxDecoration(
@@ -115,10 +118,10 @@ class HolidayList extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                   color: Colors.grey[100],
                 ),
-                margin: EdgeInsets.all(5),
+                margin: const EdgeInsets.all(5),
                 child: ListTile(
                   title: Text(eventName),
-                  subtitle: Text('Date: ${date.toLocal()}'),
+                  subtitle: Text('Date: $formattedTime'),
                 ),
               );
             },

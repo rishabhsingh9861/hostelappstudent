@@ -2,7 +2,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:vjtihostel/committe/committe_page.dart';
 import 'package:vjtihostel/committe/facilitiespage.dart';
@@ -436,7 +435,7 @@ class _DrawersState extends State<Drawers> {
             GestureDetector(
               onTap: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => ChatScreen()));
+                    context, MaterialPageRoute(builder: (_) => const ChatScreen()));
               },
               child: listtile(
                 "Announcements",
@@ -498,7 +497,7 @@ class _DrawersState extends State<Drawers> {
             InkWell(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => HolidayList()));
+                      MaterialPageRoute(builder: (_) => const HolidayList()));
                 },
                 child: listtile("Holiday List")),
             div,
@@ -529,7 +528,7 @@ class _DrawersState extends State<Drawers> {
             GestureDetector(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => AboutUsPage()));
+                      MaterialPageRoute(builder: (_) => const AboutUsPage()));
                 },
                 child: listtile("About VJTI")),
             div,

@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: use_build_context_synchronously
 
+// ignore: unused_import
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -344,7 +345,7 @@ class _ComplaintsState extends State<Complaints> {
               ElevatedButton(
                 style: ButtonStyle(
                   side: MaterialStateBorderSide.resolveWith(
-                      (states) => BorderSide(color: Colors.black)),
+                      (states) => const BorderSide(color: Colors.black)),
                   backgroundColor: MaterialStateColor.resolveWith(
                     (states) => Colors.grey,
                   ),

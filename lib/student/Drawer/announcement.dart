@@ -1,16 +1,16 @@
-import 'dart:io';
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:vjtihostel/student/constant/const.dart';
 
 
 class ChatScreen extends StatefulWidget {
+  const ChatScreen({super.key});
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -64,7 +64,7 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class MessageBubble extends StatelessWidget {
-  MessageBubble({
+  const MessageBubble({super.key, 
     required this.sender,
     required this.text,
     required this.isMe,
@@ -89,7 +89,7 @@ class MessageBubble extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                      width: 4, color: Color.fromARGB(255, 78, 78, 78)),
+                      width: 4, color: const Color.fromARGB(255, 78, 78, 78)),
                   color: isMe
                       ? const Color.fromARGB(255, 78, 78, 78)
                       : Colors.grey,
@@ -113,7 +113,7 @@ class MessageBubble extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       )
-                    : Icon(Icons.picture_as_pdf), // Placeholder for PDF icon
+                    : const Icon(Icons.picture_as_pdf), // Placeholder for PDF icon
               )
             else
               InkWell(
@@ -134,7 +134,7 @@ class MessageBubble extends StatelessWidget {
                   ),
                   height: 100,
                   width: 200,
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
@@ -216,7 +216,7 @@ class MessageBubble extends StatelessWidget {
 class PdfViewer extends StatelessWidget {
   final String pdfUrl;
 
-  PdfViewer({required this.pdfUrl});
+  const PdfViewer({super.key, required this.pdfUrl});
 
   @override
   Widget build(BuildContext context) {

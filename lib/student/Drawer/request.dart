@@ -104,7 +104,7 @@ class Request extends StatelessWidget {
           ElevatedButton(
             style: ButtonStyle(
                 side: MaterialStateBorderSide.resolveWith(
-                    (states) => BorderSide(color: Colors.black, width: 2)),
+                    (states) => const BorderSide(color: Colors.black, width: 2)),
                 backgroundColor:
                     MaterialStateColor.resolveWith((states) => Colors.grey)),
             onPressed: function,

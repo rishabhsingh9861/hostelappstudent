@@ -188,12 +188,9 @@ class _GenerateIdState extends State<GenerateId> {
                       ),
                     ),
                     Expanded(
-                      child: Container(
-                        // color: Colors.black,
-                        child: Hero(
-                            tag: "ID",
-                            child: Image.asset('assets/images/idcard.png')),
-                      ),
+                      child: Hero(
+                          tag: "ID",
+                          child: Image.asset('assets/images/idcard.png')),
                     ),
                   ],
                 ),
@@ -430,7 +427,7 @@ class _GenerateIdState extends State<GenerateId> {
                 ElevatedButton(
                   style: ButtonStyle(
                     side: MaterialStateBorderSide.resolveWith(
-                      (states) => BorderSide(color: Colors.black, width: 1),
+                      (states) => const BorderSide(color: Colors.black, width: 1),
                     ),
                     backgroundColor: MaterialStateProperty.resolveWith(
                       (states) => Colors.grey,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vjtihostel/backgroundimage.dart';
-import 'package:vjtihostel/button.dart';
 import 'package:vjtihostel/student/vjtilogin.dart';
 
 class Onboard extends StatelessWidget {
@@ -12,7 +11,7 @@ class Onboard extends StatelessWidget {
         child: Scaffold(
             body: BackgrounImage(
       assetimage: const AssetImage("assets/images/VJTIPG2.jpeg"),
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -21,7 +20,7 @@ class Onboard extends StatelessWidget {
               style: ButtonStyle(
                   elevation: MaterialStateProperty.all(5),
                   backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => Color.fromARGB(255, 255, 255, 255))),
+                      (states) => const Color.fromARGB(255, 255, 255, 255))),
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const Vjtilogin()));

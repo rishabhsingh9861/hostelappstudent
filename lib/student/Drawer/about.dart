@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AboutUsPage extends StatelessWidget {
+  const AboutUsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +16,7 @@ class AboutUsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 22),
+            const SizedBox(height: 22),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: SizedBox(
@@ -29,9 +31,9 @@ class AboutUsPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            const SizedBox(height: 20),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
                 'Welcome to VJTI',
                 style: TextStyle(
@@ -51,7 +53,7 @@ class AboutUsPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
@@ -63,7 +65,7 @@ class AboutUsPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
@@ -75,7 +77,7 @@ class AboutUsPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             LayoutBuilder(
               builder: (context, constraints) {
                 double avatarSize = constraints.maxWidth * 0.3;
@@ -83,15 +85,15 @@ class AboutUsPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: CircleAvatar(
                     radius: avatarSize,
-                    backgroundImage: AssetImage(
+                    backgroundImage: const AssetImage(
                         'assets/images/director.jpg'), // Replace with your image path
                   ),
                 );
               },
             ),
-            SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
+            const SizedBox(height: 10),
+            const Padding(
+              padding: EdgeInsets.all(10.0),
               child: Text(
                 'Dr. Sachin D. Kore',
                 style: TextStyle(
@@ -111,7 +113,7 @@ class AboutUsPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
           ],

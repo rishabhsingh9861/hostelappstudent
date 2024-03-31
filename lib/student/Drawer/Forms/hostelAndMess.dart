@@ -312,7 +312,7 @@ class _HostelAndMessState extends State<HostelAndMess> {
                   ElevatedButton(
                     style: ButtonStyle(
                       side: MaterialStateBorderSide.resolveWith((states) =>
-                          BorderSide(color: Colors.black, width: 2)),
+                          const BorderSide(color: Colors.black, width: 2)),
                       backgroundColor: MaterialStateColor.resolveWith(
                         (states) => Colors.grey,
                       ),

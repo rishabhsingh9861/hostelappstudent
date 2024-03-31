@@ -157,6 +157,7 @@ class _EventsState extends State<Events> {
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: ListTile(
+                              // ignore: avoid_print
                               onTap: () => print(""),
                               title: Text("${value[index]}"),
                             ));

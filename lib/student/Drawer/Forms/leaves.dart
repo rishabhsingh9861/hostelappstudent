@@ -1,9 +1,12 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'dart:io';
 
@@ -379,7 +382,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                   ElevatedButton(
                     style: ButtonStyle(
                       side: MaterialStateBorderSide.resolveWith((states) =>
-                          BorderSide(color: Colors.black, width: 2)),
+                          const BorderSide(color: Colors.black, width: 2)),
                       backgroundColor: MaterialStateColor.resolveWith(
                         (states) => Colors.grey,
                       ),
@@ -424,14 +427,14 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Error'),
-            content: Text('Start date must be before end date.'),
+            title: const Text('Error'),
+            content: const Text('Start date must be before end date.'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -475,8 +478,8 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Success'),
-            content: Text(
+            title: const Text('Success'),
+            content: const Text(
                 'Leave request submitted successfully. Approval will be sent to your mail.'),
             actions: <Widget>[
               TextButton(
@@ -484,7 +487,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                   int count = 1;
                   Navigator.of(context).popUntil((_) => count-- < 0);
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -507,14 +510,14 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to submit leave request.'),
+            title: const Text('Error'),
+            content: const Text('Failed to submit leave request.'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );

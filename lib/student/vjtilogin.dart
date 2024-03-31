@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:vjtihostel/backgroundimage.dart';
-import 'package:vjtihostel/button.dart';
 import 'package:vjtihostel/student/homepage.dart';
 import 'package:vjtihostel/student/studentdata.dart';
 
@@ -128,7 +127,7 @@ class _VjtiloginState extends State<Vjtilogin> {
       child: Scaffold(
         body: BackgrounImage(
           assetimage: const AssetImage("assets/images/VjtiPG.jpg"),
-          child: Container(
+          child: SizedBox(
             width: double.infinity,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
