@@ -106,6 +106,8 @@ class _HomePageState extends State<HomePage> {
             String roomo = reqData['Room No'] ?? '';
             int registration = reqData['Registration No.'] ?? 0;
             String addres = reqData['Adress'] ?? '';
+            String year = reqData['Year'] ?? '';
+            String dept = reqData['Department'] ?? '';
             String bloodgrp = reqData['Blood Group'] as String? ?? '';
             String pphoto = reqData['Passport Photo'] as String? ?? '';
             int parentnumber = reqData['Parent Contact Number'] as int? ?? 0;
@@ -259,6 +261,20 @@ class _HomePageState extends State<HomePage> {
                             height: 5,
                           ),
                           Text(
+                            'Department : $dept',
+                            style: idStyle,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Year : $year',
+                            style: idStyle,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
                             'Room  No. : $roomo',
                             style: idStyle,
                           ),
@@ -307,6 +323,9 @@ class _HomePageState extends State<HomePage> {
                                     width: 25,
                                     child: Image.asset(
                                         'assets/images/phoneicon.png')),
+                              ),
+                              const SizedBox(
+                                height: 10,
                               ),
                             ],
                           )
@@ -434,8 +453,8 @@ class _DrawersState extends State<Drawers> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => const ChatScreen()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const ChatScreen()));
               },
               child: listtile(
                 "Announcements",

@@ -149,7 +149,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                                 style: textstyy,
                               ),
                               Text(
-                                'Year: $dept',
+                                'Department: $dept',
                                 style: textstyy,
                               ),
                               Text(
@@ -235,13 +235,14 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                                   emailids,
                                   timenow,
                                   approve)
-                              .then((value) =>   QuickAlert.show(
-                          context: context,
-                          type: QuickAlertType.success,
-                          text: 'Send For Verification Process',
-                          autoCloseDuration: const Duration(seconds: 2),
-                          showConfirmBtn: false,
-                        ).then((value) {
+                              .then((value) => QuickAlert.show(
+                                    context: context,
+                                    type: QuickAlertType.success,
+                                    text: 'Send For Verification Process',
+                                    autoCloseDuration:
+                                        const Duration(seconds: 2),
+                                    showConfirmBtn: false,
+                                  ).then((value) {
                                     int count = 1;
                                     Navigator.of(context)
                                         .popUntil((_) => count-- < 0);

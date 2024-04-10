@@ -1,15 +1,15 @@
 // ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
+import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
-import 'dart:io';
-
 import 'package:vjtihostel/student/constant/const.dart';
 
 class LeaveRequestPage extends StatefulWidget {
@@ -304,11 +304,18 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
                                 },
                               );
 
-                              await refrenceImageToUpload.putFile(
-                                  File(file.path),
-                                  SettableMetadata(
-                                    contentType: "image/jpeg",
-                                  ));
+                              List<int> compressedImage =
+                                  (await FlutterImageCompress.compressWithFile(
+                                file.path,
+                                quality: 20,
+                              )) as List<int>;
+
+                              await refrenceImageToUpload.putData(
+                                Uint8List.fromList(compressedImage),
+                                SettableMetadata(
+                                  contentType: "image/jpeg",
+                                ),
+                              );
 
                               imageUrl =
                                   await refrenceImageToUpload.getDownloadURL();
