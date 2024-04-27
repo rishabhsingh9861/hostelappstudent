@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
             }
 
             String name = reqData['Name'] ?? '';
-            String hostelid = reqData['Hostel ID'] ?? '';
+            // String hostelid = reqData['Hostel ID'] ?? '';
             String roomo = reqData['Room No'] ?? '';
             int registration = reqData['Registration No.'] ?? 0;
             String addres = reqData['Adress'] ?? '';
@@ -223,13 +223,13 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Hostel Id: $hostelid',
-                            style: idStyle,
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.all(8.0),
+                        //   child: Text(
+                        //     'Hostel Id: $hostelid',
+                        //     style: idStyle,
+                        //   ),
+                        // ),
                       ],
                     ),
                     const SizedBox(

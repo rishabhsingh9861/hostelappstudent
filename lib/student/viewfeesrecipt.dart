@@ -68,7 +68,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
           .set({
         'Name': name,
         'Year': year,
-        'Hostel ID': hostelidno,
+        // 'Hostel ID': hostelidno,
         'Registration No.': registration,
         'Room NO.': roomno,
         'Adress': address,
@@ -102,8 +102,8 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
 
           address = userData['Address'] as String;
           bloodgroup = userData['Blood Group'] as String;
-          name = userData['Name'] as String;
-          hostelid = userData['Hostel Id'] as int;
+           name = userData['Name'] as String;
+          // hostelid = userData['Hostel Id'] as int;
           String dept = userData['Department'] as String;
           studentnumber = userData['Student contact number'] as int;
           registrationnumber = userData['Registration No.'] as int;
@@ -140,10 +140,10 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                                 'Name: $name',
                                 style: textstyy,
                               ),
-                              Text(
-                                'Hostel ID: $hostelid',
-                                style: textstyy,
-                              ),
+                              // Text(
+                              //   'Hostel ID: $hostelid',
+                              //   style: textstyy,
+                              // ),
                               Text(
                                 'Year: ${widget.year}',
                                 style: textstyy,
