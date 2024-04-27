@@ -61,7 +61,7 @@ class _StudentDataState extends State<StudentData> {
   final _studentcontactnoController = TextEditingController();
   final _addresController = TextEditingController();
   final _hostelIdController = TextEditingController();
-    bool isChecked = false;
+  bool isChecked = false;
 
   bool approv = false;
   Future addUserDetails(
@@ -91,7 +91,7 @@ class _StudentDataState extends State<StudentData> {
       'Address': address,
       'Blood Group': bloodgroup,
       'Department': department,
-      'Hostel Id': hostelid,
+      // 'Hostel Id': hostelid,
       'Approved': approv,
     });
   }
@@ -188,11 +188,11 @@ class _StudentDataState extends State<StudentData> {
                     });
                   }),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: writedata("Enter Hostel Id", TextInputType.number,
-                      _hostelIdController),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: writedata("Enter Hostel Id", TextInputType.number,
+                //       _hostelIdController),
+                // ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: writedata("Parents Name", TextInputType.name,
@@ -224,7 +224,7 @@ class _StudentDataState extends State<StudentData> {
                   }),
                 ),
                 const Text(
-                  "Declaration clg Rules and Policy",
+                  "Declaration Hostel Rules and Policy",
                   style: TextStyle(
                       fontSize: 18,
                       fontFamily: "Nunito",
@@ -232,25 +232,99 @@ class _StudentDataState extends State<StudentData> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Row(
+                  child: Column(
                     children: [
-                    Checkbox(
-                            checkColor: Colors.white,
-                            value: isChecked,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                isChecked = value!;
-                              });
-                            },
-                          ),
-                      const Expanded(
-                        child: Column(
-                          children: [
-                            Text(
-                                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing")
-                          ],
-                        ),
-                      )
+                      Text(
+                          "VJTI BOYS' HOSTEL - Rules, Regulations, and Guidelines\n\n"
+                          "A. ENTRY/EXIT Restrictions (Hostel and Campus-wide)\n"
+                          "1. Last Entry at Night: 11:30 pm.\n"
+                          "2. Earlier EXIT/ENTRY in the Morning: 6 am onward.\n"
+                          "3. With prior permission from Rector, anytime for going to home/coming from home.\n\n"
+                          "B. Mess Related Rules and Guidelines\n"
+                          "1. Do not waste food, water, and electricity. Keep the dining area and mess area clean and hygienic.\n"
+                          "2. Mess Timings:\n"
+                          "   - Breakfast:\n"
+                          "     - Weekdays: 7:30 am to 9:00 am\n"
+                          "     - Weekends and Holidays: 8:00 am to 10:00 am\n"
+                          "   - Lunch: 12:30 pm to 2:00 pm\n"
+                          "   - Dinner: 7:30 pm to 9:00 pm\n"
+                          "3. For leave, inform the mess manager one day in advance.\n"
+                          "4. Adhere strictly to rules and regulations laid down by the Joint Managing Committee (JMC) of the students' Messes.\n\n"
+                          "C. TV Room Related\n"
+                          "1. Timing:\n"
+                          "   - Weekdays: 5:30 pm to 11:30 pm\n"
+                          "   - Weekends: from Breakfast till 11:30 pm\n"
+                          "2. Discussion/private talks and food usage are discouraged in the TV room.\n"
+                          "3. Do not mark, spoil, or damage furniture and fittings.\n\n"
+                          "D. Meeting Parents and Visitors\n"
+                          "1. Visitor/Parents meeting to be done in Hostel Office.\n"
+                          "2. With prior permission, parents can avail the facility of a guest room for one day stay.\n"
+                          "3. In case of emergency or health-related issues of students, the stay of parents in the guest room may be extended.\n"
+                          "4. No outsiders including relatives and day scholar students shall be allowed in the room at any time.\n\n"
+                          "E. Ragging and Other Prohibitions\n"
+                          "1. Ragging is strictly prohibited as per Maharashtra Prohibition of Ragging Act and MHRD guidelines.\n"
+                          "2. Smoking, alcohol, and drugs are strictly prohibited.\n"
+                          "3. Writing, painting, sticking posters, and spitting on any walls are strictly prohibited.\n\n"
+                          "F. Admission Related\n"
+                          "1. Admission offered is valid for only one academic year.\n"
+                          "2. Students who discontinue Institute admission and are involved in violation of regulations will not be admitted to the hostel in the next academic year.\n"
+                          "3. Students who secure minimum credits for admission into the next academic year will only be considered for hostel admission.\n\n"
+                          "H. Going to Outside/Relative/Home Town\n"
+                          "1. Students going/staying outside of the hostel during the night for any work shall apply in writing to the Rector and submit the application to the hostel office before leaving. Make a note of it in the register available with their block watchman.\n\n"
+                          "Hostel and Institute Authorities have the absolute right to enter and inspect the room at any time.\n\n"),
+                      div,
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                          "VJTI GIRLS' HOSTEL Rules, Regulations, and Guidelines\n\n"
+                          "A. ENTRY/EXIT Restrictions (Girls' Hostel and Campus-wide)\n"
+                          "1. Last Entry at Night:\n"
+                          "   - Weekdays: 10:00 PM\n"
+                          "   - Weekends and Holidays: 11:00 PM\n"
+                          "2. Earlier EXIT/Entry in the Morning: 6 AM onward with prior permission (any time for going to home or coming from Home)\n"
+                          "3. Both A and E blocks are treated as a single Hostel.\n\n"
+                          "B. Mess Related Rules and Guidelines\n"
+                          "1. Do not waste food, water, and electricity. Keep the dining area and mess area clean and hygienic.\n"
+                          "2. Mess timings (Food will not be served beyond these timings):\n"
+                          "   - Breakfast:\n"
+                          "     - Weekdays: 7:30 AM to 9:00 AM\n"
+                          "     - Weekends and Holidays: 8:00 AM to 10:00 AM\n"
+                          "   - Lunch: 12:30 PM to 2:00 PM\n"
+                          "   - Dinner: 7:30 PM to 9:00 PM\n"
+                          "3. In case of early or late class, inform the mess contractor for late food/packet food provision.\n"
+                          "4. For leave, inform the mess contractor one day in advance.\n\n"
+                          "C. Reading Room Timings\n"
+                          "1. 24 x 7 open (please switch off lights and fans when no one is inside).\n"
+                          "2. Discussions/Private talks and food usage are discouraged in the reading room.\n"
+                          "3. Do not mark, spoil, or damage furniture and fittings.\n\n"
+                          "D. TV Room Related\n"
+                          "1. TV is currently in the Mess area (Weekdays: 5:30 PM to 10:00 PM, Weekends from Breakfast till Dinner time). TV should be shifted to a separate open space.\n\n"
+                          "E. Meeting Parents and Visitors\n"
+                          "1. Visitor meeting has to be done in the meeting area.\n"
+                          "2. Parents can visit the room with the company of lady staff.\n"
+                          "3. Mother/Sister can stay in the room if required in case of an emergency or health-related issue (in a separate room earmarked for this purpose).\n\n"
+                          "F. Lift Related and General Safety\n"
+                          "1. Lift maintenance can be called directly on toll-free numbers with equipment number as a reference.\n"
+                          "2. Be vigilant and inform security in case of any inappropriate incidence noticed.\n\n"
+                          "G. Ragging and Other Prohibitions\n"
+                          "1. Ragging is strictly prohibited as per Maharashtra Ragging Prohibition of Ragging Act and MHRD guidelines.\n"
+                          "2. Smoking, alcohol, and drugs are strictly prohibited and subject to expulsion from the hostel.\n"
+                          "3. Writing, painting, sticking posters, and spitting on any walls are strictly prohibited and liable to penalty.\n\n"
+                          "I. Admission Related\n"
+                          "1. Admission offered is valid for only one academic year.\n"
+                          "2. Students who discontinue Institute admission and/or are involved in violation of regulations will not be admitted to the hostel in the next academic year.\n"
+                          "3. Students who secure minimum credits for admission into the next academic year will only be considered for hostel admission."),
+                    
+                      Checkbox(
+                        checkColor: Colors.white,
+                        value: isChecked,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isChecked = value!;
+                          });
+                        },
+                      ),
                     ],
                   ),
                 ),

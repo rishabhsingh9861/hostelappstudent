@@ -75,7 +75,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
         registration = userData['Registration No.'];
         roomno = userData['Room No'];
         parentsno = userData['Parent Contact Number'];
-        hostelid = userData['Hostel ID'];
+        // hostelid = userData['Hostel ID'];
         department = userData['Department'];
         address = userData['Adress'];
         year = userData['Year'];
