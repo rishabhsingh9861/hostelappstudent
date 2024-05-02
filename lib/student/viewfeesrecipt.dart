@@ -61,7 +61,9 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
         String imgurl,
         String emailid,
         Timestamp time,
-        bool approv) async {
+        bool approv, 
+        String parentName,
+        String castes) async {
       await FirebaseFirestore.instance
           .collection('GenerateIdRequest')
           .doc()
@@ -80,7 +82,9 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
         'Passport Photo': imgurl,
         'Emailid': emailid,
         'Time': time,
-        'Approved': approv
+        'Approved': approv,
+        'Parent Name': parentName ,
+        'Caste':castes
       });
     }
 
@@ -105,6 +109,8 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
            name = userData['Name'] as String;
           // hostelid = userData['Hostel Id'] as int;
           String dept = userData['Department'] as String;
+          String parentname = userData['Parent Name'] as String;
+          String caste = userData['Caste'] as String;
           studentnumber = userData['Student contact number'] as int;
           registrationnumber = userData['Registration No'] as int;
           parentsNumber = userData['Parent Contact Number'] as int;
@@ -234,7 +240,9 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                                   imageUrl,
                                   emailids,
                                   timenow,
-                                  approve)
+                                  approve,
+                                  parentname,
+                                  caste)
                               .then((value) => QuickAlert.show(
                                     context: context,
                                     type: QuickAlertType.success,

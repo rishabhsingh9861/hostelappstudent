@@ -44,7 +44,7 @@ List<String> listBlock = <String>[
 class _GenerateIdState extends State<GenerateId> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _hostelid = TextEditingController();
+  //final _hostelid = TextEditingController();
   final _roomnoController = TextEditingController();
 
   String dropdownValueYear = listyear.first;
@@ -136,7 +136,7 @@ class _GenerateIdState extends State<GenerateId> {
   @override
   void dispose() {
     _nameController.dispose();
-    _hostelid.dispose();
+    //_hostelid.dispose();
     _roomnoController.dispose();
     super.dispose();
   }
