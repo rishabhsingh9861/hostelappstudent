@@ -92,7 +92,7 @@ class _RoomChangeState extends State<RoomChange> {
           if (idCardData != null) {
             String name = idCardData['Name'] ?? '';
             String year = idCardData['Year'] ?? '';
-            int regNo = idCardData['Registration No.'] ?? 0;
+            int regNo = idCardData['Registration No'] ?? 0;
             String roomNo = idCardData['Room No'] ?? '';
             String emailid = idCardData['Emailid'] ?? '';
             String photo = idCardData['Passport Photo'] ?? '';

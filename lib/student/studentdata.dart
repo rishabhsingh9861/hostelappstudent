@@ -75,7 +75,7 @@ class _StudentDataState extends State<StudentData> {
       String address,
       String bloodgroup,
       String department,
-      int hostelid,
+      // int hostelid,
       bool aprov) async {
     await FirebaseFirestore.instance
         .collection('HostelStudents')
@@ -83,7 +83,7 @@ class _StudentDataState extends State<StudentData> {
         .set({
       'Name': name,
       'Email': email,
-      'Registration No.': registration,
+      'Registration No': registration,
       'Caste': caste,
       'Parent Name': parentname,
       'Student contact number': studentcontactnumber,
@@ -234,7 +234,7 @@ class _StudentDataState extends State<StudentData> {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      Text(
+                      const Text(
                           "VJTI BOYS' HOSTEL - Rules, Regulations, and Guidelines\n\n"
                           "A. ENTRY/EXIT Restrictions (Hostel and Campus-wide)\n"
                           "1. Last Entry at Night: 11:30 pm.\n"
@@ -273,10 +273,10 @@ class _StudentDataState extends State<StudentData> {
                           "1. Students going/staying outside of the hostel during the night for any work shall apply in writing to the Rector and submit the application to the hostel office before leaving. Make a note of it in the register available with their block watchman.\n\n"
                           "Hostel and Institute Authorities have the absolute right to enter and inspect the room at any time.\n\n"),
                       div,
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
-                      Text(
+                      const Text(
                           "VJTI GIRLS' HOSTEL Rules, Regulations, and Guidelines\n\n"
                           "A. ENTRY/EXIT Restrictions (Girls' Hostel and Campus-wide)\n"
                           "1. Last Entry at Night:\n"
@@ -315,7 +315,6 @@ class _StudentDataState extends State<StudentData> {
                           "1. Admission offered is valid for only one academic year.\n"
                           "2. Students who discontinue Institute admission and/or are involved in violation of regulations will not be admitted to the hostel in the next academic year.\n"
                           "3. Students who secure minimum credits for admission into the next academic year will only be considered for hostel admission."),
-                    
                       Checkbox(
                         checkColor: Colors.white,
                         value: isChecked,
@@ -354,7 +353,7 @@ class _StudentDataState extends State<StudentData> {
                                 _addresController.text.trim(),
                                 setbloodgroup,
                                 setdepartment,
-                                int.parse(_hostelIdController.text.trim()),
+                               // int.parse(_hostelIdController.text.trim()),
                                 approv)
                             .then((value) => Navigator.pushReplacement(
                                 context,

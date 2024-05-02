@@ -41,7 +41,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
   int contactno = 0;
   String roomno = "";
   int parentsno = 0;
-  String hostelid = "";
+ // String hostelid = "";
   String department = "";
   String address = "";
   String year = "";
@@ -72,7 +72,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
         name = userData['Name'];
         contactno = userData['Student contact number'];
         photo = userData['Passport Photo'];
-        registration = userData['Registration No.'];
+        registration = userData['Registration No'];
         roomno = userData['Room No'];
         parentsno = userData['Parent Contact Number'];
         // hostelid = userData['Hostel ID'];
@@ -458,7 +458,7 @@ class _LeaveRequestPageState extends State<LeaveRequestPage> {
         'reason': reason,
         'Name': name,
         'Type': setleave,
-        'Hostelid': hostelid,
+        //'Hostelid': hostelid,
         'Registration No': registration,
         'Department': department,
         'Parents No': parentsno,

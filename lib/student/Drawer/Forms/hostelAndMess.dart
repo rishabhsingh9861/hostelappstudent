@@ -133,7 +133,7 @@ class _HostelAndMessState extends State<HostelAndMess> {
         if (idCardData != null) {
           String name = idCardData['Name'] ?? '';
           String year = idCardData['Year'] ?? '';
-          int regNo = idCardData['Registration No.'] ?? 0;
+          int regNo = idCardData['Registration No'] ?? 0;
           String roomNo = idCardData['Room No'] ?? '';
 
           if (certificate.isNotEmpty) {
@@ -142,7 +142,7 @@ class _HostelAndMessState extends State<HostelAndMess> {
                 {
                   'Name': name,
                   'Year': year,
-                  'Registration No.': regNo,
+                  'Registration No': regNo,
                   'Room No': roomNo,
                   'Certificate Type': certificate,
                   'Timestamp': Timestamp.now(),

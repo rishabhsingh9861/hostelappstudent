@@ -18,9 +18,7 @@ import 'package:vjtihostel/student/rectors.dart';
 import 'package:vjtihostel/student/Drawer/request.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({
-    Key? key,
-  }) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -32,6 +30,43 @@ String email = user.email.toString();
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('HostelStudents')
+          .doc(email)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+
+        if (!snapshot.hasData || !snapshot.data!.exists) {
+          // User is not registered or data is missing, redirect to Onboard page
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const Onboard()),
+            );
+          });
+          return const Scaffold(
+            body: Center(
+              child: Text('Redirecting to registration...'),
+            ),
+          );
+        }
+
+        // User is registered and data is present, proceed with HomePage
+        return _buildHomePage(
+            context, snapshot.data!.data() as Map<String, dynamic>?);
+      },
+    );
+  }
+
+  Widget _buildHomePage(BuildContext context, Map<String, dynamic>? userData) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -68,43 +103,48 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       drawer: const Drawers(),
-      body: FutureBuilder<DocumentSnapshot>(
-        future: FirebaseFirestore.instance
-            .collection('HostelStudents')
-            .doc(email)
-            .collection('StudentIDCard')
-            .doc('idcard')
-            .get(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
+      body: StreamBuilder<DocumentSnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('HostelStudents')
+              .doc(email)
+              .collection('StudentIDCard')
+              .doc('idcard')
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
             }
 
             if (!snapshot.hasData || snapshot.data == null) {
               return const Center(
-                  child: Text(
-                'You have skipped the registration page pls contact hostel office',
-                style: textsty,
-              ));
+                child: Text(
+                  'You have skipped the registration page please signout and login again',
+                  style: textsty,
+                ),
+              );
+            }
+
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
             }
 
             final reqData = snapshot.data?.data() as Map<String, dynamic>?;
             if (reqData == null) {
               return const Center(
-                  child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'Please Generate Id card',
-                  style: textsty,
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Please Generate ID card',
+                    style: textsty,
+                  ),
                 ),
-              ));
+              );
             }
 
             String name = reqData['Name'] ?? '';
             // String hostelid = reqData['Hostel ID'] ?? '';
             String roomo = reqData['Room No'] ?? '';
-            int registration = reqData['Registration No.'] ?? 0;
+            int registration = reqData['Registration No'] ?? 0;
             String addres = reqData['Adress'] ?? '';
             String year = reqData['Year'] ?? '';
             String dept = reqData['Department'] ?? '';
@@ -365,11 +405,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
+          }),
     );
   }
 }

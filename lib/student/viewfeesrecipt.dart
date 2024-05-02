@@ -49,7 +49,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
     Future addGeneratrIdDetails(
         String name,
         String year,
-        int hostelidno,
+      //  int hostelidno,
         int registration,
         String roomno,
         String address,
@@ -69,7 +69,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
         'Name': name,
         'Year': year,
         // 'Hostel ID': hostelidno,
-        'Registration No.': registration,
+        'Registration No': registration,
         'Room NO.': roomno,
         'Adress': address,
         'Blood Group': bloodgrp,
@@ -106,7 +106,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
           // hostelid = userData['Hostel Id'] as int;
           String dept = userData['Department'] as String;
           studentnumber = userData['Student contact number'] as int;
-          registrationnumber = userData['Registration No.'] as int;
+          registrationnumber = userData['Registration No'] as int;
           parentsNumber = userData['Parent Contact Number'] as int;
           bool approve = userData['Approved'];
 
@@ -161,7 +161,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                                 style: textstyy,
                               ),
                               Text(
-                                'Registration No.: $registrationnumber',
+                                'Registration No: $registrationnumber',
                                 style: textstyy,
                               ),
                               Text(
@@ -222,7 +222,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                           addGeneratrIdDetails(
                                   name,
                                   widget.year,
-                                  hostelid,
+                                 // hostelid,
                                   registrationnumber,
                                   widget.roomnumber,
                                   address,
