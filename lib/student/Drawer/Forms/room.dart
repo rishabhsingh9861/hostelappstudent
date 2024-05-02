@@ -3,6 +3,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import '../../constant/const.dart';
 
@@ -59,10 +63,11 @@ List<String> listbatch = [
 ];
 
 class _RoomChangeState extends State<RoomChange> {
+  String uniqueFilename = 'Upload merged Fess Receipts till current year ';
   CollectionReference db =
-      FirebaseFirestore.instance.collection('HostelStudents');
+  FirebaseFirestore.instance.collection('HostelStudents');
   CollectionReference db1 =
-      FirebaseFirestore.instance.collection('RoomVacantReq');
+  FirebaseFirestore.instance.collection('RoomVacantReq');
   //TextEditingController preferences = TextEditingController();
   // TextEditingController reason = TextEditingController();
   bool? click;
@@ -71,6 +76,96 @@ class _RoomChangeState extends State<RoomChange> {
   String setvacant = "";
   String dropdownValueBatch = listbatch.first;
   String setBatch = "";
+
+  Future<File?> pickFile() async {
+    FilePickerResult? pickedFile = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
+
+    if (pickedFile != null) {
+      File file = File(pickedFile.files.single.path!);
+      return file;
+    }
+
+    return null;
+  }
+
+  String downloadUrl = '';
+
+  Future<void> uploadFile(File? file) async {
+    if (file == null) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const AlertDialog(
+            content: Text('PDF not selected'),
+          );
+        },
+      );
+      return;
+    }
+
+    try {
+      uniqueFilename = file.path.split('/').last;
+      Reference referenceDirPdf =
+      FirebaseStorage.instance.ref().child('FeesReceipt');
+      Reference referencePdfToUpload = referenceDirPdf.child(uniqueFilename);
+
+      showDialog(
+        context: context,
+        builder: (_) {
+          return const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Please wait Uploading',
+                style: TextStyle(
+                    fontSize: 20,
+                    decoration: TextDecoration.none,
+                    color: Colors.green),
+              ),
+              CircularProgressIndicator(
+                color: Colors.green,
+              ),
+            ],
+          );
+        },
+      );
+
+      // Set content type explicitly to 'application/pdf'
+      await referencePdfToUpload.putFile(
+        file,
+        SettableMetadata(
+          contentType: 'application/pdf',
+        ),
+      );
+
+      downloadUrl = await referencePdfToUpload.getDownloadURL();
+
+      setState(() {});
+    } catch (error) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const AlertDialog(
+            content: Text('PDF not uploaded'),
+          );
+        },
+      );
+    } finally {
+      Navigator.of(context).pop();
+    }
+  }
+
+  @override
+  // void dispose() {
+  //   _nameController.dispose();
+  //   _hostelid.dispose();
+  //   _roomnoController.dispose();
+  //   super.dispose();
+  // }
+
+
 
   void validateFields() async {
     try {
@@ -87,12 +182,12 @@ class _RoomChangeState extends State<RoomChange> {
 
         if (idCardSnapshot.exists) {
           Map<String, dynamic>? idCardData =
-              idCardSnapshot.data() as Map<String, dynamic>?;
+          idCardSnapshot.data() as Map<String, dynamic>?;
 
           if (idCardData != null) {
             String name = idCardData['Name'] ?? '';
             String year = idCardData['Year'] ?? '';
-            int regNo = idCardData['Registration No'] ?? 0;
+            int regNo = idCardData['Registration No.'] ?? 0;
             String roomNo = idCardData['Room No'] ?? '';
             String emailid = idCardData['Emailid'] ?? '';
             String photo = idCardData['Passport Photo'] ?? '';
@@ -225,12 +320,12 @@ class _RoomChangeState extends State<RoomChange> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: dropdownMenu(listvacant, dropdownValueVacant,
-                      (String? value) {
-                    setState(() {
-                      dropdownValueVacant = value!;
-                      setvacant = dropdownValueVacant;
-                    });
-                  }),
+                          (String? value) {
+                        setState(() {
+                          dropdownValueVacant = value!;
+                          setvacant = dropdownValueVacant;
+                        });
+                      }),
                 ),
                 const SizedBox(
                   height: 10,
@@ -238,16 +333,75 @@ class _RoomChangeState extends State<RoomChange> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: dropdownMenu(listbatch, dropdownValueBatch,
-                      (String? value) {
-                    setState(() {
-                      dropdownValueBatch = value!;
-                      setBatch = dropdownValueBatch;
-                    });
-                  }),
+                          (String? value) {
+                        setState(() {
+                          dropdownValueBatch = value!;
+                          setBatch = dropdownValueBatch;
+                        });
+                      }),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: InkWell(
+                        onTap: () async {
+                          File? file = await pickFile();
+                          uploadFile(file);
+                          setState(() {
+                            uniqueFilename;
+                          });
+                        },
+                        child: Container(
+                          height: 58,
+                          width: 250,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.black,
+                            ),
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                uniqueFilename,
+                                style: const TextStyle(
+                                  fontFamily: "Nunito",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // Expanded(
+                    //   child: SizedBox(
+                    //     height: 44,
+                    //     child: Image.network(
+                    //         "http://cdn.onlinewebfonts.com/svg/img_215257.png"),
+                    //   ),
+                    // ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,9 +429,9 @@ class _RoomChangeState extends State<RoomChange> {
                 ElevatedButton(
                   style: ButtonStyle(
                     side: MaterialStateBorderSide.resolveWith(
-                        (states) => const BorderSide(color: Colors.black, width: 2)),
+                            (states) => const BorderSide(color: Colors.black, width: 2)),
                     backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => Colors.grey,
+                          (states) => Colors.grey,
                     ),
                   ),
                   onPressed: () {
@@ -309,7 +463,7 @@ TextField leaveDetails({
       hintText: hinttext,
       labelText: labletext,
       labelStyle:
-          const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+      const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
       icon: icons,
       border: const OutlineInputBorder(
         borderRadius: BorderRadius.all(
