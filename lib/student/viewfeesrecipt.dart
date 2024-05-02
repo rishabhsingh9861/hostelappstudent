@@ -49,7 +49,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
     Future addGeneratrIdDetails(
         String name,
         String year,
-      //  int hostelidno,
+        //  int hostelidno,
         int registration,
         String roomno,
         String address,
@@ -61,7 +61,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
         String imgurl,
         String emailid,
         Timestamp time,
-        bool approv, 
+        bool approv,
         String parentName,
         String castes) async {
       await FirebaseFirestore.instance
@@ -83,8 +83,8 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
         'Emailid': emailid,
         'Time': time,
         'Approved': approv,
-        'Parent Name': parentName ,
-        'Caste':castes
+        'Parent Name': parentName,
+        'Caste': castes
       });
     }
 
@@ -106,7 +106,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
 
           address = userData['Address'] as String;
           bloodgroup = userData['Blood Group'] as String;
-           name = userData['Name'] as String;
+          name = userData['Name'] as String;
           // hostelid = userData['Hostel Id'] as int;
           String dept = userData['Department'] as String;
           String parentname = userData['Parent Name'] as String;
@@ -228,7 +228,7 @@ class _FeesReceiptViewerState extends State<FeesReceiptViewer> {
                           addGeneratrIdDetails(
                                   name,
                                   widget.year,
-                                 // hostelid,
+                                  // hostelid,
                                   registrationnumber,
                                   widget.roomnumber,
                                   address,
