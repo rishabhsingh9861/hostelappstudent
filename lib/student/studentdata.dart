@@ -60,7 +60,7 @@ class _StudentDataState extends State<StudentData> {
   final _parentcontactnoController = TextEditingController();
   final _studentcontactnoController = TextEditingController();
   final _addresController = TextEditingController();
-  final _hostelIdController = TextEditingController();
+ // final _hostelIdController = TextEditingController();
   bool isChecked = false;
 
   bool approv = false;
@@ -109,7 +109,7 @@ class _StudentDataState extends State<StudentData> {
     _middlenameController.dispose();
     _surnameController.dispose();
 
-    _hostelIdController.dispose();
+   // _hostelIdController.dispose();
     // _bloodgroupController.dispose();
     super.dispose();
   }
