@@ -427,7 +427,8 @@ class _GenerateIdState extends State<GenerateId> {
                 ElevatedButton(
                   style: ButtonStyle(
                     side: MaterialStateBorderSide.resolveWith(
-                      (states) => const BorderSide(color: Colors.black, width: 1),
+                      (states) =>
+                          const BorderSide(color: Colors.black, width: 1),
                     ),
                     backgroundColor: MaterialStateProperty.resolveWith(
                       (states) => Colors.grey,

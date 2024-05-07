@@ -30,10 +30,14 @@ List<String> listbloodgroup = <String>[
 List<String> listcastecategory = <String>[
   'Select Category',
   'Open',
+  'EWS',
+  'SBC',
   'OBC',
   'VJ/NT',
   'SC',
   'ST',
+  'PH',
+  'Others'
 ];
 
 List<String> listDepartment = <String>[

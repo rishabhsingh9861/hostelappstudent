@@ -318,7 +318,18 @@ class _HostelAndMessState extends State<HostelAndMess> {
                       ),
                     ),
                     onPressed: () {
-                      validateFields();
+                      if (downloadUrl != '') {
+                        validateFields();
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const AlertDialog(
+                              content: Text('Please upload fees receipt'),
+                            );
+                          },
+                        );
+                      }
                     },
                     child: const Text(
                       "SUBMIT",

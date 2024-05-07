@@ -65,9 +65,9 @@ List<String> listbatch = [
 class _RoomChangeState extends State<RoomChange> {
   String uniqueFilename = 'Upload merged Fess Receipts till current year ';
   CollectionReference db =
-  FirebaseFirestore.instance.collection('HostelStudents');
+      FirebaseFirestore.instance.collection('HostelStudents');
   CollectionReference db1 =
-  FirebaseFirestore.instance.collection('RoomVacantReq');
+      FirebaseFirestore.instance.collection('RoomVacantReq');
   //TextEditingController preferences = TextEditingController();
   // TextEditingController reason = TextEditingController();
   bool? click;
@@ -90,6 +90,7 @@ class _RoomChangeState extends State<RoomChange> {
   }
 
   String downloadUrl = '';
+  bool isChecked = false;
 
   Future<void> uploadFile(File? file) async {
     if (file == null) {
@@ -107,7 +108,7 @@ class _RoomChangeState extends State<RoomChange> {
     try {
       uniqueFilename = file.path.split('/').last;
       Reference referenceDirPdf =
-      FirebaseStorage.instance.ref().child('FeesReceipt');
+          FirebaseStorage.instance.ref().child('FeesReceipt');
       Reference referencePdfToUpload = referenceDirPdf.child(uniqueFilename);
 
       showDialog(
@@ -157,15 +158,12 @@ class _RoomChangeState extends State<RoomChange> {
     }
   }
 
-  @override
   // void dispose() {
   //   _nameController.dispose();
   //   _hostelid.dispose();
   //   _roomnoController.dispose();
   //   super.dispose();
   // }
-
-
 
   void validateFields() async {
     try {
@@ -182,7 +180,7 @@ class _RoomChangeState extends State<RoomChange> {
 
         if (idCardSnapshot.exists) {
           Map<String, dynamic>? idCardData =
-          idCardSnapshot.data() as Map<String, dynamic>?;
+              idCardSnapshot.data() as Map<String, dynamic>?;
 
           if (idCardData != null) {
             String name = idCardData['Name'] ?? '';
@@ -191,7 +189,6 @@ class _RoomChangeState extends State<RoomChange> {
             String roomNo = idCardData['Room No'] ?? '';
             String emailid = idCardData['Emailid'] ?? '';
             String photo = idCardData['Passport Photo'] ?? '';
-
             String reasonText = setvacant;
             String batch = setBatch;
 
@@ -209,6 +206,7 @@ class _RoomChangeState extends State<RoomChange> {
                     'Batch': batch,
                     'Email': emailid,
                     'Photo': photo,
+                    'Fees Receipt' : downloadUrl  ,
                     'Timestamp': Timestamp.now(),
                   }
                 ]),
@@ -320,12 +318,12 @@ class _RoomChangeState extends State<RoomChange> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: dropdownMenu(listvacant, dropdownValueVacant,
-                          (String? value) {
-                        setState(() {
-                          dropdownValueVacant = value!;
-                          setvacant = dropdownValueVacant;
-                        });
-                      }),
+                      (String? value) {
+                    setState(() {
+                      dropdownValueVacant = value!;
+                      setvacant = dropdownValueVacant;
+                    });
+                  }),
                 ),
                 const SizedBox(
                   height: 10,
@@ -333,17 +331,16 @@ class _RoomChangeState extends State<RoomChange> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: dropdownMenu(listbatch, dropdownValueBatch,
-                          (String? value) {
-                        setState(() {
-                          dropdownValueBatch = value!;
-                          setBatch = dropdownValueBatch;
-                        });
-                      }),
+                      (String? value) {
+                    setState(() {
+                      dropdownValueBatch = value!;
+                      setBatch = dropdownValueBatch;
+                    });
+                  }),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -401,14 +398,13 @@ class _RoomChangeState extends State<RoomChange> {
                 const SizedBox(
                   height: 20,
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Checkbox(
+              Checkbox(
                         value: click ?? false,
-                        activeColor: Colors.grey,
+                        activeColor: Colors.blueAccent,
                         onChanged: (newBool) {
                           setState(() {
                             click = newBool;
@@ -428,14 +424,29 @@ class _RoomChangeState extends State<RoomChange> {
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
-                    side: MaterialStateBorderSide.resolveWith(
-                            (states) => const BorderSide(color: Colors.black, width: 2)),
+                    side: MaterialStateBorderSide.resolveWith((states) =>
+                        const BorderSide(color: Colors.black, width: 2)),
                     backgroundColor: MaterialStateColor.resolveWith(
-                          (states) => Colors.grey,
+                      (states) => Colors.grey,
                     ),
                   ),
                   onPressed: () {
-                    validateFields();
+                 
+                      if (downloadUrl != '' ||
+                          setvacant == 'Select Reason' ||
+                          setBatch == 'Select Batch') {
+                        validateFields();
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const AlertDialog(
+                              content: Text('Please fill the above details'),
+                            );
+                          },
+                        );
+                      }
+                    
                   },
                   child: const Text(
                     "Submit",
@@ -463,7 +474,7 @@ TextField leaveDetails({
       hintText: hinttext,
       labelText: labletext,
       labelStyle:
-      const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
       icon: icons,
       border: const OutlineInputBorder(
         borderRadius: BorderRadius.all(

@@ -45,7 +45,7 @@ class Developers extends StatelessWidget {
                     width: 170,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Colors.amber,
+                      color: Colors.transparent,
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
@@ -59,7 +59,7 @@ class Developers extends StatelessWidget {
                     height: 10,
                   ),
                   const Text(
-                    "RISHABH SINGH",
+                    "Mr. RISHABH SINGH",
                     style: TextStyle(
                       color: Colors.white,
                       letterSpacing: 2,
@@ -89,12 +89,12 @@ class Developers extends StatelessWidget {
                     width: 170,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Colors.amber,
+                      color: Colors.transparent,
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.asset(
-                        "assets/images/developers/komal.png",
+                        "assets/images/developers/shivani.jpg",
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -103,7 +103,7 @@ class Developers extends StatelessWidget {
                     height: 10,
                   ),
                   const Text(
-                    "Ms.SHIVINI DHANANJAY SUPE",
+                    "Ms. SHIVANI D SUPE",
                     style: TextStyle(
                       color: Colors.white,
                       letterSpacing: 2,
@@ -130,16 +130,22 @@ class Developers extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Contributers("Sahil Dongre", "sahil.png"),
-                      Contributers("Komal Salunkhe", "komal.png"),
-                      Contributers("Aditya Arakharao", "Aditya.png"),
+                      Contributers("Mr. Sahil Dongre", "sahil.png"),
+                      Contributers("Ms. Komal Salunkhe", "komal.png"),
+                      Contributers("Mr. Ayush Gurav", "ayush.png"),
                     ],
                   ),
                   Row(
                     children: [
-                      Contributers("Ayush Gurav", "Ayush.png"),
-                      Contributers("Mukund Gohil", "mukund.jpg"),
-                      Contributers("Prathamesh Kothawade", "prathamesh.png"),
+                      Contributers("Mr. Aditya Arakharao", "aditya.png"),
+                      Contributers("Mr. Mukund Gohil", "mukund.jpg"),
+                      Contributers("Mr. Prathamesh Kothawade", "prathamesh.png")
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Contributers("Ms. Sanhita Patil", "sanhita.jpg"),
+                      Contributers("Mr. Adyan Tisekar", "adyan.png")
                     ],
                   ),
                 ],
@@ -158,7 +164,7 @@ class Developers extends StatelessWidget {
         width: 180,
         decoration: BoxDecoration(
           color: Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(50),
         ),
         child: Column(
           children: [
@@ -166,7 +172,10 @@ class Developers extends StatelessWidget {
               height: 100,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(50),
-                child: Image.asset("assets/images/developers/${image}"),
+                child: Image.asset(
+                  "assets/images/developers/${image}",
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(

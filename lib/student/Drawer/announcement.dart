@@ -7,7 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:vjtihostel/student/constant/const.dart';
 
-
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
@@ -27,8 +26,13 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           Expanded(
             child: StreamBuilder(
-              stream:
-                  FirebaseFirestore.instance.collection('notices').snapshots(),
+              stream: FirebaseFirestore.instance
+                  .collection('notices')
+                  .orderBy(
+                    'createdAt',
+                    descending: true,
+                  )
+                  .snapshots(),
               builder: (ctx, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -64,7 +68,8 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class MessageBubble extends StatelessWidget {
-  const MessageBubble({super.key, 
+  const MessageBubble({
+    super.key,
     required this.sender,
     required this.text,
     required this.isMe,
@@ -113,7 +118,8 @@ class MessageBubble extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       )
-                    : const Icon(Icons.picture_as_pdf), // Placeholder for PDF icon
+                    : const Icon(
+                        Icons.picture_as_pdf), // Placeholder for PDF icon
               )
             else
               InkWell(
@@ -210,8 +216,6 @@ class MessageBubble extends StatelessWidget {
     );
   }
 }
-
-
 
 class PdfViewer extends StatelessWidget {
   final String pdfUrl;
